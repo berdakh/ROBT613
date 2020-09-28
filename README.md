@@ -1,2 +1,2 @@
 # ROBT613
- Brain-Machine Interfaces course materials 
+ BMI course materials 
