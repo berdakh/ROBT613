@@ -46,6 +46,9 @@ print(backend)
 # (Notebook 11 covers the tenth case.)
 
 # %% [markdown]
+# <img src="../docs/assets/diagrams/rag-pipeline.svg" alt="The four RAG stages: chunk, embed, retrieve, generate - measured in two halves" width="100%">
+
+# %% [markdown]
 # ## 9.2 · The pipeline, one stage at a time
 
 # %%

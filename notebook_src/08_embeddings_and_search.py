@@ -26,6 +26,9 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 import numpy as np
 
 # %% [markdown]
+# <img src="../docs/assets/diagrams/embedding-space.svg" alt="Embeddings place text in space where distance means similarity of meaning" width="100%">
+
+# %% [markdown]
 # ## 8.1 · What an embedding is
 #
 # An embedding model maps a piece of text to a fixed-length vector — for

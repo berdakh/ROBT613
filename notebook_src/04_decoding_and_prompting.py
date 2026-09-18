@@ -122,6 +122,9 @@ for temp in (0.1, 0.7, 1.3):
 # quality becomes a lottery.
 
 # %% [markdown]
+# <img src="../docs/assets/diagrams/sampling.svg" alt="Sampling narrows the vocabulary by temperature then top-k/top-p before picking one token" width="100%">
+
+# %% [markdown]
 # ## 4.3 · top-p, top-k and min-p
 #
 # These *truncate* the distribution before sampling, cutting off the long tail
@@ -203,6 +206,9 @@ for run in range(2):
 # Identical output. Note greedy decoding is **not** recommended for Qwen3
 # thinking mode — it tends to fall into repetition loops — but it is ideal for
 # structured extraction.
+
+# %% [markdown]
+# <img src="../docs/assets/diagrams/thinking-mode.svg" alt="Thinking mode inserts a hidden reasoning block before the visible answer" width="100%">
 
 # %% [markdown]
 # ## 4.5 · Thinking mode

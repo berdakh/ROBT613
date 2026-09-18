@@ -26,6 +26,9 @@ report = check_environment()
 print(describe_environment(report))
 
 # %% [markdown]
+# <img src="../docs/assets/diagrams/memory-budget.svg" alt="Memory use per model and precision: weights dominate until the context gets long" width="100%">
+
+# %% [markdown]
 # ## 2.1 · The memory formula
 #
 # Almost all of the memory goes to the **weights**. For a model with $N$

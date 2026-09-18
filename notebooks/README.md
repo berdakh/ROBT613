@@ -28,6 +28,13 @@ ollama serve && ollama pull qwen3:0.6b
 Every notebook begins with a cell that puts `src/` on the path. **Run it.**
 Skipping it is the single most common cause of `ModuleNotFoundError`.
 
+## The figures
+
+Each notebook embeds SVG diagrams from `../docs/assets/diagrams/`. They render
+in JupyterLab, on GitHub and on the course site, and adapt to light or dark
+themes. All 18 are collected on one page:
+[`docs/guides/diagrams.md`](../docs/guides/diagrams.md).
+
 ## Editing these notebooks
 
 Don't — edit `notebook_src/*.py` instead and run `make notebooks`. The `.ipynb`

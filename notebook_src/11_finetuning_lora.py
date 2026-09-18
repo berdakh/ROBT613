@@ -38,6 +38,9 @@
 # > knowledge. It half-works, cannot cite sources, and must be redone whenever
 # > a document changes. Use RAG.
 
+# %% [markdown]
+# <img src="../docs/assets/diagrams/decision-tree.svg" alt="Decision order: prompt, then RAG, then structured output, then tools, then fine-tuning" width="100%">
+
 # %%
 import sys
 from pathlib import Path
@@ -58,6 +61,9 @@ if not torch.cuda.is_available():
     print("  2. Read through and run only the data-preparation sections.")
     print("  3. Reduce MAX_STEPS below to 20 and accept a weak adapter.")
     print("!" * 70)
+
+# %% [markdown]
+# <img src="../docs/assets/diagrams/lora.svg" alt="LoRA freezes the original weight matrix and learns two thin matrices beside it" width="100%">
 
 # %% [markdown]
 # ## 11.2 · What LoRA does

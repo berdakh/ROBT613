@@ -12,6 +12,8 @@ nav_order: 6
 
 ---
 
+<img src="../assets/diagrams/serving.svg" alt="One OpenAI-compatible API served by Ollama, vLLM, llama.cpp or LM Studio" width="100%">
+
 ## Choosing a runtime
 
 | Runtime | Throughput | Setup | Choose when |

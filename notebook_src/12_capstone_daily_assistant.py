@@ -13,6 +13,9 @@
 # the scaffolding to build your own.
 
 # %% [markdown]
+# <img src="../docs/assets/diagrams/roadmap.svg" alt="The four-day roadmap, ending in the capstone" width="100%">
+
+# %% [markdown]
 # ## 12.1 · The requirements
 #
 # Your capstone must include **all four**:

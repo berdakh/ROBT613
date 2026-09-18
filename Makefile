@@ -1,6 +1,6 @@
 # Workshop maintenance tasks. Students do not need these; instructors do.
 
-.PHONY: help install test notebooks check lint clean models smoke
+.PHONY: help install test notebooks diagrams check lint clean models smoke
 
 help:  ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -15,8 +15,12 @@ test:  ## Run the test suite (no model or network needed)
 notebooks:  ## Rebuild notebooks/*.ipynb from notebook_src/*.py
 	python tools/nbbuild.py
 
-check:  ## Verify notebooks are built and valid, links resolve, tests pass
+diagrams:  ## Regenerate docs/assets/diagrams/*.svg
+	python tools/make_diagrams.py
+
+check:  ## Verify notebooks and diagrams are built and valid, links resolve, tests pass
 	python tools/nbbuild.py --check
+	python tools/make_diagrams.py --check
 	python tools/check_notebooks.py
 	python tools/check_links.py
 	python -m pytest

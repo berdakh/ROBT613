@@ -17,6 +17,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
+IMG = re.compile(r'<img[^>]+src="([^"]+)"')
 
 
 def resolve(source: Path, target: str) -> bool:
@@ -42,12 +43,19 @@ def main() -> int:
     for path in files:
         if not path.exists():
             continue
-        for label, target in LINK.findall(path.read_text(encoding="utf-8")):
+        content = path.read_text(encoding="utf-8")
+        for label, target in LINK.findall(content):
             if target.startswith(("http://", "https://", "#", "mailto:")):
                 continue
             checked += 1
             if not resolve(path, target):
                 problems.append(f"{path.relative_to(REPO_ROOT)}: [{label}]({target})")
+        for target in IMG.findall(content):
+            if target.startswith(("http://", "https://", "data:")):
+                continue
+            checked += 1
+            if not (path.parent / target).resolve().exists():
+                problems.append(f"{path.relative_to(REPO_ROOT)}: <img src={target}>")
 
     print(f"checked {checked} relative links across {len(files)} files")
     if problems:

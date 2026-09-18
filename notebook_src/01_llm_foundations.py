@@ -43,6 +43,9 @@
 # | The unit is a token, not a letter | Counting letters is genuinely hard for it. |
 # | Output is a *distribution*, and we sample from it | The same prompt gives different answers. That is a setting, not a bug. |
 
+# %% [markdown]
+# <img src="../docs/assets/diagrams/next-token-loop.svg" alt="The generation loop: tokenize, predict a distribution over every token, sample one, append, repeat" width="100%">
+
 # %%
 # Setup: make the workshop package importable from anywhere in the repo.
 import sys
@@ -141,6 +144,9 @@ for name, text in samples.items():
 # > Which is most expensive? Write down the chars/token you measured.
 
 # %% [markdown]
+# <img src="../docs/assets/diagrams/tokenization.svg" alt="The word strawberry becomes three tokens, so the letters are invisible to the model" width="100%">
+
+# %% [markdown]
 # ## 1.3 · Why letter-counting is hard
 #
 # The famous "how many r's in strawberry" failure is a *tokenisation* problem.
@@ -225,6 +231,9 @@ print(f"that string is {len(tokenizer.encode(prompt))} tokens")
 # > What disappeared? Why would the model keep silent (or ramble) without it?
 #
 # > **Exercise 3.** Set `enable_thinking=True`. What extra marker appears?
+
+# %% [markdown]
+# <img src="../docs/assets/diagrams/open-weights.svg" alt="Open weights gives you parameters and inference code, but not the training data" width="100%">
 
 # %% [markdown]
 # ## 1.5 · "Open weights" is not "open source"

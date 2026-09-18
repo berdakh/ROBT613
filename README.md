@@ -11,6 +11,8 @@ and no data leaving your laptop.
 
 ---
 
+<img src="docs/assets/diagrams/roadmap.svg" alt="The four-day roadmap" width="100%">
+
 ## What you will be able to do
 
 By the end of four days:
@@ -94,6 +96,7 @@ Short on time? Priority order: **01, 03, 07, 09, 10** are the essential five.
 | [Troubleshooting](docs/guides/troubleshooting.md) | When it breaks |
 | [Cheat sheet](docs/guides/cheatsheet.md) | The snippets you will reuse |
 | [Glossary](docs/guides/glossary.md) | Every term, defined plainly |
+| [Diagram index](docs/guides/diagrams.md) | All 18 figures in one place |
 
 ---
 
@@ -117,7 +120,11 @@ data/             sample notes, pantry, expenses, inbox, eval questions
 scripts/          check_env, download_models, smoke_test
 tests/            108 tests that run without a model, GPU or network
 docs/             the GitHub Pages site
-tools/            notebook build and validation
+    assets/diagrams/  18 generated SVG figures, embedded in the notebooks
+tools/
+    nbbuild.py        notebook_src/*.py  ->  notebooks/*.ipynb
+    make_diagrams.py  the diagrams; svgkit.py is the drawing kit
+    check_notebooks.py, check_links.py   validation run in CI
 ```
 
 The library is small and meant to be **read**, not just imported. Every module
@@ -134,6 +141,11 @@ for fine-tuning. "It looks good" is not an evaluation.
 **Nothing is magic.** You write the agent loop yourself before using a
 framework. You implement quantization in NumPy before using `bitsandbytes`. You
 see the raw `<tool_call>` text before using a parser.
+
+**Everything is generated and checked.** Notebooks come from `notebook_src/*.py`
+and the 18 figures come from `tools/make_diagrams.py`, so both stay reviewable
+in a diff. CI fails if either drifts, if a code cell stops parsing, or if any
+link or image path breaks.
 
 **Security is taught, not bolted on.** No `eval()` on model output — the
 `calculate` tool parses an AST. File tools check path containment. Irreversible
@@ -153,11 +165,18 @@ make test        # 108 tests, no model or network needed
 make check       # tests + notebooks built and valid
 make lint        # ruff
 make notebooks   # rebuild .ipynb from notebook_src/
+make diagrams    # regenerate docs/assets/diagrams/*.svg
 ```
 
 Notebooks are **generated** from `notebook_src/*.py` (jupytext percent format)
 so that pull requests show readable diffs instead of JSON blobs. Edit the `.py`
 file, run `make notebooks`, commit both.
+
+Diagrams work the same way: edit `tools/make_diagrams.py`, run `make diagrams`,
+commit both. They are self-authored SVG rather than downloaded images, so there
+is no licensing question when you redistribute the course, nothing to break when
+a link rots, and they still render with no network — which matters, since the
+whole workshop is meant to run offline.
 
 CI runs the tests and verifies the notebooks are in sync on every push.
 

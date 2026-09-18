@@ -61,6 +61,19 @@ def check_notebook(path: Path) -> list[str]:
                 if not resolved.exists():
                     problems.append(f"cell {number}: broken link [{text}]({target})")
 
+            # Images too - a diagram that 404s is worse than no diagram, and
+            # it is invisible until a student opens that exact notebook.
+            for target in re.findall(r'<img[^>]+src="([^"]+)"', source):
+                if target.startswith(("http://", "https://", "data:")):
+                    continue
+                if not (path.parent / target).resolve().exists():
+                    problems.append(f"cell {number}: broken image src={target}")
+            for target in re.findall(r"!\[[^\]]*\]\(([^)\s]+)\)", source):
+                if target.startswith(("http://", "https://", "data:")):
+                    continue
+                if not (path.parent / target).resolve().exists():
+                    problems.append(f"cell {number}: broken image {target}")
+
     return problems
 
 

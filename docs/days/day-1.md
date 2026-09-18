@@ -36,6 +36,8 @@ Hold onto this. When something surprising happens later in the week —
 the model miscounts letters, forgets your name, contradicts itself mid-answer —
 the explanation almost always reduces to this sentence.
 
+<img src="../assets/diagrams/next-token-loop.svg" alt="The generation loop: tokenize, predict a distribution, sample, append, repeat" width="100%">
+
 ## What to pay attention to
 
 **In notebook 01**, the chars-per-token table. English gets ~4 characters per

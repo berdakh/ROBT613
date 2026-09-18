@@ -21,4 +21,5 @@ the material you will come back to after the workshop is over.
 | [Troubleshooting](troubleshooting.html) | When something breaks |
 | [Cheat sheet](cheatsheet.html) | Constantly |
 | [Glossary](glossary.html) | Whenever a term is unfamiliar |
+| [Diagram index](diagrams.html) | Lecturing, or revising visually |
 | [Where next](where-next.html) | After the workshop |

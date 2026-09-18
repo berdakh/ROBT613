@@ -30,6 +30,8 @@ would actually use.
 > Anyone can demo an LLM. The engineering is in **measuring** it and being
 > honest about where it fails.
 
+<img src="../assets/diagrams/decision-tree.svg" alt="Decision order: prompt, RAG, structured output, tools, then fine-tuning" width="100%">
+
 ## Fine-tuning: decide before you train
 
 Work down this list and **stop at the first yes**:

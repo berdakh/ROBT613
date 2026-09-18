@@ -33,6 +33,9 @@ for name, spec in BACKENDS.items():
     print(f"{name:<12}{spec['base_url']:<34}{status}")
 
 # %% [markdown]
+# <img src="../docs/assets/diagrams/serving.svg" alt="One OpenAI-compatible API served interchangeably by Ollama, vLLM, llama.cpp or LM Studio" width="100%">
+
+# %% [markdown]
 # ## 6.1 · Start a server
 #
 # Pick **one**. Run it in a terminal (not in this notebook — it needs to stay
