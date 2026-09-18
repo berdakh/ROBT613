@@ -1,57 +1,197 @@
-# ROBT613: Brain–Machine Interface (BMI) Course Materials
+# Open-Weight LLMs & Agentic AI — a hands-on workshop
 
-This repository contains course materials for ROBT613, focusing on Brain–Machine Interfaces (BMIs). It includes Jupyter notebooks and project files designed to provide hands-on experience with BMI concepts and applications.
+**ROBT613** · Four days · Everything runs on your own machine.
 
-## Repository Contents
+Learn to run [Qwen](https://huggingface.co/Qwen) open-weight models locally,
+give them tools and your own documents, build an agent, measure whether it
+works, and ship something you actually use — with no API key, no subscription,
+and no data leaving your laptop.
 
-* **Variable\_Nested\_FORNew\.ipynb**: A Jupyter notebook demonstrating the use of nested loops and variable manipulation in Python.
-* **q1.ipynb**: A notebook containing solutions and explanations for Question 1 of the course assignments.
-* **termproject.ipynb**: The main notebook for the term project, encompassing data analysis, model development, and results.
-* **termproject.pdf**: A PDF version of the term project report, providing a comprehensive overview of the project's objectives, methodology, and findings.
+📖 **[Read the full course site →](https://berdakh.github.io/ROBT613/)**
 
-## Getting Started
+---
 
-To begin working with the course materials:
+## What you will be able to do
 
-1. **Clone the Repository**:
+By the end of four days:
 
-   ```bash
-   git clone https://github.com/berdakh/ROBT613.git
-   cd ROBT613
-   ```
+1. **Explain** what a language model computes, and why it behaves as it does.
+2. **Download and run** open-weight models on a laptop, GPU or Colab.
+3. **Choose** the right model size, quantization and runtime for given hardware.
+4. **Get structured, validated output** your program can rely on.
+5. **Give the model tools** it can call — safely.
+6. **Build retrieval** over your own notes, with citations and honest refusals.
+7. **Write an agent loop** from scratch and debug it when it misbehaves.
+8. **Fine-tune** with LoRA — and know when not to.
+9. **Measure** all of the above instead of guessing.
 
-2. **Set Up the Environment**:
+## Who it is for
 
-   Ensure you have Python 3.x installed. It's recommended to use a virtual environment:
+You need comfortable Python and a terminal. You do **not** need machine-learning
+background, a GPU, or any paid service.
 
-   ```bash
-   python -m venv env
-   source env/bin/activate  # On Windows: env\Scripts\activate
-   ```
+| You have | You can do |
+|---|---|
+| Any laptop, 8 GB RAM | Everything, with Qwen3-0.6B / 1.7B |
+| 16 GB RAM or Apple Silicon | Everything, comfortably, with Qwen3-4B |
+| An NVIDIA GPU | Everything, plus fine-tuning and vLLM |
+| None of the above | Everything, in free Google Colab |
 
-3. **Install Required Packages**:
+---
 
-   Install the necessary Python packages using pip:
+## Quick start
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+git clone https://github.com/berdakh/ROBT613.git
+cd ROBT613
 
-   *Note: If a `requirements.txt` file is not provided, manually install packages as needed based on the notebooks.*
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
 
-4. **Launch Jupyter Notebook**:
+python scripts/check_env.py                 # what can this machine run?
+python scripts/download_models.py --set core   # ~3 GB, do this on good wifi
+jupyter lab notebooks/01_llm_foundations.ipynb
+```
 
-   Start the Jupyter Notebook server to access the notebooks:
+Full setup, including Colab and Windows:
+**[docs/guides/setup.md](docs/guides/setup.md)**
 
-   ```bash
-   jupyter notebook
-   ```
+---
 
-   Navigate to the desired notebook (e.g., `termproject.ipynb`) to begin exploring the content.
+## The notebooks
 
-## Prerequisites
+| # | Notebook | You learn to | Time |
+|---|---|---|---|
+| **Day 1 — Foundations** ||||
+| 01 | [LLM foundations](notebooks/01_llm_foundations.ipynb) | Tokenization; what a model really computes; open weights vs. open source | 60 min |
+| 02 | [Environment & hardware](notebooks/02_environment_and_hardware.ipynb) | Compute memory needs; choose a model; control your cache | 45 min |
+| 03 | [First generation](notebooks/03_first_generation.ipynb) | Load Qwen3, generate, stream, converse, measure tok/s | 75 min |
+| 04 | [Decoding & prompting](notebooks/04_decoding_and_prompting.ipynb) | Temperature, top-p, thinking mode, prompt patterns that work | 75 min |
+| **Day 2 — Making it practical** ||||
+| 05 | [Quantization & runtimes](notebooks/05_quantization_and_local_runtimes.ipynb) | GGUF, Ollama, llama.cpp, bitsandbytes; measure the quality cost | 60 min |
+| 06 | [Serving & the OpenAI API](notebooks/06_serving_and_openai_api.ipynb) | Run a local server; write portable client code | 60 min |
+| 07 | [Structured output & tools](notebooks/07_structured_output_and_tools.ipynb) | Reliable JSON, Pydantic validation, tool calling, tool security | 90 min |
+| **Day 3 — Knowledge & agents** ||||
+| 08 | [Embeddings & search](notebooks/08_embeddings_and_search.ipynb) | Semantic search, hybrid search, and when embeddings fail | 60 min |
+| 09 | [RAG over your notes](notebooks/09_rag_over_your_notes.ipynb) | Full RAG pipeline with citations, refusals and **evaluation** | 90 min |
+| 10 | [Agents from scratch](notebooks/10_agents_from_scratch.ipynb) | Write the agent loop; ReAct; failure modes; prompt injection | 90 min |
+| **Day 4 — Adapt & ship** ||||
+| 11 | [Fine-tuning with LoRA](notebooks/11_finetuning_lora.ipynb) | Train an adapter — and decide whether you should | 90 min |
+| 12 | [Capstone](notebooks/12_capstone_daily_assistant.ipynb) | Build, evaluate and present a daily-life assistant | rest |
 
-* **Python 3.x**: Ensure Python is installed on your system.
-* **Jupyter Notebook**: An interactive environment for running and editing notebooks.
-* **Additional Python Packages**: Depending on the notebook, packages such as NumPy, pandas, matplotlib, or others may be required.
- 
+Short on time? Priority order: **01, 03, 07, 09, 10** are the essential five.
+
+## Deep-dive guides
+
+| Guide | About |
+|---|---|
+| [Open-weight models](docs/guides/open-weight-models.md) | What "open weights" means, licences, formats, quantization, sizing |
+| [The Qwen family](docs/guides/qwen-family.md) | Which model for which job |
+| [**Agentic AI**](docs/guides/agentic-ai.md) | The long version: loops, tools, memory, planning, multi-agent, MCP, failure modes, evaluation |
+| [Privacy and safety](docs/guides/privacy-and-safety.md) | Using your own data responsibly |
+| [Deployment](docs/guides/deployment.md) | From notebook to service |
+| [Capstone ideas](docs/guides/capstone-ideas.md) | Seven projects, scoped for one afternoon |
+| [Troubleshooting](docs/guides/troubleshooting.md) | When it breaks |
+| [Cheat sheet](docs/guides/cheatsheet.md) | The snippets you will reuse |
+| [Glossary](docs/guides/glossary.md) | Every term, defined plainly |
+
+---
+
+## What is in this repository
+
+```
+notebooks/        12 teaching notebooks, in order
+notebook_src/     their source (percent format) - edit these, not the .ipynb
+src/qwen_workshop/
+    config.py     model catalogue and sampling presets
+    env.py        hardware and package detection
+    loading.py    load models with sensible defaults and readable errors
+    chat.py       chat templates, generation, streaming, thinking mode
+    client.py     OpenAI-compatible client for Ollama / vLLM / llama.cpp
+    tools.py      turn Python functions into tools an LLM can call, safely
+    agent.py      the agent loop (~200 lines, heavily commented)
+    rag.py        chunking, embeddings, vector index, RAG prompts
+    demo_tools.py ready-made tools for the agent notebooks
+    parsing.py    tolerant JSON extraction from chatty model output
+data/             sample notes, pantry, expenses, inbox, eval questions
+scripts/          check_env, download_models, smoke_test
+tests/            108 tests that run without a model, GPU or network
+docs/             the GitHub Pages site
+tools/            notebook build and validation
+```
+
+The library is small and meant to be **read**, not just imported. Every module
+is commented for a student who is seeing this for the first time.
+
+---
+
+## Design principles
+
+**Everything is measurable.** Every technique is paired with a way to check
+whether it worked — recall@k for retrieval, test cases for agents, before/after
+for fine-tuning. "It looks good" is not an evaluation.
+
+**Nothing is magic.** You write the agent loop yourself before using a
+framework. You implement quantization in NumPy before using `bitsandbytes`. You
+see the raw `<tool_call>` text before using a parser.
+
+**Security is taught, not bolted on.** No `eval()` on model output — the
+`calculate` tool parses an AST. File tools check path containment. Irreversible
+actions need confirmation. There is a live prompt-injection demo in notebook 10.
+
+**Honest about limits.** A 0.6B model will get things wrong. The workshop says
+so, shows where, and teaches you to close the gap with retrieval and tools
+rather than pretending the gap is not there.
+
+---
+
+## For instructors
+
+```bash
+make install     # core + dev requirements
+make test        # 108 tests, no model or network needed
+make check       # tests + notebooks built and valid
+make lint        # ruff
+make notebooks   # rebuild .ipynb from notebook_src/
+```
+
+Notebooks are **generated** from `notebook_src/*.py` (jupytext percent format)
+so that pull requests show readable diffs instead of JSON blobs. Edit the `.py`
+file, run `make notebooks`, commit both.
+
+CI runs the tests and verifies the notebooks are in sync on every push.
+
+### Publishing the site
+
+The site lives in `docs/`. Either:
+
+- **Settings → Pages → Deploy from a branch**, branch `master`, folder `/docs`; or
+- **Settings → Pages → Source: GitHub Actions**, which uses
+  `.github/workflows/pages.yml`.
+
+### Adapting it
+
+- Swap `data/notes/` for material from your own course — the RAG notebooks get
+  much better when the corpus is something students care about.
+- The workshop is Qwen-based but the concepts are not. Changing `DEFAULT_CHAT_MODEL`
+  in `src/qwen_workshop/config.py` is most of the work needed to use Llama or Mistral.
+- Each day is independent enough to run as a standalone 6-hour session.
+
+---
+
+## Licence
+
+Code is [MIT](LICENSE). Prose and teaching materials are CC BY 4.0 — use them in
+your own course, with attribution.
+
+**Model weights are governed by their own licences.** The Qwen3 main line is
+Apache 2.0, but always check the model card for the specific checkpoint you
+download. See [Open-weight models](docs/guides/open-weight-models.md#3-licences-read-them).
+
+## Acknowledgements
+
+Built on the work of the [Qwen team](https://huggingface.co/Qwen) at Alibaba
+Cloud, and the open-source ecosystem around
+[transformers](https://github.com/huggingface/transformers),
+[llama.cpp](https://github.com/ggml-org/llama.cpp),
+[Ollama](https://ollama.com) and [vLLM](https://github.com/vllm-project/vllm).

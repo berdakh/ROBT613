@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qwen-workshop"
+version = "1.0.0"
+description = "Hands-on workshop materials for open-weight Qwen models and agentic AI (ROBT613)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+full = [
+    "torch>=2.4",
+    "transformers>=4.51",
+    "accelerate>=0.30",
+    "sentence-transformers>=3.0",
+    "openai>=1.40",
+    "pydantic>=2.7",
+]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "tests"]
+addopts = "-q --strict-markers"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+ignore = [
+    "E501",  # long lines in prose-heavy docstrings are fine
+    "B008",  # we never call functions in defaults, but dataclasses trip this
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E402"]      # conftest inserts sys.path before imports
+"scripts/*" = ["E402"]    # same

@@ -1,0 +1,126 @@
+date,merchant,category,amount_kzt,payment
+2026-01-05,Electricity,utilities,8000,card
+2026-01-05,Gym membership,health,12000,card
+2026-01-05,Internet,utilities,6000,card
+2026-01-05,Water,utilities,2850,card
+2026-01-05,Pharmacy,health,3800,cash
+2026-01-05,Mobile top-up,utilities,2300,card
+2026-01-05,Shashlik stand,eating out,3000,card
+2026-01-07,Coffee Boom,eating out,1700,card
+2026-01-07,Coffee Boom,eating out,1550,card
+2026-01-07,Metro top-up,transport,2200,cash
+2026-01-08,Cinema,fun,3600,card
+2026-01-08,Metro top-up,transport,1000,card
+2026-01-08,Concert ticket,fun,6050,card
+2026-01-10,Online course,study,16050,cash
+2026-01-10,Metro top-up,transport,2400,card
+2026-01-12,Small Magnum,groceries,4800,card
+2026-01-12,Student canteen,eating out,1400,cash
+2026-01-12,Student canteen,eating out,1500,card
+2026-01-13,Pizza place,eating out,4050,card
+2026-01-13,Cinema,fun,2300,card
+2026-01-13,Bowling,fun,3750,card
+2026-01-14,Small Magnum,groceries,3900,cash
+2026-01-15,Small Magnum,groceries,2800,card
+2026-01-15,Coffee Boom,eating out,1900,card
+2026-01-15,Coffee Boom,eating out,2050,card
+2026-01-16,Coffee Boom,eating out,1700,card
+2026-01-16,Concert ticket,fun,7600,card
+2026-01-17,Bakery,groceries,1150,card
+2026-01-17,Small Magnum,groceries,3950,card
+2026-01-17,Bakery,groceries,1400,card
+2026-01-18,Pizza place,eating out,3650,card
+2026-01-18,Board game cafe,fun,4050,card
+2026-01-18,Bakery,groceries,1250,card
+2026-01-19,Bakery,groceries,600,card
+2026-01-19,Metro top-up,transport,2450,card
+2026-01-19,Metro top-up,transport,2950,card
+2026-01-20,Bakery,groceries,1350,cash
+2026-01-21,Coffee Boom,eating out,2000,cash
+2026-01-22,Train ticket,transport,8850,card
+2026-01-22,Student canteen,eating out,600,card
+2026-01-23,Coffee Boom,eating out,1350,cash
+2026-01-25,Bakery,groceries,750,card
+2026-01-25,Metro top-up,transport,1900,card
+2026-01-27,Bakery,groceries,950,card
+2026-01-27,Pharmacy,health,1650,card
+2026-01-29,Bakery,groceries,1150,card
+2026-01-31,Pharmacy,health,1750,card
+2026-02-01,Small Magnum,groceries,6400,cash
+2026-02-02,Student canteen,eating out,1550,card
+2026-02-04,Coffee Boom,eating out,1400,card
+2026-02-04,Coffee Boom,eating out,2200,card
+2026-02-05,Electricity,utilities,7450,card
+2026-02-05,Gym membership,health,12000,card
+2026-02-05,Internet,utilities,6000,card
+2026-02-05,Water,utilities,2250,card
+2026-02-05,Bus card,transport,1900,card
+2026-02-05,Bakery,groceries,900,cash
+2026-02-06,Small Magnum,groceries,5300,cash
+2026-02-06,Metro top-up,transport,2950,card
+2026-02-06,Bowling,fun,5950,cash
+2026-02-07,Bus card,transport,1250,card
+2026-02-08,Small Magnum,groceries,4700,card
+2026-02-08,Student canteen,eating out,800,cash
+2026-02-09,Metro top-up,transport,2100,cash
+2026-02-10,Small Magnum,groceries,6550,card
+2026-02-10,Cinema,fun,2750,cash
+2026-02-10,Bakery,groceries,600,card
+2026-02-11,Student canteen,eating out,800,card
+2026-02-12,Galmart,groceries,7700,cash
+2026-02-12,Pizza place,eating out,3300,card
+2026-02-13,Coffee Boom,eating out,1300,card
+2026-02-13,Small Magnum,groceries,6350,card
+2026-02-14,Small Magnum,groceries,2100,card
+2026-02-14,Cinema,fun,4500,card
+2026-02-14,Coffee Boom,eating out,1550,card
+2026-02-15,Cinema,fun,3550,card
+2026-02-15,Bakery,groceries,350,cash
+2026-02-15,Student canteen,eating out,1100,cash
+2026-02-15,Metro top-up,transport,1200,cash
+2026-02-16,Printing,study,1100,cash
+2026-02-17,Galmart,groceries,7850,card
+2026-02-17,Student canteen,eating out,1200,card
+2026-02-17,Bakery,groceries,350,card
+2026-02-18,Small Magnum,groceries,2850,card
+2026-02-18,Pizza place,eating out,2600,card
+2026-02-19,Bakery,groceries,750,card
+2026-02-19,Coffee Boom,eating out,2150,card
+2026-02-19,Coffee Boom,eating out,1250,card
+2026-02-21,Train ticket,transport,8400,card
+2026-02-21,Shashlik stand,eating out,2700,cash
+2026-02-21,Small Magnum,groceries,3500,card
+2026-02-23,Metro top-up,transport,2400,card
+2026-02-23,Shashlik stand,eating out,3750,card
+2026-02-24,Bus card,transport,1600,card
+2026-02-24,Pizza place,eating out,6000,cash
+2026-02-25,Small Magnum,groceries,2350,cash
+2026-02-25,Metro top-up,transport,2250,card
+2026-02-27,Metro top-up,transport,2850,card
+2026-03-01,Student canteen,eating out,1050,card
+2026-03-02,Bakery,groceries,1300,cash
+2026-03-03,Mobile top-up,utilities,2650,cash
+2026-03-03,Student canteen,eating out,1000,card
+2026-03-03,Coffee Boom,eating out,900,card
+2026-03-04,Small Magnum,groceries,6350,card
+2026-03-04,Small Magnum,groceries,6000,card
+2026-03-04,Board game cafe,fun,2900,card
+2026-03-05,Electricity,utilities,10450,card
+2026-03-05,Gym membership,health,12000,card
+2026-03-05,Internet,utilities,6000,card
+2026-03-05,Water,utilities,1400,card
+2026-03-05,Green corner market,groceries,1500,card
+2026-03-05,Metro top-up,transport,1150,card
+2026-03-05,Concert ticket,fun,14100,cash
+2026-03-06,Coffee Boom,eating out,1050,cash
+2026-03-06,Yandex Go,transport,850,card
+2026-03-06,Printing,study,700,card
+2026-03-09,Metro top-up,transport,2400,card
+2026-03-10,Metro top-up,transport,1700,card
+2026-03-11,Metro top-up,transport,2950,card
+2026-03-12,Coffee Boom,eating out,2050,card
+2026-03-12,Bowling,fun,3300,card
+2026-03-14,Green corner market,groceries,2900,card
+2026-03-14,Pizza place,eating out,3100,card
+2026-03-14,Coffee Boom,eating out,1250,cash
+2026-03-14,Metro top-up,transport,2150,card

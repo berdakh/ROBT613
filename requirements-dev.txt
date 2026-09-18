@@ -1,0 +1,6 @@
+# For working on the workshop materials themselves.
+
+pytest>=8.0
+ruff>=0.6
+nbformat>=5.10
+gradio>=4.40        # optional capstone UI (notebook 12)
