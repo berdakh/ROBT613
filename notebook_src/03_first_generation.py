@@ -1,4 +1,9 @@
 # %% [markdown]
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/03_first_generation.ipynb)
+#
+# *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
+
+# %% [markdown]
 # # 03 · Your first generation
 #
 # **Day 1 · ~75 minutes**
@@ -16,11 +21,28 @@
 # 5. hold a multi-turn conversation and explain why the model has no memory.
 
 # %%
+# --- Setup: works on your laptop AND in Google Colab ------------------------
+# In Colab this clones the workshop repo and installs the dependencies (about a
+# minute, first run only) so that `src/`, `data/` and the sample files exist.
+# On your own machine it just locates the repo. Safe to re-run either way.
+import os
+import subprocess
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path.cwd() if (Path.cwd() / "src").exists() else Path.cwd().parent
+if "google.colab" in sys.modules:
+    if not Path("/content/ROBT613").exists():
+        subprocess.run(["git", "clone", "--depth", "1",
+                        "https://github.com/berdakh/ROBT613.git",
+                        "/content/ROBT613"], check=True)
+    os.chdir("/content/ROBT613")
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q",
+                    "-r", "requirements.txt"], check=True)
+
+REPO_ROOT = next(p for p in [Path.cwd(), *Path.cwd().parents]
+                 if (p / "src" / "qwen_workshop").is_dir())
 sys.path.insert(0, str(REPO_ROOT / "src"))
+print("repo root:", REPO_ROOT)
 
 from qwen_workshop.env import describe_environment
 
@@ -46,7 +68,7 @@ print(f"parameters      : {qwen.n_params / 1e9:.2f} B")
 print(f"memory in use   : {qwen.memory_footprint_gb():.2f} GB")
 
 # %% [markdown]
-# <img src="../docs/assets/diagrams/chat-pipeline.svg" alt="Four steps: messages, chat template, generate, then slice off the prompt" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/chat-pipeline.svg" alt="Four steps: messages, chat template, generate, then slice off the prompt" width="100%">
 
 # %% [markdown]
 # ## 3.2 · The raw loop, with nothing hidden

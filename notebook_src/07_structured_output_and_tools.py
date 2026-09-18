@@ -1,4 +1,9 @@
 # %% [markdown]
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/07_structured_output_and_tools.ipynb)
+#
+# *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
+
+# %% [markdown]
 # # 07 · Structured output and tool calling
 #
 # **Day 2 · ~90 minutes**
@@ -17,11 +22,28 @@
 
 # %%
 import json
+# --- Setup: works on your laptop AND in Google Colab ------------------------
+# In Colab this clones the workshop repo and installs the dependencies (about a
+# minute, first run only) so that `src/`, `data/` and the sample files exist.
+# On your own machine it just locates the repo. Safe to re-run either way.
+import os
+import subprocess
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path.cwd() if (Path.cwd() / "src").exists() else Path.cwd().parent
+if "google.colab" in sys.modules:
+    if not Path("/content/ROBT613").exists():
+        subprocess.run(["git", "clone", "--depth", "1",
+                        "https://github.com/berdakh/ROBT613.git",
+                        "/content/ROBT613"], check=True)
+    os.chdir("/content/ROBT613")
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q",
+                    "-r", "requirements.txt"], check=True)
+
+REPO_ROOT = next(p for p in [Path.cwd(), *Path.cwd().parents]
+                 if (p / "src" / "qwen_workshop").is_dir())
 sys.path.insert(0, str(REPO_ROOT / "src"))
+print("repo root:", REPO_ROOT)
 
 from qwen_workshop.client import complete, get_client, is_up, require_backend
 
@@ -29,6 +51,22 @@ BACKEND, MODEL = "ollama", "qwen3:0.6b"
 require_backend(BACKEND)
 client, backend = get_client(BACKEND, model=MODEL)
 print(backend)
+
+# %% [markdown]
+# ### Running this notebook in Colab?
+#
+# This notebook needs a local OpenAI-compatible server. Colab has none, so run
+# the cell below to install Ollama, start it, and pull the model. It takes two
+# to four minutes the first time. **Skip it if you already have Ollama running
+# on your own machine** - the notebook will find it.
+
+# %%
+from qwen_workshop.colab import in_colab, start_ollama
+
+if in_colab():
+    start_ollama("qwen3:0.6b")
+else:
+    print("Not in Colab - make sure your own server is running:  ollama serve")
 
 # %% [markdown]
 # ## 7.1 · The problem
@@ -230,7 +268,7 @@ except Exception as exc:  # noqa: BLE001
 # > free-text sentences. Which field does the small model get wrong most often?
 
 # %% [markdown]
-# <img src="../docs/assets/diagrams/tool-calling.svg" alt="The tool-calling round trip: the model requests, your code executes, the result returns" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/tool-calling.svg" alt="The tool-calling round trip: the model requests, your code executes, the result returns" width="100%">
 
 # %% [markdown]
 # ## 7.5 · Tool calling

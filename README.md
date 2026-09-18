@@ -55,31 +55,34 @@ python scripts/download_models.py --set core   # ~3 GB, do this on good wifi
 jupyter lab notebooks/01_llm_foundations.ipynb
 ```
 
-Full setup, including Colab and Windows:
-**[docs/guides/setup.md](docs/guides/setup.md)**
+**No install at all?** Click any *Colab* badge in the table below — the first
+cell clones the repo and installs everything for you.
+See [docs/guides/colab.md](docs/guides/colab.md).
+
+Full local setup, including Windows: **[docs/guides/setup.md](docs/guides/setup.md)**
 
 ---
 
 ## The notebooks
 
-| # | Notebook | You learn to | Time |
-|---|---|---|---|
-| **Day 1 — Foundations** ||||
-| 01 | [LLM foundations](notebooks/01_llm_foundations.ipynb) | Tokenization; what a model really computes; open weights vs. open source | 60 min |
-| 02 | [Environment & hardware](notebooks/02_environment_and_hardware.ipynb) | Compute memory needs; choose a model; control your cache | 45 min |
-| 03 | [First generation](notebooks/03_first_generation.ipynb) | Load Qwen3, generate, stream, converse, measure tok/s | 75 min |
-| 04 | [Decoding & prompting](notebooks/04_decoding_and_prompting.ipynb) | Temperature, top-p, thinking mode, prompt patterns that work | 75 min |
-| **Day 2 — Making it practical** ||||
-| 05 | [Quantization & runtimes](notebooks/05_quantization_and_local_runtimes.ipynb) | GGUF, Ollama, llama.cpp, bitsandbytes; measure the quality cost | 60 min |
-| 06 | [Serving & the OpenAI API](notebooks/06_serving_and_openai_api.ipynb) | Run a local server; write portable client code | 60 min |
-| 07 | [Structured output & tools](notebooks/07_structured_output_and_tools.ipynb) | Reliable JSON, Pydantic validation, tool calling, tool security | 90 min |
-| **Day 3 — Knowledge & agents** ||||
-| 08 | [Embeddings & search](notebooks/08_embeddings_and_search.ipynb) | Semantic search, hybrid search, and when embeddings fail | 60 min |
-| 09 | [RAG over your notes](notebooks/09_rag_over_your_notes.ipynb) | Full RAG pipeline with citations, refusals and **evaluation** | 90 min |
-| 10 | [Agents from scratch](notebooks/10_agents_from_scratch.ipynb) | Write the agent loop; ReAct; failure modes; prompt injection | 90 min |
-| **Day 4 — Adapt & ship** ||||
-| 11 | [Fine-tuning with LoRA](notebooks/11_finetuning_lora.ipynb) | Train an adapter — and decide whether you should | 90 min |
-| 12 | [Capstone](notebooks/12_capstone_daily_assistant.ipynb) | Build, evaluate and present a daily-life assistant | rest |
+| # | Notebook | You learn to | Time | Colab |
+|---|---|---|---|---|
+| **Day 1 — Foundations** |||||
+| 01 | [LLM foundations](notebooks/01_llm_foundations.ipynb) | Tokenization; what a model really computes; open weights vs. open source | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/01_llm_foundations.ipynb) |
+| 02 | [Environment & hardware](notebooks/02_environment_and_hardware.ipynb) | Compute memory needs; choose a model; control your cache | 45 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/02_environment_and_hardware.ipynb) |
+| 03 | [First generation](notebooks/03_first_generation.ipynb) | Load Qwen3, generate, stream, converse, measure tok/s | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/03_first_generation.ipynb) |
+| 04 | [Decoding & prompting](notebooks/04_decoding_and_prompting.ipynb) | Temperature, top-p, thinking mode, prompt patterns that work | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/04_decoding_and_prompting.ipynb) |
+| **Day 2 — Making it practical** |||||
+| 05 | [Quantization & runtimes](notebooks/05_quantization_and_local_runtimes.ipynb) | GGUF, Ollama, llama.cpp, bitsandbytes; measure the quality cost | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb) |
+| 06 | [Serving & the OpenAI API](notebooks/06_serving_and_openai_api.ipynb) | Run a local server; write portable client code | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/06_serving_and_openai_api.ipynb) |
+| 07 | [Structured output & tools](notebooks/07_structured_output_and_tools.ipynb) | Reliable JSON, Pydantic validation, tool calling, tool security | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/07_structured_output_and_tools.ipynb) |
+| **Day 3 — Knowledge & agents** |||||
+| 08 | [Embeddings & search](notebooks/08_embeddings_and_search.ipynb) | Semantic search, hybrid search, and when embeddings fail | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/08_embeddings_and_search.ipynb) |
+| 09 | [RAG over your notes](notebooks/09_rag_over_your_notes.ipynb) | Full RAG pipeline with citations, refusals and **evaluation** | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/09_rag_over_your_notes.ipynb) |
+| 10 | [Agents from scratch](notebooks/10_agents_from_scratch.ipynb) | Write the agent loop; ReAct; failure modes; prompt injection | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/10_agents_from_scratch.ipynb) |
+| **Day 4 — Adapt & ship** |||||
+| 11 | [Fine-tuning with LoRA](notebooks/11_finetuning_lora.ipynb) | Train an adapter — and decide whether you should | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/11_finetuning_lora.ipynb) |
+| 12 | [Capstone](notebooks/12_capstone_daily_assistant.ipynb) | Build, evaluate and present a daily-life assistant | rest | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
 
 Short on time? Priority order: **01, 03, 07, 09, 10** are the essential five.
 

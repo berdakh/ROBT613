@@ -118,7 +118,7 @@ export HF_HUB_OFFLINE=1
 
 ## Google Colab
 
-Every notebook runs on a free T4.
+Every notebook runs on a free T4, and each one carries an **Open in Colab** badge — see [Run in Colab](colab.html) for the full guide, including the GPU switch and the Ollama bootstrap.
 
 1. Open [colab.research.google.com](https://colab.research.google.com)
 2. **File → Open notebook → GitHub**, paste `berdakh/ROBT613`

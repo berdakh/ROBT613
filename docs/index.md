@@ -67,6 +67,8 @@ python scripts/check_env.py
 
 Then open `notebooks/01_llm_foundations.ipynb`.
 
+**No install at all?** Every notebook has an *Open in Colab* badge — see [Run in Colab](guides/colab.html).
+
 Full instructions, including Colab and Windows: [Setup](guides/setup.html).
 
 ## Deep-dive guides

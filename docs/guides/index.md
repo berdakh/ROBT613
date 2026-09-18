@@ -12,6 +12,7 @@ the material you will come back to after the workshop is over.
 | Guide | Read it when |
 |---|---|
 | [Setup](setup.html) | Before day 1 |
+| [Run in Colab](colab.html) | No GPU, or no local install |
 | [Open-weight models](open-weight-models.html) | Day 1, or when choosing a model |
 | [The Qwen family](qwen-family.html) | When deciding which model to download |
 | [Agentic AI](agentic-ai.html) | Day 3, and again before your capstone |

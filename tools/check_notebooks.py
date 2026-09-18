@@ -26,6 +26,26 @@ NOTEBOOK_DIR = REPO_ROOT / "notebooks"
 # Lines Jupyter understands but Python does not.
 MAGIC = re.compile(r"^\s*[%!]")
 
+# Notebook images point at raw.githubusercontent so they also load in Colab,
+# where relative paths do not resolve. We still verify the file exists in this
+# repo - otherwise a typo becomes an image that 404s only for students.
+RAW_PREFIX = "https://raw.githubusercontent.com/berdakh/ROBT613/master/"
+COLAB_PREFIX = "https://colab.research.google.com/github/berdakh/ROBT613/blob/master/"
+
+
+def _image_problem(path: Path, target: str) -> str | None:
+    """Return a problem description for an image target, or None if it is fine."""
+    if target.startswith(RAW_PREFIX):
+        relative = target[len(RAW_PREFIX):]
+        if not (REPO_ROOT / relative).exists():
+            return f"raw URL points at a missing file: {relative}"
+        return None
+    if target.startswith(("http://", "https://", "data:")):
+        return None  # third-party image, not ours to verify
+    if not (path.parent / target).resolve().exists():
+        return f"broken image src={target}"
+    return None
+
 
 def check_notebook(path: Path) -> list[str]:
     problems: list[str] = []
@@ -63,16 +83,28 @@ def check_notebook(path: Path) -> list[str]:
 
             # Images too - a diagram that 404s is worse than no diagram, and
             # it is invisible until a student opens that exact notebook.
-            for target in re.findall(r'<img[^>]+src="([^"]+)"', source):
-                if target.startswith(("http://", "https://", "data:")):
+            images = re.findall(r'<img[^>]+src="([^"]+)"', source)
+            images += re.findall(r"!\[[^\]]*\]\(([^)\s]+)\)", source)
+            for target in images:
+                problem = _image_problem(path, target)
+                if problem:
+                    problems.append(f"cell {number}: {problem}")
+
+            # The Colab badge must point at this notebook, not a stale one.
+            # Match only /github/ links - the badge's own image URL lives under
+            # /assets/ and is matched by the same ](...) markdown shape.
+            for target in re.findall(
+                r"\]\((https://colab\.research\.google\.com/github/[^)]+)\)", source
+            ):
+                if not target.startswith(COLAB_PREFIX):
+                    problems.append(f"cell {number}: unexpected Colab URL {target}")
                     continue
-                if not (path.parent / target).resolve().exists():
-                    problems.append(f"cell {number}: broken image src={target}")
-            for target in re.findall(r"!\[[^\]]*\]\(([^)\s]+)\)", source):
-                if target.startswith(("http://", "https://", "data:")):
-                    continue
-                if not (path.parent / target).resolve().exists():
-                    problems.append(f"cell {number}: broken image {target}")
+                expected = f"{COLAB_PREFIX}notebooks/{path.name}"
+                if target != expected:
+                    problems.append(
+                        f"cell {number}: Colab badge points at {target.rsplit('/', 1)[-1]}, "
+                        f"expected {path.name}"
+                    )
 
     return problems
 

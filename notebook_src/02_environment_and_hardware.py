@@ -1,4 +1,9 @@
 # %% [markdown]
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/02_environment_and_hardware.ipynb)
+#
+# *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
+
+# %% [markdown]
 # # 02 · What can *your* machine run?
 #
 # **Day 1 · ~45 minutes**
@@ -14,11 +19,28 @@
 # 4. control where models are cached, and clean the cache up.
 
 # %%
+# --- Setup: works on your laptop AND in Google Colab ------------------------
+# In Colab this clones the workshop repo and installs the dependencies (about a
+# minute, first run only) so that `src/`, `data/` and the sample files exist.
+# On your own machine it just locates the repo. Safe to re-run either way.
+import os
+import subprocess
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path.cwd() if (Path.cwd() / "src").exists() else Path.cwd().parent
+if "google.colab" in sys.modules:
+    if not Path("/content/ROBT613").exists():
+        subprocess.run(["git", "clone", "--depth", "1",
+                        "https://github.com/berdakh/ROBT613.git",
+                        "/content/ROBT613"], check=True)
+    os.chdir("/content/ROBT613")
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q",
+                    "-r", "requirements.txt"], check=True)
+
+REPO_ROOT = next(p for p in [Path.cwd(), *Path.cwd().parents]
+                 if (p / "src" / "qwen_workshop").is_dir())
 sys.path.insert(0, str(REPO_ROOT / "src"))
+print("repo root:", REPO_ROOT)
 
 from qwen_workshop.env import check_environment, describe_environment
 
@@ -26,7 +48,7 @@ report = check_environment()
 print(describe_environment(report))
 
 # %% [markdown]
-# <img src="../docs/assets/diagrams/memory-budget.svg" alt="Memory use per model and precision: weights dominate until the context gets long" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/memory-budget.svg" alt="Memory use per model and precision: weights dominate until the context gets long" width="100%">
 
 # %% [markdown]
 # ## 2.1 · The memory formula
