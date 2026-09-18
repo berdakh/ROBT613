@@ -15,6 +15,8 @@ would actually use.
 
 ---
 
+No GPU? Every notebook below opens in [Google Colab](../guides/colab.html) with one click.
+
 ## Schedule
 
 | Time | Activity | Notebook |

@@ -1,4 +1,9 @@
 # %% [markdown]
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/12_capstone_daily_assistant.ipynb)
+#
+# *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
+
+# %% [markdown]
 # # 12 · Capstone — build your daily-life assistant
 #
 # **Day 4 · the rest of the workshop**
@@ -13,7 +18,7 @@
 # the scaffolding to build your own.
 
 # %% [markdown]
-# <img src="../docs/assets/diagrams/roadmap.svg" alt="The four-day roadmap, ending in the capstone" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/roadmap.svg" alt="The four-day roadmap, ending in the capstone" width="100%">
 
 # %% [markdown]
 # ## 12.1 · The requirements
@@ -64,11 +69,28 @@
 # Read this, run it, then replace it with yours.
 
 # %%
+# --- Setup: works on your laptop AND in Google Colab ------------------------
+# In Colab this clones the workshop repo and installs the dependencies (about a
+# minute, first run only) so that `src/`, `data/` and the sample files exist.
+# On your own machine it just locates the repo. Safe to re-run either way.
+import os
+import subprocess
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path.cwd() if (Path.cwd() / "src").exists() else Path.cwd().parent
+if "google.colab" in sys.modules:
+    if not Path("/content/ROBT613").exists():
+        subprocess.run(["git", "clone", "--depth", "1",
+                        "https://github.com/berdakh/ROBT613.git",
+                        "/content/ROBT613"], check=True)
+    os.chdir("/content/ROBT613")
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q",
+                    "-r", "requirements.txt"], check=True)
+
+REPO_ROOT = next(p for p in [Path.cwd(), *Path.cwd().parents]
+                 if (p / "src" / "qwen_workshop").is_dir())
 sys.path.insert(0, str(REPO_ROOT / "src"))
+print("repo root:", REPO_ROOT)
 
 from qwen_workshop.agent import Agent
 from qwen_workshop.client import get_client, require_backend
@@ -94,6 +116,22 @@ assistant = Agent(client, backend, tools, system=ASSISTANT_SYSTEM, max_steps=6)
 
 print(f"{len(tools)} tools ready:")
 print(tools.describe())
+
+# %% [markdown]
+# ### Running this notebook in Colab?
+#
+# This notebook needs a local OpenAI-compatible server. Colab has none, so run
+# the cell below to install Ollama, start it, and pull the model. It takes two
+# to four minutes the first time. **Skip it if you already have Ollama running
+# on your own machine** - the notebook will find it.
+
+# %%
+from qwen_workshop.colab import in_colab, start_ollama
+
+if in_colab():
+    start_ollama("qwen3:0.6b")
+else:
+    print("Not in Colab - make sure your own server is running:  ollama serve")
 
 # %%
 run = assistant.run("What should I cook tonight? Use what needs eating first.")
