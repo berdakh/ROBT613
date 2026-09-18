@@ -34,6 +34,8 @@ citations, and an agent chains tools together on its own.
 
 Most real systems need the middle two and rarely the first.
 
+<img src="../assets/diagrams/rag-pipeline.svg" alt="The four RAG stages: chunk, embed, retrieve, generate" width="100%">
+
 ## What to pay attention to
 
 **In notebook 08**, the "invoice 88213" search. There is no such note, and the

@@ -49,6 +49,9 @@ for binary in ("ollama", "llama-cli", "llama-server"):
     print(f"{binary:<14}{'found' if have(binary) else 'not installed'}")
 
 # %% [markdown]
+# <img src="../docs/assets/diagrams/quantization.svg" alt="Quantization stores a group of weights as small integers plus one shared scale" width="100%">
+
+# %% [markdown]
 # ## 5.1 · What quantization actually does
 #
 # A weight is a number like `0.4173829`. Stored as bf16 that costs 2 bytes.

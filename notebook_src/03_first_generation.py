@@ -46,6 +46,9 @@ print(f"parameters      : {qwen.n_params / 1e9:.2f} B")
 print(f"memory in use   : {qwen.memory_footprint_gb():.2f} GB")
 
 # %% [markdown]
+# <img src="../docs/assets/diagrams/chat-pipeline.svg" alt="Four steps: messages, chat template, generate, then slice off the prompt" width="100%">
+
+# %% [markdown]
 # ## 3.2 · The raw loop, with nothing hidden
 #
 # Before using any helper, do it by hand once. Every line below corresponds to

@@ -40,6 +40,9 @@ jobs:
       - name: Verify notebooks are in sync with their sources
         run: python tools/nbbuild.py --check
 
+      - name: Verify diagrams are in sync with their generator
+        run: python tools/make_diagrams.py --check
+
       - name: Validate notebook structure, syntax and links
         run: python tools/check_notebooks.py
 

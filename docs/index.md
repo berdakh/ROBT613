@@ -17,6 +17,8 @@ works, and ship something you actually use.
 
 ---
 
+<img src="assets/diagrams/roadmap.svg" alt="The four-day roadmap: foundations, practical serving and tools, knowledge and agents, then fine-tuning and the capstone" width="100%">
+
 ## What you will be able to do
 
 By the end of four days, without an API key and without an internet connection:

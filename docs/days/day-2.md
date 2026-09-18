@@ -34,6 +34,8 @@ program can trust.
 
 Today is the day the technology stops being a chatbot.
 
+<img src="../assets/diagrams/tool-calling.svg" alt="The tool-calling round trip: the model requests, your code executes, the result returns" width="100%">
+
 ## What to pay attention to
 
 **In notebook 05**, the quantization error table. The jump from 8-bit (~0.6%

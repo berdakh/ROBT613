@@ -16,6 +16,8 @@ when you should not use one. Read this alongside
 
 ---
 
+<img src="../assets/diagrams/agent-loop.svg" alt="The agent loop: think, act, observe, repeat, bounded by max_steps" width="100%">
+
 ## 1. What an agent is
 
 Strip away the marketing and an agent is a **loop**:
@@ -51,6 +53,8 @@ Remove any one and you do not have an agent. Remove the limits and you have a
 liability.
 
 ---
+
+<img src="../assets/diagrams/agent-spectrum.svg" alt="A spectrum from prompt and chain through to multi-agent" width="100%">
 
 ## 2. The spectrum: from prompt to agent
 
@@ -329,6 +333,8 @@ model to quote tool output verbatim.
 Step 1 is slightly wrong; steps 2–5 build on it confidently. The final answer is
 coherent, plausible and wrong. **This is why traces are mandatory** — the answer
 alone gives you no way to notice.
+
+<img src="../assets/diagrams/prompt-injection.svg" alt="Prompt injection and the defences that work" width="100%">
 
 ### 8.5 Prompt injection
 

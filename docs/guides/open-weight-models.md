@@ -15,6 +15,8 @@ to get them, and how to choose.
 
 ---
 
+<img src="../assets/diagrams/open-weights.svg" alt="Open weights gives parameters and inference code, but not training data" width="100%">
+
 ## 1. Open weights vs. open source
 
 These are not the same thing, and the difference is legal as well as technical.
@@ -170,6 +172,8 @@ GPU.** Everything else is a special case.
 
 ---
 
+<img src="../assets/diagrams/quantization.svg" alt="Quantization stores a group of weights as small integers plus one shared scale" width="100%">
+
 ## 6. Quantization in one page
 
 Quantization stores each weight in fewer bits. The model gets smaller and
@@ -205,6 +209,8 @@ Notebook 05 implements group-wise quantization in 15 lines of NumPy so you can
 see exactly where the error comes from.
 
 ---
+
+<img src="../assets/diagrams/memory-budget.svg" alt="Memory use per model and precision: weights dominate until context grows" width="100%">
 
 ## 7. Sizing: what fits on what
 

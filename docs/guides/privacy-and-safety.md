@@ -56,6 +56,8 @@ A short checklist:
 > The RAG index is a plain-text copy of your documents. If the source documents
 > are sensitive, the index is equally sensitive. Treat it the same way.
 
+<img src="../assets/diagrams/prompt-injection.svg" alt="Prompt injection and the defences that work" width="100%">
+
 ## The three security rules that matter most
 
 ### 1. Never execute model output

@@ -230,6 +230,9 @@ except Exception as exc:  # noqa: BLE001
 # > free-text sentences. Which field does the small model get wrong most often?
 
 # %% [markdown]
+# <img src="../docs/assets/diagrams/tool-calling.svg" alt="The tool-calling round trip: the model requests, your code executes, the result returns" width="100%">
+
+# %% [markdown]
 # ## 7.5 · Tool calling
 #
 # Structured output lets the model *return* data. Tool calling lets it
