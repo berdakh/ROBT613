@@ -25,13 +25,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # NOTE: Pages must be switched on ONCE by a repository admin:
+      #   Settings -> Pages -> Source: "GitHub Actions"
+      # This cannot be automated. `enablement: true` on this step calls the
+      # "create a Pages site" API, which requires admin permission; the
+      # workflow's GITHUB_TOKEN cannot be granted that (`pages: write` covers
+      # deploying to an existing site, not creating one), so it fails with
+      # "Resource not accessible by integration". See PR #2.
       - uses: actions/configure-pages@v5
-        with:
-          # Create the Pages site via the API if it does not exist yet, instead
-          # of failing with "Get Pages site failed ... Not Found". This is what
-          # lets the site go live without anyone visiting repository settings.
-          # Idempotent: once Pages exists, this is a no-op.
-          enablement: true
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1

@@ -163,11 +163,18 @@ CI runs the tests and verifies the notebooks are in sync on every push.
 
 ### Publishing the site
 
-The site lives in `docs/`. Either:
+The site lives in `docs/`. A repository admin must switch Pages on **once**:
 
-- **Settings → Pages → Deploy from a branch**, branch `master`, folder `/docs`; or
-- **Settings → Pages → Source: GitHub Actions**, which uses
-  `.github/workflows/pages.yml`.
+**Settings → Pages → Source: "GitHub Actions"**
+
+After that, `.github/workflows/pages.yml` publishes it on every push to
+`master` that touches `docs/`.
+
+This one step cannot be automated: creating a Pages site requires admin
+permission, and a workflow's `GITHUB_TOKEN` cannot be granted it — `pages: write`
+covers deploying to an existing site, not creating one. Until it is switched on,
+the deploy workflow fails at `configure-pages` with
+`Resource not accessible by integration`.
 
 ### Adapting it
 
