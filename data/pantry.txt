@@ -1,0 +1,23 @@
+# Kitchen inventory, updated 12 March
+# format: item | quantity | expires (YYYY-MM-DD or "-")
+
+rice (basmati)      | 2 kg      | -
+red lentils         | 900 g     | -
+spaghetti           | 500 g     | -
+eggs                | 6         | 2026-03-18
+milk                | 1 L       | 2026-03-16
+plain yoghurt       | 400 g     | 2026-03-19
+butter              | 200 g     | 2026-04-02
+cheddar             | 150 g     | 2026-03-28
+chicken thighs      | 700 g     | 2026-03-17
+onions              | 4         | -
+garlic              | 1 bulb    | -
+carrots             | 5         | 2026-03-24
+potatoes            | 1.5 kg    | -
+tomatoes (tinned)   | 3 tins    | -
+spinach (frozen)    | 450 g     | -
+chickpeas (tinned)  | 2 tins    | -
+olive oil           | 500 ml    | -
+cumin, paprika, bay | -         | -
+black tea           | 100 bags  | -
+bread               | half loaf | 2026-03-15

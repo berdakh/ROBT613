@@ -1,0 +1,9 @@
+# Day 4: LoRA fine-tuning (notebook 11). Needs a GPU to be practical.
+# Install the core requirements first.
+
+peft>=0.12
+trl>=0.11
+datasets>=2.20
+
+# NVIDIA GPUs only - 4-bit quantization. Skip on macOS/CPU and use GGUF instead.
+bitsandbytes>=0.43; platform_system == "Linux" or platform_system == "Windows"

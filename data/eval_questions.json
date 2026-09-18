@@ -1,0 +1,77 @@
+[
+  {
+    "question": "When is the ROBT613 midterm and where?",
+    "expected_sources": [
+      "study.md"
+    ],
+    "expected_keywords": [
+      "14 March",
+      "3.204"
+    ]
+  },
+  {
+    "question": "How much do I want to keep monthly spending under?",
+    "expected_sources": [
+      "home.md"
+    ],
+    "expected_keywords": [
+      "180,000",
+      "eating out"
+    ]
+  },
+  {
+    "question": "What is the water-to-rice ratio?",
+    "expected_sources": [
+      "cooking.md"
+    ],
+    "expected_keywords": [
+      "1.5"
+    ]
+  },
+  {
+    "question": "How long does the train to Almaty take and what does it cost?",
+    "expected_sources": [
+      "travel.md"
+    ],
+    "expected_keywords": [
+      "13 hours",
+      "8,000"
+    ]
+  },
+  {
+    "question": "Why should I salt lentils at the end?",
+    "expected_sources": [
+      "cooking.md"
+    ],
+    "expected_keywords": [
+      "soften"
+    ]
+  },
+  {
+    "question": "When is rubbish collected?",
+    "expected_sources": [
+      "home.md"
+    ],
+    "expected_keywords": [
+      "Tuesday",
+      "Friday"
+    ]
+  },
+  {
+    "question": "What did I write about why multi-head attention helps?",
+    "expected_sources": [
+      "study.md"
+    ],
+    "expected_keywords": [
+      "can't explain",
+      "re-read"
+    ]
+  },
+  {
+    "question": "What is the capital of Brazil?",
+    "expected_sources": [],
+    "expected_keywords": [
+      "cannot answer"
+    ]
+  }
+]
