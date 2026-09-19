@@ -86,6 +86,21 @@ Full local setup, including Windows: **[docs/guides/setup.md](docs/guides/setup.
 
 Short on time? Priority order: **01, 03, 07, 09, 10** are the essential five.
 
+## The handbook — background reading
+
+The notebooks teach you to build. The **[handbook](docs/handbook/)** explains
+what you are building on. It is self-contained: no code to run, readable in an
+evening, and it answers the questions students actually ask.
+
+| | Chapter | About |
+|---|---|---|
+| 1 | [How we got here](docs/handbook/how-we-got-here.md) | Why each piece was invented, in order |
+| 2 | [How models work](docs/handbook/how-models-work.md) | Tokens, embeddings, attention, context windows |
+| 3 | [How LLMs are trained](docs/handbook/how-llms-are-trained.md) | Data, pre-training, post-training, RLHF/DPO, reasoning, and your part |
+| 4 | [The model landscape](docs/handbook/the-model-landscape.md) | Base vs instruct vs reasoning · foundation vs frontier · reading a model card |
+| 5 | [The tool ecosystem](docs/handbook/the-tool-ecosystem.md) | Every tool worth knowing, the problem it solves, and when not to use it |
+| 6 | [Protocols and standards](docs/handbook/protocols-and-standards.md) | OpenAI API, tool-calling schemas, and MCP in depth |
+
 ## Deep-dive guides
 
 | Guide | About |
@@ -99,7 +114,7 @@ Short on time? Priority order: **01, 03, 07, 09, 10** are the essential five.
 | [Troubleshooting](docs/guides/troubleshooting.md) | When it breaks |
 | [Cheat sheet](docs/guides/cheatsheet.md) | The snippets you will reuse |
 | [Glossary](docs/guides/glossary.md) | Every term, defined plainly |
-| [Diagram index](docs/guides/diagrams.md) | All 18 figures in one place |
+| [Diagram index](docs/guides/diagrams.md) | All 31 figures in one place |
 
 ---
 
@@ -108,6 +123,7 @@ Short on time? Priority order: **01, 03, 07, 09, 10** are the essential five.
 ```
 notebooks/        12 teaching notebooks, in order
 notebook_src/     their source (percent format) - edit these, not the .ipynb
+docs/handbook/    6-chapter background handbook (no code required)
 src/qwen_workshop/
     config.py     model catalogue and sampling presets
     env.py        hardware and package detection
@@ -123,10 +139,11 @@ data/             sample notes, pantry, expenses, inbox, eval questions
 scripts/          check_env, download_models, smoke_test
 tests/            108 tests that run without a model, GPU or network
 docs/             the GitHub Pages site
-    assets/diagrams/  18 generated SVG figures, embedded in the notebooks
+    assets/diagrams/  31 generated SVG figures, used by notebooks and handbook
 tools/
     nbbuild.py        notebook_src/*.py  ->  notebooks/*.ipynb
-    make_diagrams.py  the diagrams; svgkit.py is the drawing kit
+    make_diagrams.py  workshop diagrams; diagrams_handbook.py the handbook's
+                      (svgkit.py is the shared drawing kit)
     check_notebooks.py, check_links.py   validation run in CI
 ```
 
@@ -146,7 +163,7 @@ framework. You implement quantization in NumPy before using `bitsandbytes`. You
 see the raw `<tool_call>` text before using a parser.
 
 **Everything is generated and checked.** Notebooks come from `notebook_src/*.py`
-and the 18 figures come from `tools/make_diagrams.py`, so both stay reviewable
+and the 31 figures come from `tools/make_diagrams.py`, so both stay reviewable
 in a diff. CI fails if either drifts, if a code cell stops parsing, or if any
 link or image path breaks.
 

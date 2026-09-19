@@ -15,16 +15,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from svgkit import Canvas  # noqa: E402
+from svgkit import DIAGRAMS, Canvas, diagram  # noqa: E402
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "docs" / "assets" / "diagrams"
-
-DIAGRAMS = []
-
-
-def diagram(func):
-    DIAGRAMS.append(func)
-    return func
 
 
 # ---------------------------------------------------------------------------
@@ -639,6 +632,10 @@ def roadmap():
         "A four-day roadmap: foundations, practical serving and tools, knowledge "
         "and agents, then fine-tuning and the capstone."
     ), "The four-day roadmap"
+
+
+# Importing this module registers the handbook's diagrams into DIAGRAMS.
+import diagrams_handbook  # noqa: E402,F401
 
 
 def main() -> int:

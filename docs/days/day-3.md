@@ -97,6 +97,8 @@ leaves your machine.
 
 ## Optional reading
 
+- [Protocols and standards](../handbook/protocols-and-standards.html) — the handbook chapter behind today's material
+
 - [Agentic AI](../guides/agentic-ai.html) — the long-form guide. Read it tonight
   if you intend to build an agent for your capstone.
 - [Yao et al., *ReAct*](https://arxiv.org/abs/2210.03629) — the original paper.

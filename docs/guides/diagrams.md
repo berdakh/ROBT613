@@ -7,8 +7,8 @@ nav_order: 12
 # Diagram index
 {: .no_toc }
 
-Every diagram in the workshop, in one place — useful for lecturing from, or for
-revision.
+Every diagram in the workshop and the handbook, in one place — useful for
+lecturing from, or for revision.
 
 All of them are **generated**, not drawn by hand: `tools/make_diagrams.py`
 builds them with the small kit in `tools/svgkit.py`. Change the generator and
@@ -133,3 +133,78 @@ Notebook 11. Work down the list and stop at the first yes.
 ### The four-day roadmap
 
 <img src="../assets/diagrams/roadmap.svg" alt="Day 1 foundations, day 2 practical, day 3 knowledge and agents, day 4 ship" width="100%">
+
+---
+
+## Handbook figures
+
+These accompany [the handbook](../handbook/), which is background reading rather
+than hands-on work.
+
+### How we got here
+[Chapter 1](../handbook/how-we-got-here.html). Why each piece was invented.
+
+<img src="../assets/diagrams/hb-timeline.svg" alt="A timeline from the 2017 transformer to reasoning models and agents" width="100%">
+
+### What attention does
+[Chapter 2](../handbook/how-models-work.html).
+
+<img src="../assets/diagrams/hb-attention.svg" alt="The word 'it' attends mostly to 'laptop', resolving the pronoun" width="100%">
+
+### Inside a transformer
+[Chapter 2](../handbook/how-models-work.html).
+
+<img src="../assets/diagrams/hb-transformer-block.svg" alt="Embeddings, N blocks of attention and feed-forward, then a final layer and softmax" width="100%">
+
+### The full training lifecycle
+[Chapter 3](../handbook/how-llms-are-trained.html). The single most useful figure
+in the handbook.
+
+<img src="../assets/diagrams/hb-training-lifecycle.svg" alt="Four phases - data, pre-training, post-training, adaptation - with falling costs" width="100%">
+
+### Phase 0: making the data
+[Chapter 3](../handbook/how-llms-are-trained.html).
+
+<img src="../assets/diagrams/hb-pretraining-data.svg" alt="Crawl, filter, deduplicate, decontaminate, tokenize" width="100%">
+
+### Scaling laws
+[Chapter 3](../handbook/how-llms-are-trained.html). Why good small models exist.
+
+<img src="../assets/diagrams/hb-scaling-laws.svg" alt="Tokens per parameter from GPT-3 through Chinchilla to modern overtrained small models" width="100%">
+
+### Phase 2: post-training
+[Chapter 3](../handbook/how-llms-are-trained.html). SFT, RLHF and DPO.
+
+<img src="../assets/diagrams/hb-post-training.svg" alt="Base model to instruct model via supervised fine-tuning and preference optimisation" width="100%">
+
+### Adaptation options, cheapest first
+[Chapter 3](../handbook/how-llms-are-trained.html).
+
+<img src="../assets/diagrams/hb-adaptation-ladder.svg" alt="A ladder from prompting through RAG and tools to fine-tuning and pre-training" width="100%">
+
+### Distillation and Mixture of Experts
+[Chapter 3](../handbook/how-llms-are-trained.html).
+
+<img src="../assets/diagrams/hb-distillation-moe.svg" alt="A small student trained on a teacher's outputs; a router sending tokens to a couple of experts" width="100%">
+
+### Which kind of model is this?
+[Chapter 4](../handbook/the-model-landscape.html). Foundation vs frontier, and
+the axes people conflate.
+
+<img src="../assets/diagrams/hb-model-landscape.svg" alt="Four axes: training stage, availability, size and capability tier" width="100%">
+
+### The ecosystem as a stack
+[Chapter 5](../handbook/the-tool-ecosystem.html). Tools in the same layer are
+alternatives; tools in different layers compose.
+
+<img src="../assets/diagrams/hb-ecosystem-stack.svg" alt="Seven layers from hardware up to the application" width="100%">
+
+### Choosing a tool
+[Chapter 5](../handbook/the-tool-ecosystem.html).
+
+<img src="../assets/diagrams/hb-choosing-tools.svg" alt="Five questions for evaluating a tool" width="100%">
+
+### MCP: why a protocol was needed
+[Chapter 6](../handbook/protocols-and-standards.html).
+
+<img src="../assets/diagrams/hb-mcp.svg" alt="Nine custom integrations become six once a protocol sits in the middle" width="100%">

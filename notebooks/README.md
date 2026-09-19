@@ -23,6 +23,12 @@ Work through these in order. Each builds on the last.
 ollama serve && ollama pull qwen3:0.6b
 ```
 
+## Background reading
+
+The [handbook](../docs/handbook/) covers what these notebooks assume: how models
+work, how they are trained, and what every tool in the ecosystem is for. It
+needs no code and stands on its own.
+
 ## Before you start
 
 Every notebook begins with a cell that puts `src/` on the path. **Run it.**
