@@ -215,11 +215,7 @@ covers deploying to an existing site, not creating one. Until it is switched on,
 the deploy workflow fails at `configure-pages` with
 `Resource not accessible by integration`.
 
-### Adapting it to another topic
-
-[`TEMPLATE.md`](TEMPLATE.md) documents how this repository was built — the
-prompts, the structure, and the conventions (generated artifacts, CI checks,
-dependency-free tests) that are worth reusing on an unrelated project.
+### Adapting it
 
 - Swap `data/notes/` for material from your own course — the RAG notebooks get
   much better when the corpus is something students care about.
