@@ -102,6 +102,17 @@ def _markers() -> str:
     )
 
 
+# The shared registry. Any module that imports `diagram` and decorates a
+# function adds it to the set that `make_diagrams.py` renders.
+DIAGRAMS: list = []
+
+
+def diagram(func):
+    """Register a diagram function. It must return ``(filename, svg, caption)``."""
+    DIAGRAMS.append(func)
+    return func
+
+
 # Approximate advance width per character, as a fraction of font size. Good
 # enough to wrap label text without shipping a font-metrics library.
 _CHAR_W = 0.55
@@ -160,6 +171,14 @@ class Canvas:
             sub: str = "", role: str = "default", radius: float = 9,
             label_cls: str = "lbl", mono: bool = False) -> Canvas:
         """A rounded rectangle with a wrapped, vertically centred label."""
+        # Easy mistake: box(x, y, w, h, "label", "accent") puts the role in the
+        # `sub` slot, so the diagram silently renders "accent" as a subtitle and
+        # uses the default colour. Refuse it rather than ship it.
+        if sub in ROLE_COLOURS and role == "default":
+            raise ValueError(
+                f"box(): sub={sub!r} is a role name - did you mean role={sub!r}? "
+                "Pass it by keyword."
+            )
         fill_key, stroke_key = ROLE_COLOURS.get(role, ROLE_COLOURS["default"])
         fill = "none" if fill_key is None else LIGHT[fill_key]
         dashes = ' stroke-dasharray="5 4"' if role in ("muted", "ghost") else ""

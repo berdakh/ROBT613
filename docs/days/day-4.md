@@ -104,3 +104,7 @@ paths forward — multimodal models, MCP, better retrieval, evaluation at scale.
 
 The most valuable habit to keep: **read the model cards and technical reports.**
 They are more accurate and more current than any tutorial, including this one.
+
+## Background reading
+
+[How LLMs are trained](../handbook/how-llms-are-trained.html) — the handbook chapter behind today's material.

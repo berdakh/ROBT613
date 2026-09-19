@@ -95,6 +95,8 @@ Before you stop for the day, answer these without looking:
 
 ## Optional reading
 
+- [How models work](../handbook/how-models-work.html) — the handbook chapter behind today's material
+
 - [Open-weight models](../guides/open-weight-models.html) — the full picture
 - [The Qwen family](../guides/qwen-family.html) — what else is available
 - [Andrej Karpathy, *Let's build GPT*](https://www.youtube.com/watch?v=kCc8FmEb1nY) —

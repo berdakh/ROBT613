@@ -71,6 +71,20 @@ Then open `notebooks/01_llm_foundations.ipynb`.
 
 Full instructions, including Colab and Windows: [Setup](guides/setup.html).
 
+## Background reading: the handbook
+
+The notebooks teach you to build. [**The handbook**](handbook/) explains what
+you are building on — and it stands alone, with no code to run.
+
+| | Chapter |
+|:---|:---|
+| 1 | [How we got here](handbook/how-we-got-here.html) — why each piece was invented |
+| 2 | [How models work](handbook/how-models-work.html) — tokens, attention, context |
+| 3 | [How LLMs are trained](handbook/how-llms-are-trained.html) — every phase, from raw data to your fine-tune |
+| 4 | [The model landscape](handbook/the-model-landscape.html) — base vs instruct, foundation vs frontier |
+| 5 | [The tool ecosystem](handbook/the-tool-ecosystem.html) — every tool, and the problem it solves |
+| 6 | [Protocols and standards](handbook/protocols-and-standards.html) — the OpenAI API, tool calling, MCP |
+
 ## Deep-dive guides
 
 The notebooks are hands-on; these are the reference material behind them.

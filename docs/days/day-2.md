@@ -107,3 +107,7 @@ each one a name, a one-line description, and its arguments. You will build them
 on day 4, and having them in mind makes days 3 and 4 far more focused.
 
 [Capstone ideas](../guides/capstone-ideas.html) if you need a starting point.
+
+## Background reading
+
+[The tool ecosystem](../handbook/the-tool-ecosystem.html) — the handbook chapter behind today's material.
