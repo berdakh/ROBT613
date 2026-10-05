@@ -17,6 +17,9 @@ understand what it is doing.
 
 No GPU? Every notebook below opens in [Google Colab](../guides/colab.html) with one click.
 
+{: .warning }
+> Did you do [the day-0 checklist](../guides/before-you-start.html)? If not, do it now — the first hour assumes a working install.
+
 ## Schedule
 
 | Time | Activity | Notebook |

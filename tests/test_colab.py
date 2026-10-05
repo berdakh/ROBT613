@@ -72,3 +72,54 @@ def test_start_ollama_refuses_to_install_on_a_real_machine(monkeypatch):
 def test_start_ollama_is_a_noop_when_already_running(monkeypatch):
     monkeypatch.setattr("qwen_workshop.client.is_up", lambda *a, **k: True)
     assert colab.start_ollama(pull=False) is True
+
+
+# --------------------------------------------------------------------------
+# The shared lab endpoint (the fallback when a student's local install fails)
+# --------------------------------------------------------------------------
+
+
+def test_lab_backend_exists():
+    from qwen_workshop.client import BACKENDS
+
+    assert "lab" in BACKENDS
+
+
+def test_unconfigured_lab_says_what_to_do(monkeypatch):
+    """A student with no WORKSHOP_LAB_URL must get instructions, not a stacktrace."""
+    from qwen_workshop import client
+
+    monkeypatch.setitem(client.BACKENDS["lab"], "base_url", "")
+    with pytest.raises(RuntimeError, match="WORKSHOP_LAB_URL"):
+        client.get_client("lab")
+
+
+def test_unknown_backend_lists_the_real_ones():
+    from qwen_workshop import client
+
+    with pytest.raises(ValueError, match="ollama"):
+        client.get_client("not-a-backend")
+
+
+def test_available_backend_falls_back_to_preferred_when_nothing_runs(monkeypatch):
+    from qwen_workshop import client
+
+    monkeypatch.setattr(client, "is_up", lambda *a, **k: False)
+    assert client.available_backend() == "ollama"
+    assert client.available_backend("vllm") == "vllm"
+
+
+def test_available_backend_prefers_what_is_actually_up(monkeypatch):
+    from qwen_workshop import client
+
+    monkeypatch.setattr(client, "is_up", lambda name, **k: name == "llamacpp")
+    assert client.available_backend() == "llamacpp"
+
+
+def test_available_backend_skips_lab_when_no_url_is_set(monkeypatch):
+    """Without a URL the lab entry is not a candidate, however `is_up` behaves."""
+    from qwen_workshop import client
+
+    monkeypatch.setattr(client, "LAB_URL", "")
+    monkeypatch.setattr(client, "is_up", lambda *a, **k: True)
+    assert client.available_backend() != "lab"

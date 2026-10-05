@@ -1,0 +1,199 @@
+[
+  {
+    "question": "What does thinking mode cost in extra tokens?",
+    "expected_sources": [
+      "handbook/the-model-landscape.md"
+    ],
+    "expected_keywords": [
+      "5-20"
+    ]
+  },
+  {
+    "question": "What did Chinchilla find was compute-optimal?",
+    "expected_sources": [
+      "handbook/how-llms-are-trained.md"
+    ],
+    "expected_keywords": [
+      "tokens per parameter",
+      "compute-optimal"
+    ]
+  },
+  {
+    "question": "Why should I prefer safetensors over .bin files?",
+    "expected_sources": [
+      "handbook/the-tool-ecosystem.md"
+    ],
+    "expected_keywords": [
+      "pickle"
+    ]
+  },
+  {
+    "question": "What problem does MCP solve?",
+    "expected_sources": [
+      "handbook/protocols-and-standards.md"
+    ],
+    "expected_keywords": [
+      "integration"
+    ]
+  },
+  {
+    "question": "What is the difference between a foundation model and a frontier model?",
+    "expected_sources": [
+      "handbook/the-model-landscape.md"
+    ],
+    "expected_keywords": [
+      "moving"
+    ]
+  },
+  {
+    "question": "What does PagedAttention do?",
+    "expected_sources": [
+      "handbook/the-tool-ecosystem.md"
+    ],
+    "expected_keywords": [
+      "kv cache"
+    ]
+  },
+  {
+    "question": "Why does a base model not follow instructions?",
+    "expected_sources": [
+      "handbook/how-llms-are-trained.md"
+    ],
+    "expected_keywords": [
+      "phase 2"
+    ]
+  },
+  {
+    "question": "What sampling settings does Qwen3 recommend for thinking mode?",
+    "expected_sources": [
+      "guides/qwen-family.md"
+    ],
+    "expected_keywords": [
+      "0.6"
+    ]
+  },
+  {
+    "question": "How do I move the Hugging Face cache to another disk?",
+    "expected_sources": [
+      "guides/troubleshooting.md"
+    ],
+    "expected_keywords": [
+      "hf_home"
+    ]
+  },
+  {
+    "question": "What should I do if the model never calls my tools?",
+    "expected_sources": [
+      "guides/troubleshooting.md"
+    ],
+    "expected_keywords": [
+      "tool-call-parser"
+    ]
+  },
+  {
+    "question": "How should I bound an agent's loop?",
+    "expected_sources": [
+      "guides/agentic-ai.md"
+    ],
+    "expected_keywords": [
+      "max_steps"
+    ]
+  },
+  {
+    "question": "What defends against prompt injection?",
+    "expected_sources": [
+      "guides/agentic-ai.md"
+    ],
+    "expected_keywords": [
+      "least privilege"
+    ]
+  },
+  {
+    "question": "Which quantization level should I start with?",
+    "expected_sources": [
+      "guides/open-weight-models.md"
+    ],
+    "expected_keywords": [
+      "q4_k_m"
+    ]
+  },
+  {
+    "question": "How do I turn on the GPU in Colab?",
+    "expected_sources": [
+      "guides/colab.md"
+    ],
+    "expected_keywords": [
+      "t4"
+    ]
+  },
+  {
+    "question": "Why is my RAG index a privacy risk?",
+    "expected_sources": [
+      "guides/privacy-and-safety.md"
+    ],
+    "expected_keywords": [
+      "plain-text"
+    ]
+  },
+  {
+    "question": "What is DPO and why did it displace RLHF?",
+    "expected_sources": [
+      "handbook/how-llms-are-trained.md"
+    ],
+    "expected_keywords": [
+      "reward model"
+    ]
+  },
+  {
+    "question": "What does LoRA actually learn?",
+    "expected_sources": [
+      "handbook/how-llms-are-trained.md"
+    ],
+    "expected_keywords": [
+      "thin matrices"
+    ]
+  },
+  {
+    "question": "What is the KV cache and why does it matter?",
+    "expected_sources": [
+      "handbook/how-models-work.md"
+    ],
+    "expected_keywords": [
+      "kv cache"
+    ]
+  },
+  {
+    "question": "When should I use a chain instead of an agent?",
+    "expected_sources": [
+      "guides/agentic-ai.md"
+    ],
+    "expected_keywords": [
+      "flowchart"
+    ]
+  },
+  {
+    "question": "What does Ollama do that llama.cpp does not?",
+    "expected_sources": [
+      "handbook/the-tool-ecosystem.md"
+    ],
+    "expected_keywords": [
+      "ollama"
+    ]
+  },
+  {
+    "question": "How many chunks before I need a vector database?",
+    "expected_sources": [
+      "handbook/the-tool-ecosystem.md"
+    ],
+    "expected_keywords": [
+      "numpy"
+    ]
+  },
+  {
+    "question": "What is the capital of Brazil?",
+    "expected_sources": [],
+    "expected_keywords": [
+      "cannot answer"
+    ]
+  }
+]

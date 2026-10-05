@@ -35,6 +35,8 @@
 # Plus a short **README** covering: what it does, how to run it, what it gets
 # wrong, and what you would do with another week.
 #
+# 📋 Full marking scheme: [`docs/guides/capstone-rubric.md`](../docs/guides/capstone-rubric.md) — read it before you build, not after.
+#
 # ### Judged on
 #
 # - **It works.** A demo that runs beats a design that does not.

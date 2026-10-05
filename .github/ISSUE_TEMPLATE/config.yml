@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Setup problems before the workshop
+    url: https://github.com/berdakh/ROBT613/blob/master/docs/guides/setup.md
+    about: Installation, Colab, Windows, slow downloads - start here.
+  - name: Something broke mid-notebook
+    url: https://github.com/berdakh/ROBT613/blob/master/docs/guides/troubleshooting.md
+    about: Organised by the error you are seeing.

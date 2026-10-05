@@ -1,0 +1,44 @@
+name: Something was unclear or wrong
+description: An explanation did not land, or you think the material is mistaken.
+title: "[docs] short description"
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Both kinds of report are welcome and useful:
+
+        - **"I could not follow this"** — a confusing explanation is a defect in
+          the material, not in you. These are the most valuable reports we get.
+        - **"I think this is factually wrong"** — this field moves fast and parts
+          of the handbook are a snapshot. If a model card disagrees with us, we
+          are the ones who are wrong.
+
+  - type: input
+    id: where
+    attributes:
+      label: Where?
+      placeholder: "handbook ch.3, the scaling laws section — or notebook 09, section 9.4"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem?
+      options:
+        - I could not follow the explanation
+        - I think this is factually wrong
+        - It contradicts something else in the material
+        - A link or image is broken
+        - Something is missing that I expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: What happened, and what did you expect?
+      description: If you think something is factually wrong, a link to a model card or paper helps a lot.
+    validations:
+      required: true
