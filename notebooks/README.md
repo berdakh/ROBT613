@@ -46,6 +46,13 @@ themes. All 18 are collected on one page:
 Don't — edit `notebook_src/*.py` instead and run `make notebooks`. The `.ipynb`
 files are generated, so that pull requests show readable diffs rather than JSON.
 
+## Exercises
+
+Each notebook has `> **Exercise N.**` prompts. They are where the learning
+actually happens — do them.
+
+Instructors: worked answers are in [`../solutions/`](../solutions/).
+
 ## If a cell fails
 
 See [`../docs/guides/troubleshooting.md`](../docs/guides/troubleshooting.md).

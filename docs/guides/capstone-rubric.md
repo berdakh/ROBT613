@@ -15,6 +15,10 @@ exactly what is being judged.
 
 ---
 
+{: .note }
+> Exercise and checkpoint answers for the other notebooks live in
+> [`solutions/`](https://github.com/berdakh/ROBT613/tree/master/solutions).
+
 ## How to use this
 
 **Students:** this is not a surprise. Read it on day 1, build against it, and

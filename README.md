@@ -117,6 +117,7 @@ evening, and it answers the questions students actually ask.
 | [Capstone ideas](docs/guides/capstone-ideas.md) | Seven projects, scoped for one afternoon |
 | [Before you start](docs/guides/before-you-start.md) | The day-0 checklist to send students |
 | [Capstone rubric](docs/guides/capstone-rubric.md) | How the capstone is marked, 100 points |
+| [Solutions](solutions/) | Exercise and checkpoint answers (instructors) |
 | [Troubleshooting](docs/guides/troubleshooting.md) | When it breaks |
 | [Cheat sheet](docs/guides/cheatsheet.md) | The snippets you will reuse |
 | [Glossary](docs/guides/glossary.md) | Every term, defined plainly |
@@ -143,7 +144,8 @@ src/qwen_workshop/
     parsing.py    tolerant JSON extraction from chatty model output
 data/             sample notes, pantry, expenses, inbox, eval questions
 scripts/          check_env, download_models, smoke_test
-tests/            124 tests that run without a model, GPU or network
+solutions/        exercise + checkpoint answers for instructors
+tests/            159 tests that run without a model, GPU or network
 docs/             the GitHub Pages site
     assets/diagrams/  31 generated SVG figures, used by notebooks and handbook
 tools/
@@ -185,11 +187,15 @@ rather than pretending the gap is not there.
 
 ## For instructors
 
+Worked answers to all 20 exercises and 49 checkpoint questions are in
+[`solutions/`](solutions/) — with confidence markers, since the ones that depend
+on a real run are estimates until you teach it once.
+
 ```bash
 make install          # latest compatible versions
 make install-locked   # the exact versions you teach with
 make lock             # regenerate the lock file from a verified environment
-make test             # 124 tests, no model or network needed
+make test             # 159 tests, no model or network needed
 make check       # tests + notebooks built and valid
 make lint        # ruff
 make notebooks   # rebuild .ipynb from notebook_src/
