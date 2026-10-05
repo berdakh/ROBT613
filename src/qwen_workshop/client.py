@@ -8,7 +8,20 @@ model or the runtime.** Only `base_url` and `model` change.
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
+
+# A shared server the instructor can stand up so that a student whose local
+# install fails does not lose days 2-4. Set it once, for everyone:
+#
+#     export WORKSHOP_LAB_URL=http://lab-gpu.university.kz:8000/v1
+#     export WORKSHOP_LAB_MODEL=Qwen/Qwen3-8B      # optional
+#
+# Then any notebook works with BACKEND = "lab". Nothing else changes, because
+# every runtime here speaks the same API - which is the whole point of
+# notebook 06.
+LAB_URL = os.environ.get("WORKSHOP_LAB_URL", "")
+LAB_MODEL = os.environ.get("WORKSHOP_LAB_MODEL", "Qwen/Qwen3-8B")
 
 # Default endpoints for the runtimes we cover in notebooks 05-06.
 BACKENDS: dict[str, dict] = {
@@ -36,7 +49,39 @@ BACKENDS: dict[str, dict] = {
         "model": "qwen3-0.6b",
         "start": "Start the LM Studio local server from its Developer tab.",
     },
+    "lab": {
+        "base_url": LAB_URL,
+        "api_key": os.environ.get("WORKSHOP_LAB_KEY", "workshop"),
+        "model": LAB_MODEL,
+        "start": "Ask your instructor for the lab server URL, then:\n"
+                 "    export WORKSHOP_LAB_URL=<url>",
+    },
 }
+
+
+def available_backend(preferred: str = "ollama") -> str:
+    """Return the first backend that is actually answering.
+
+    Use this instead of hard-coding a backend when you want a notebook to keep
+    working whichever option the student got running::
+
+        BACKEND = available_backend()
+
+    Order: your preference, then the other local runtimes, then the shared lab
+    server if one is configured. Returns `preferred` unchanged when nothing
+    answers, so the caller still gets the usual "start a server" error.
+    """
+    candidates = [preferred, "ollama", "vllm", "llamacpp", "lmstudio", "lab"]
+    seen: set[str] = set()
+    for name in candidates:
+        if name in seen or name not in BACKENDS:
+            continue
+        seen.add(name)
+        if name == "lab" and not LAB_URL:
+            continue
+        if is_up(name):
+            return name
+    return preferred
 
 
 @dataclass
@@ -63,11 +108,26 @@ def get_client(backend: str = "ollama", *, model: str | None = None, base_url: s
     Raises:
         ValueError: unknown backend name.
     """
-    from openai import OpenAI
-
+    # Validate before importing openai, so a misconfiguration reports itself
+    # rather than surfacing as a confusing ImportError.
     if backend not in BACKENDS:
         raise ValueError(f"Unknown backend '{backend}'. Choose from: {', '.join(BACKENDS)}")
     spec = BACKENDS[backend]
+    if backend == "lab" and not (base_url or spec["base_url"]):
+        raise RuntimeError(
+            "The 'lab' backend needs a URL. Your instructor should give you one:\n"
+            "    export WORKSHOP_LAB_URL=http://<host>:8000/v1\n"
+            "Then restart the kernel."
+        )
+
+    try:
+        from openai import OpenAI
+    except ImportError as exc:
+        raise ImportError(
+            "The `openai` package is not installed - it is the client used to talk "
+            "to YOUR local server, not a hosted service.\n"
+            "    pip install -r requirements.txt"
+        ) from exc
     resolved = Backend(
         name=backend,
         base_url=base_url or spec["base_url"],

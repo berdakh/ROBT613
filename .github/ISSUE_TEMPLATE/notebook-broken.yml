@@ -1,0 +1,56 @@
+name: A notebook or cell failed
+description: Something in the workshop did not run. Please report it - your first-run failures are the best test data we get.
+title: "[nb NN] short description of what failed"
+labels: ["bug", "notebook"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Most problems are environment-related and have a
+        known fix in [troubleshooting](../../blob/master/docs/guides/troubleshooting.md) —
+        worth a quick look first, but file the issue anyway if it cost you time.
+        If the guide is missing your problem, that is itself a bug worth fixing.
+
+  - type: input
+    id: notebook
+    attributes:
+      label: Which notebook and cell?
+      placeholder: "07_structured_output_and_tools, the cell under 7.5"
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: The full error
+      description: The whole traceback, not just the last line. The lines above it usually say what actually went wrong.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Output of `python scripts/check_env.py`
+      description: Paste it all. This answers most of the follow-up questions in one go.
+      render: text
+    validations:
+      required: true
+
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where were you running it?
+      options:
+        - My own laptop
+        - Google Colab
+        - A lab machine
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What did you already try?
+      placeholder: "Restarted the kernel, re-ran from the top, checked troubleshooting.md"

@@ -56,6 +56,8 @@ than having run a training loop once.
 
 ## Capstone requirements
 
+Marked against the [capstone rubric](../guides/capstone-rubric.html) — 100 points, weighted so that evaluation and honesty together outweigh the implementation.
+
 All four are required:
 
 | # | Requirement | Evidence |

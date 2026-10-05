@@ -159,14 +159,20 @@ class RagAnswer:
         return self.hits[0][1] if self.hits else 0.0
 
 
-def rag(question: str, k: int = 3, min_score: float = 0.35, temperature: float = 0.2) -> RagAnswer:
+def rag(question: str, k: int = 3, min_score: float = 0.35, temperature: float = 0.2,
+        search_index=None) -> RagAnswer:
     """Retrieve, then answer strictly from what was retrieved.
 
     `min_score` is the guard from notebook 08: a vector index always returns k
     neighbours, so without a floor we would happily feed the model the three
     least-irrelevant chunks and invite it to invent an answer.
+
+    `search_index` defaults to the notes index. Section 9.4 passes the larger
+    docs index instead, so evaluation runs against a corpus big enough for the
+    numbers to mean something.
     """
-    hits = index.search(embedder.encode_queries([question])[0], k=k)
+    search_index = search_index if search_index is not None else index
+    hits = search_index.search(embedder.encode_queries([question])[0], k=k)
     hits = [(chunk, score) for chunk, score in hits if score >= min_score]
 
     if not hits:
@@ -211,41 +217,80 @@ for q in [
 # %% [markdown]
 # ## 9.4 · Measure it
 #
-# "It looks good" is not an evaluation. `data/eval_questions.json` holds
-# questions with their expected source files and expected keywords.
+# "It looks good" is not an evaluation.
 #
+# ### First, a corpus big enough to measure against
+#
+# The notes corpus above is **8 chunks**. Retrieving 3 of 8 means recall@3 is
+# high almost by accident — you would score well with a random retriever. That
+# teaches the opposite of the intended lesson.
+#
+# So for evaluation we switch to a corpus big enough for the number to mean
+# something: **the workshop's own documentation**, about 400 chunks. It is real,
+# varied prose, and the result is immediately useful — you end up with a
+# searchable index of the course.
+
+# %%
+docs_chunks = load_corpus(REPO_ROOT / "docs", max_chars=700, overlap=120)
+print(f"{len(docs_chunks)} chunks from {len({c.source for c in docs_chunks})} files")
+print(f"retrieving 3 of {len(docs_chunks)} = the top {3 / len(docs_chunks):.1%} of the corpus")
+print(f"(for the notes corpus that was {3 / len(chunks):.0%} - which is why it could not fail)")
+
+# %%
+docs_index_path = REPO_ROOT / "data" / ".index" / "docs"
+
+if docs_index_path.with_suffix(".npy").exists():
+    docs_index = VectorIndex.load(docs_index_path)
+    print(f"loaded cached index ({len(docs_index)} chunks)")
+else:
+    # ~400 chunks: a minute or two on CPU, seconds on a GPU.
+    docs_index = VectorIndex(docs_chunks,
+                             embedder.encode_documents([c.text for c in docs_chunks]))
+    docs_index.save(docs_index_path)
+    print(f"built and saved index ({len(docs_index)} chunks)")
+
+# %% [markdown]
+# `data/eval_questions_docs.json` holds 22 questions with their expected source
+# file. Every one was checked against the actual text before being written down
+# — an evaluation set whose "right answers" are wrong is worse than none.
+
+# %%
+eval_set = json.loads(
+    (REPO_ROOT / "data" / "eval_questions_docs.json").read_text(encoding="utf-8")
+)
+print(f"{len(eval_set)} evaluation questions")
+print(json.dumps(eval_set[0], indent=2, ensure_ascii=False))
+
+# %% [markdown]
 # Measure the two stages **separately** — they fail for different reasons and
 # have different fixes.
 
 # %%
-eval_set = json.loads((REPO_ROOT / "data" / "eval_questions.json").read_text(encoding="utf-8"))
-print(f"{len(eval_set)} evaluation questions")
-print(json.dumps(eval_set[0], indent=2, ensure_ascii=False))
-
-# %%
-def evaluate_retrieval(k: int = 3) -> float:
+def evaluate_retrieval(search_index, questions, k: int = 3, verbose: bool = True) -> float:
     """Recall@k: did we retrieve at least one chunk from an expected file?"""
-    hits_count = 0
-    scorable = 0
-    print(f"{'question':<52}{'expected':<14}{'retrieved':<22}{'ok'}")
-    print("-" * 96)
-    for item in eval_set:
+    hits = scorable = 0
+    if verbose:
+        print(f"{'question':<52}{'expected':<34}{'ok'}")
+        print("-" * 92)
+    for item in questions:
         expected = set(item["expected_sources"])
         if not expected:
-            continue  # the refusal question is scored in the answer evaluation
+            continue  # the refusal question is scored on the answer, not retrieval
         scorable += 1
-        retrieved = index.search(embedder.encode_queries([item["question"]])[0], k=k)
+        retrieved = search_index.search(
+            embedder.encode_queries([item["question"]])[0], k=k)
         sources = [c.source for c, _ in retrieved]
         ok = bool(expected & set(sources))
-        hits_count += ok
-        print(f"{item['question'][:50]:<52}{','.join(expected):<14}"
-              f"{','.join(dict.fromkeys(sources))[:20]:<22}{'yes' if ok else 'NO'}")
-    recall = hits_count / scorable
-    print(f"\nRecall@{k} = {hits_count}/{scorable} = {recall:.0%}")
+        hits += ok
+        if verbose:
+            print(f"{item['question'][:50]:<52}{','.join(expected)[:32]:<34}"
+                  f"{'yes' if ok else 'NO'}")
+    recall = hits / scorable
+    print(f"\nRecall@{k} = {hits}/{scorable} = {recall:.0%}")
     return recall
 
 
-recall_at_3 = evaluate_retrieval(k=3)
+recall_at_3 = evaluate_retrieval(docs_index, eval_set, k=3)
 
 # %% [markdown]
 # **If recall is low, no prompt engineering will save you.** The model cannot
@@ -258,15 +303,15 @@ recall_at_3 = evaluate_retrieval(k=3)
 # - a reranker (section 9.6)
 
 # %%
-for k in (1, 2, 3, 5):
+for k in (1, 2, 3, 5, 10):
     retrieved_ok = sum(
         bool(set(item["expected_sources"]) &
-             {c.source for c, _ in index.search(
+             {c.source for c, _ in docs_index.search(
                  embedder.encode_queries([item["question"]])[0], k=k)})
         for item in eval_set if item["expected_sources"]
     )
     total = sum(1 for item in eval_set if item["expected_sources"])
-    print(f"Recall@{k} = {retrieved_ok}/{total} = {retrieved_ok / total:.0%}")
+    print(f"Recall@{k:<3}= {retrieved_ok}/{total} = {retrieved_ok / total:.0%}")
 
 # %% [markdown]
 # Recall rises with `k` — but so does the amount of irrelevant text in the
@@ -274,13 +319,14 @@ for k in (1, 2, 3, 5):
 # what a reranker exists to resolve.
 
 # %%
-def evaluate_answers() -> dict:
+def evaluate_answers(search_index=None) -> dict:
     """Score answers on keyword presence, refusal behaviour and citation honesty."""
+    search_index = search_index if search_index is not None else docs_index
     scores = {"correct": 0, "refused_correctly": 0, "hallucinated_citation": 0}
     total_answerable = 0
 
     for item in eval_set:
-        result = rag(item["question"])
+        result = rag(item["question"], search_index=search_index)
         expects_refusal = not item["expected_sources"]
 
         if expects_refusal:
@@ -305,7 +351,7 @@ def evaluate_answers() -> dict:
     return scores
 
 
-answer_scores = evaluate_answers()
+answer_scores = evaluate_answers(docs_index)
 
 # %% [markdown]
 # > **Exercise 1.** Write 10 evaluation questions about **your own** documents,
@@ -320,10 +366,11 @@ answer_scores = evaluate_answers()
 # through them in order — do not skip to step 4.
 
 # %%
-def diagnose(question: str, k: int = 3) -> None:
+def diagnose(question: str, k: int = 3, search_index=None) -> None:
     """Walk the four failure modes for one question."""
+    search_index = search_index if search_index is not None else docs_index
     query_vector = embedder.encode_queries([question])[0]
-    hits = index.search(query_vector, k=k)
+    hits = search_index.search(query_vector, k=k)
 
     print(f"Q: {question}\n")
     print("1. RETRIEVAL - what came back?")
@@ -341,7 +388,7 @@ def diagnose(question: str, k: int = 3) -> None:
     print(f"     prompt is ~{len(prompt) // 4} tokens")
 
     print("\n4. GENERATION - what did it do with it?")
-    result = rag(question, k=k)
+    result = rag(question, k=k, search_index=search_index)
     print(f"     {result.answer[:220]}")
     print(f"\n   Verdict: "
           + ("retrieval failed - fix chunking/embedding/k"
@@ -349,7 +396,7 @@ def diagnose(question: str, k: int = 3) -> None:
              else "retrieval looks fine - the generation step is at fault"))
 
 
-diagnose("What did I write about multi-head attention?")
+diagnose("What does PagedAttention actually do?")
 
 # %% [markdown]
 # ## 9.6 · Reranking (optional, high value)
@@ -378,8 +425,8 @@ def rerank_with_reranker(question: str, candidates: list, top_k: int = 3):
         return candidates[:top_k]
 
 
-question = "what should I do about the radiator?"
-wide = index.search(embedder.encode_queries([question])[0], k=min(8, len(index)))
+question = "how do I stop the model inventing facts?"
+wide = docs_index.search(embedder.encode_queries([question])[0], k=12)
 print("embedding order:")
 for chunk, score in wide[:4]:
     print(f"  [{score:.3f}] {chunk.citation}: {' '.join(chunk.text.split())[:70]}...")
@@ -416,13 +463,13 @@ def rewrite_query(question: str) -> str:
     return (reply.choices[0].message.content or question).strip()
 
 
-vague = "what about the thing with the heating?"
+vague = "what about that thing where it makes stuff up?"
 rewritten = rewrite_query(vague)
 print(f"original : {vague}")
 print(f"rewritten: {rewritten}\n")
 
 for label, text in (("original", vague), ("rewritten", rewritten)):
-    top = index.search(embedder.encode_queries([text])[0], k=1)[0]
+    top = docs_index.search(embedder.encode_queries([text])[0], k=1)[0]
     print(f"{label:<10} -> [{top[1]:.3f}] {top[0].citation}")
 
 # %% [markdown]

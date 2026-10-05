@@ -1,0 +1,61 @@
+# Pinned versions for teaching.
+#
+# WHY THIS FILE EXISTS
+# requirements.txt uses lower bounds, so a fresh install picks up whatever is
+# current. That is fine for someone tracking the ecosystem and bad for a course:
+# a release during your workshop week breaks every student at once.
+#
+# Install these instead when teaching:
+#     pip install -r requirements-lock.txt
+#
+# HOW TO REGENERATE (do this on a machine where you have VERIFIED the notebooks)
+#     make lock
+# which is:
+#     pip freeze --exclude-editable > requirements-lock.txt
+#
+# STATUS OF THESE NUMBERS
+# Resolved from PyPI as the latest release at the time of writing. They are
+# NOT yet verified against the notebooks - see the compatibility note below.
+# Run `python scripts/smoke_test.py` and notebooks 03, 07 and 09 before you
+# trust this file, then regenerate it with `make lock`.
+
+# --- core: days 1-3 ---
+torch==2.14.1
+transformers==5.18.0
+accelerate==1.15.0
+huggingface-hub==2.1.1
+safetensors==0.8.0
+sentence-transformers==6.1.0
+numpy==2.4.6
+openai==3.24.0
+pydantic==2.13.5
+
+# --- notebook environment ---
+jupyterlab==4.6.4
+ipykernel==7.4.0
+ipywidgets==8.1.9
+
+# --- day 4: fine-tuning (GPU) ---
+# peft==0.21.2
+# trl==1.14.1
+# datasets==5.1.0
+# bitsandbytes==0.50.2
+
+# =====================================================================
+# COMPATIBILITY NOTE - READ BEFORE TEACHING
+# =====================================================================
+# The notebooks were written against transformers 4.x and openai 1.x.
+# Both have since released new MAJOR versions (5.x and 3.x), which by
+# semantic versioning are allowed to contain breaking changes.
+#
+# This has NOT been tested. Two safe options:
+#
+#   1. Verify the current majors. Run the smoke test and notebooks 03,
+#      06, 07 and 09. If they pass, this file is good as-is.
+#
+#   2. Stay on the majors the code targets until you have verified:
+#          transformers>=4.51,<5
+#          openai>=1.40,<2
+#      Uncomment them in requirements.txt and regenerate this file.
+#
+# Whichever you choose, pin it before the workshop starts, not during.

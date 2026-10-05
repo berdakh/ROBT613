@@ -43,12 +43,16 @@ background, a GPU, or any paid service.
 
 ## Quick start
 
+**Teaching this?** Send students
+[docs/guides/before-you-start.md](docs/guides/before-you-start.md) a week ahead.
+Setup failures are the biggest waste of day 1.
+
 ```bash
 git clone https://github.com/berdakh/ROBT613.git
 cd ROBT613
 
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r requirements-lock.txt                # pinned; use for teaching
 
 python scripts/check_env.py                 # what can this machine run?
 python scripts/download_models.py --set core   # ~3 GB, do this on good wifi
@@ -111,6 +115,8 @@ evening, and it answers the questions students actually ask.
 | [Privacy and safety](docs/guides/privacy-and-safety.md) | Using your own data responsibly |
 | [Deployment](docs/guides/deployment.md) | From notebook to service |
 | [Capstone ideas](docs/guides/capstone-ideas.md) | Seven projects, scoped for one afternoon |
+| [Before you start](docs/guides/before-you-start.md) | The day-0 checklist to send students |
+| [Capstone rubric](docs/guides/capstone-rubric.md) | How the capstone is marked, 100 points |
 | [Troubleshooting](docs/guides/troubleshooting.md) | When it breaks |
 | [Cheat sheet](docs/guides/cheatsheet.md) | The snippets you will reuse |
 | [Glossary](docs/guides/glossary.md) | Every term, defined plainly |
@@ -137,7 +143,7 @@ src/qwen_workshop/
     parsing.py    tolerant JSON extraction from chatty model output
 data/             sample notes, pantry, expenses, inbox, eval questions
 scripts/          check_env, download_models, smoke_test
-tests/            108 tests that run without a model, GPU or network
+tests/            124 tests that run without a model, GPU or network
 docs/             the GitHub Pages site
     assets/diagrams/  31 generated SVG figures, used by notebooks and handbook
 tools/
@@ -180,8 +186,10 @@ rather than pretending the gap is not there.
 ## For instructors
 
 ```bash
-make install     # core + dev requirements
-make test        # 108 tests, no model or network needed
+make install          # latest compatible versions
+make install-locked   # the exact versions you teach with
+make lock             # regenerate the lock file from a verified environment
+make test             # 124 tests, no model or network needed
 make check       # tests + notebooks built and valid
 make lint        # ruff
 make notebooks   # rebuild .ipynb from notebook_src/
@@ -219,6 +227,9 @@ the deploy workflow fails at `configure-pages` with
 
 - Swap `data/notes/` for material from your own course — the RAG notebooks get
   much better when the corpus is something students care about.
+- Stand up a shared endpoint as insurance and give students one line:
+  `export WORKSHOP_LAB_URL=<url>`. Any notebook then works with
+  `BACKEND = "lab"`, so a broken laptop costs one student a setup, not three days.
 - The workshop is Qwen-based but the concepts are not. Changing `DEFAULT_CHAT_MODEL`
   in `src/qwen_workshop/config.py` is most of the work needed to use Llama or Mistral.
 - Each day is independent enough to run as a standalone 6-hour session.

@@ -15,6 +15,8 @@ These are starting points, not a menu.
 
 ---
 
+All four requirements below are marked against the [capstone rubric](capstone-rubric.html) — read it before you start, not after.
+
 ## The requirements, again
 
 All four are required:

@@ -1,13 +1,21 @@
 # Workshop maintenance tasks. Students do not need these; instructors do.
 
-.PHONY: help install test notebooks diagrams check lint clean models smoke
+.PHONY: help install install-locked lock test notebooks diagrams check lint clean models smoke
 
 help:  ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
 
-install:  ## Install core + dev requirements
+install:  ## Install core + dev requirements (latest compatible)
 	pip install -r requirements.txt -r requirements-dev.txt
+
+install-locked:  ## Install the exact versions used for teaching
+	pip install -r requirements-lock.txt -r requirements-dev.txt
+
+lock:  ## Regenerate requirements-lock.txt from the CURRENT environment
+	@echo "Only run this where you have verified the notebooks actually work."
+	pip freeze --exclude-editable > requirements-lock.txt
+	@echo "Wrote requirements-lock.txt - commit it with a note on what you tested."
 
 test:  ## Run the test suite (no model or network needed)
 	python -m pytest

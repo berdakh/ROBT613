@@ -4,6 +4,13 @@
 # version. If you need a specific one, install torch first from
 # https://pytorch.org/get-started/locally/ and then run this file.
 
+# NOTE: these are lower bounds, so you get whatever is current. Teaching a
+# class? Use requirements-lock.txt instead - it pins exact versions so a
+# mid-workshop release cannot break every student at once.
+#
+# The notebooks were written against transformers 4.x and openai 1.x. Both
+# have since shipped new major versions. See requirements-lock.txt.
+
 # --- model loading and inference ---
 torch>=2.4
 transformers>=4.51          # Qwen3 architecture support
