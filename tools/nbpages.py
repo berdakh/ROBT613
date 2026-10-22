@@ -192,7 +192,10 @@ def index_page(pages: list[tuple[str, str, Path]]) -> str:
     lines = [
         "---",
         "title: Notebooks",
-        "nav_order: 3",
+        # Last, deliberately. Home / Daily plan / Handbook / Guides keep the
+        # positions they have always had; this section is appended rather than
+        # inserted, so nothing a reader already knows where to find moves.
+        "nav_order: 5",
         "has_children: true",
         "---",
         "",
