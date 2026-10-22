@@ -1,11 +1,11 @@
 # Instructor solutions
 
-Worked answers to the 56 in-notebook exercises and the 119 end-of-notebook
+Worked answers to the 61 in-notebook exercises and the 127 end-of-notebook
 checkpoint questions.
 
 | File | Contents |
 |---|---|
-| [`exercises.md`](exercises.md) | The 56 exercises, in notebook order |
+| [`exercises.md`](exercises.md) | The 61 exercises, in notebook order |
 | [`checkpoints.md`](checkpoints.md) | The "Checkpoint" questions that close each notebook |
 
 ---
@@ -62,7 +62,7 @@ up an exploratory answer has still read it.
    stuck, which is the part worth preparing.
 2. **Do not read answers aloud.** Most exercises are "run it and see" — the
    observation is the point and saying it first destroys it.
-3. **Exercises 10-1 and 03-1 are the best live demos.** Both make something
+3. **Exercises 10-4 and 03-1 are the best live demos.** Both make something
    invisible visible in about 30 seconds.
 4. **Correct these as you go.** When a real run contradicts an estimate here,
    fix the file. That is the single most valuable thing you can do with this
@@ -82,11 +82,26 @@ Rough, assuming students work in pairs:
 | 07 | 2 | 35 |
 | 08 | 2 | 25 |
 | 09 | 1 | 45 |
-| 10 | 2 | 40 |
+| 10 | 7 | 75 |
 | 11 | 1 | 45 |
 | 12 | 1 | 30 |
+| 13 | 2 | 40 |
+| 14 | 2 | 35 |
+| 15 | 3 | 40 |
+| 16 | 3 | 35 |
+| 17 | 4 | 45 |
+| 18 | 4 | 50 |
+| 19 | 4 | 45 |
+| 20 | 4 | 50 |
+| 21 | 5 | 60 |
+| 22 | 5 | 45 |
+
+That is far more than any one course has room for. The tracks are designed to
+be taken whole or skipped whole: 13–16 (training), 17–20 (agents), 21 (the
+mathematics), 22 (Kazakh and Russian).
 
 **If you are short of time**, the ones that carry the most weight are
-**09-1** (write an eval set and measure), **10-1** (the hallucinated
-`Observation:`) and **10-2** (chain vs agent). Those three teach the
-discriminating skills.
+**09-1** (write an eval set and measure), **10-2** (script an error-recovery
+run) and **10-7** (rewrite the agent as a chain). Those three teach the
+discriminating skills. If your students build in Kazakh, add **22-1** — it is
+five minutes and it changes every budget decision downstream.

@@ -1,7 +1,7 @@
 ---
 title: Troubleshooting
 parent: Guides
-nav_order: 8
+nav_order: 12
 ---
 
 # Troubleshooting

@@ -1,7 +1,7 @@
 ---
 title: Cheat sheet
 parent: Guides
-nav_order: 9
+nav_order: 13
 ---
 
 # Cheat sheet

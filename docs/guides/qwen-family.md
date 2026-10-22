@@ -1,7 +1,7 @@
 ---
 title: The Qwen family
 parent: Guides
-nav_order: 3
+nav_order: 4
 ---
 
 # The Qwen family — which model for which job

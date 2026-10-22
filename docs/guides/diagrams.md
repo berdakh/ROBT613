@@ -1,7 +1,7 @@
 ---
 title: Diagram index
 parent: Guides
-nav_order: 12
+nav_order: 14
 ---
 
 # Diagram index
@@ -279,3 +279,13 @@ Why the score ends up depending on the gap between tokens, not on where they are
 The residual stream runs straight down; everything else is a correction to it.
 
 <img src="../assets/diagrams/mt-block-anatomy.svg" alt="A transformer block as a vertical residual stream, with RMSNorm plus attention and RMSNorm plus the SwiGLU MLP each adding a correction back" width="100%">
+
+---
+
+## Language
+
+### The tax on Kazakh and Russian
+Notebook 22 and the [language guide](kazakh-and-russian.html). Each step
+multiplies the one before it.
+
+<img src="../assets/diagrams/lang-tax.svg" alt="The same sentence, then two bytes per character in UTF-8, then two to three times the tokens, with the multiplier hitting context, cost and latency at once" width="100%">

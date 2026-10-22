@@ -1,7 +1,7 @@
 ---
 title: Agentic AI
 parent: Guides
-nav_order: 4
+nav_order: 5
 ---
 
 # Agentic AI — the long version
