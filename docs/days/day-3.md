@@ -22,10 +22,10 @@ No GPU? Every notebook below opens in [Google Colab](../guides/colab.html) with 
 | Time | Activity | Notebook |
 |---|---|---|
 | 0:00–0:15 | Recap; share the tools you designed last night | — |
-| 0:15–1:15 | Embeddings and semantic search | `08_embeddings_and_search` |
-| 1:15–2:45 | RAG over your own documents, with evaluation | `09_rag_over_your_notes` |
+| 0:15–1:15 | Embeddings and semantic search | [`08_embeddings_and_search`](../notebooks/08_embeddings_and_search.html) |
+| 1:15–2:45 | RAG over your own documents, with evaluation | [`09_rag_over_your_notes`](../notebooks/09_rag_over_your_notes.html) |
 | 2:45–3:00 | *Break* | — |
-| 3:00–4:45 | Agents from scratch | `10_agents_from_scratch` |
+| 3:00–4:45 | Agents from scratch | [`10_agents_from_scratch`](../notebooks/10_agents_from_scratch.html) |
 | 4:45–5:30 | Failure modes, prompt injection, guardrails | `10` (second half) |
 | 5:30–6:00 | Lab: point RAG at your own documents | — |
 

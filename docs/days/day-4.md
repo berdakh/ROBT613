@@ -21,8 +21,8 @@ No GPU? Every notebook below opens in [Google Colab](../guides/colab.html) with 
 
 | Time | Activity | Notebook |
 |---|---|---|
-| 0:00–1:30 | LoRA fine-tuning — and when not to | `11_finetuning_lora` |
-| 1:30–2:00 | Capstone briefing; pick your project | `12_capstone_daily_assistant` |
+| 0:00–1:30 | LoRA fine-tuning — and when not to | [`11_finetuning_lora`](../notebooks/11_finetuning_lora.html) |
+| 1:30–2:00 | Capstone briefing; pick your project | [`12_capstone_daily_assistant`](../notebooks/12_capstone_daily_assistant.html) |
 | 2:00–4:30 | **Build.** Instructors circulate. | `12` |
 | 4:30–5:00 | Evaluate: at least 10 test cases, scored | `12` |
 | 5:00–6:00 | Demos — 5 minutes each | — |

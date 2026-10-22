@@ -1,0 +1,309 @@
+#!/usr/bin/env python3
+"""Render notebooks/*.ipynb into readable pages for the course site.
+
+Why this exists
+---------------
+GitHub Pages serves static files, so it cannot *run* a notebook. What it can
+do is show one. Without this, a student on the site has to leave for GitHub to
+read anything, which is exactly the trip we are trying to remove: they read the
+notebook on the site, in the site's theme, with the site's search, and click
+one button to run it in Colab.
+
+The output is plain Markdown with Jekyll front matter rather than nbconvert
+HTML. That keeps the pages inside the theme (and inside search), keeps each one
+to a few tens of KB rather than a megabyte of inlined CSS, and means this tool
+needs no dependency beyond the standard library.
+
+Generated, therefore checked::
+
+    python tools/nbpages.py            # write docs/notebooks/*.md
+    python tools/nbpages.py --check    # fail if any page is stale (CI)
+
+Do not edit ``docs/notebooks/*.md`` by hand - edit ``notebook_src/*.py``,
+run ``make notebooks``, then ``make pages``.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+NB_DIR = REPO_ROOT / "notebooks"
+OUT_DIR = REPO_ROOT / "docs" / "notebooks"
+
+GITHUB = "https://github.com/berdakh/ROBT613/blob/master/notebooks"
+COLAB = "https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks"
+
+# The Colab badge and its caption open every notebook source. On the site they
+# are replaced by the header this tool writes, so they are stripped.
+BADGE_RE = re.compile(r"^\[!\[Open In Colab\].*?\)\s*$", re.M)
+BADGE_CAPTION_RE = re.compile(r"^\*Click the badge to run this notebook.*?\*\s*$", re.M | re.S)
+
+# Cross-references between notebooks: [`11_finetuning_lora.ipynb`](11_finetuning_lora.ipynb)
+NB_LINK_RE = re.compile(r"\]\((\d{2}_[a-z0-9_]+)\.ipynb\)")
+# Links out of notebooks/ into the repo: ](../docs/guides/x.md) or ](../solutions/)
+DOCS_LINK_RE = re.compile(r"\]\(\.\./docs/([a-z0-9/_-]+)\.md\)")
+REPO_LINK_RE = re.compile(r"\]\(\.\./([a-zA-Z0-9/_.-]+)\)")
+
+
+def notebook_title(cells: list[dict]) -> tuple[str, str]:
+    """Return (nav title, the H1 line) from the first `# NN · Title` heading."""
+    for cell in cells:
+        if cell["cell_type"] != "markdown":
+            continue
+        for line in "".join(cell["source"]).splitlines():
+            if line.startswith("# ") and "·" in line:
+                heading = line[2:].strip()
+                number, _, rest = heading.partition("·")
+                return f"{number.strip()} · {rest.strip()}", heading
+    raise SystemExit("a notebook has no '# NN · Title' heading")
+
+
+def rewrite_links(text: str) -> str:
+    """Point in-notebook links at the site instead of at GitHub."""
+    text = NB_LINK_RE.sub(r"](\1.html)", text)
+
+    def repo_link(match: re.Match) -> str:
+        target = match.group(1)
+        # ../docs/... becomes a site link below; everything else is a repo
+        # path with no page on the site, so send it to GitHub rather than 404.
+        if target.startswith("docs/"):
+            return match.group(0)
+        return f"](https://github.com/berdakh/ROBT613/blob/master/{target})"
+
+    # Order matters: the repo rule must run FIRST and skip docs/, or it will
+    # match the site-relative links the docs rule has just produced.
+    text = REPO_LINK_RE.sub(repo_link, text)
+    return DOCS_LINK_RE.sub(r"](../\1.html)", text)
+
+
+def protect_liquid(block: str) -> str:
+    """Wrap a block in {% raw %} if Jekyll would try to interpret it.
+
+    Jekyll runs Liquid over every page before Markdown. A notebook containing
+    `{{` or `{%` - which Python format strings and templating examples do -
+    makes Liquid raise and takes the entire site build down with it.
+    """
+    if "{{" in block or "{%" in block:
+        return "{% raw %}\n" + block + "\n{% endraw %}"
+    return block
+
+
+def unprotected_liquid(page: str) -> list[str]:
+    """Lines with Liquid syntax that is not inside a raw block."""
+    bad, inside = [], False
+    for line in page.splitlines():
+        stripped = line.strip()
+        if stripped == "{% raw %}":
+            inside = True
+            continue
+        if stripped == "{% endraw %}":
+            inside = False
+            continue
+        if not inside and ("{{" in line or "{%" in line):
+            bad.append(line.strip()[:80])
+    return bad
+
+
+def render(path: Path) -> tuple[str, str]:
+    """Return (output filename, page markdown) for one notebook."""
+    notebook = json.loads(path.read_text(encoding="utf-8"))
+    cells = notebook["cells"]
+    nav_title, heading = notebook_title(cells)
+    stem = path.stem
+    order = int(stem[:2])
+
+    parts: list[str] = [
+        "---",
+        f'title: "{nav_title}"',
+        "parent: Notebooks",
+        f"nav_order: {order}",
+        "---",
+        "",
+        "<!-- GENERATED by tools/nbpages.py from notebooks/. Do not edit. -->",
+        "",
+        f"# {heading}",
+        "{: .no_toc }",
+        "",
+        f"[Run it in Colab]({COLAB}/{stem}.ipynb){{: .btn .btn-primary .mr-2 target=_blank }}",
+        f"[View the .ipynb]({GITHUB}/{stem}.ipynb){{: .btn target=_blank }}",
+        "",
+        "{: .note }",
+        "> You are reading this notebook. To **run** it, open it in Colab with the"
+        " button above - no install, no GPU needed for most of them - or clone the"
+        " repository and open it in Jupyter.",
+        "",
+        "1. TOC",
+        "{:toc}",
+        "",
+        "---",
+        "",
+    ]
+
+    first_markdown = True
+    for cell in cells:
+        source = "".join(cell["source"]).rstrip()
+        if not source:
+            continue
+
+        if cell["cell_type"] == "markdown":
+            if first_markdown:
+                # Strip the Colab badge block that opens every notebook.
+                source = BADGE_RE.sub("", source)
+                source = BADGE_CAPTION_RE.sub("", source).strip()
+                first_markdown = False
+            # The H1 is already in the page header; drop the duplicate.
+            source = re.sub(rf"^# {re.escape(heading)}\s*$", "", source, flags=re.M).strip()
+            if not source:
+                continue
+            parts.append(protect_liquid(rewrite_links(source)))
+        else:
+            parts.append(protect_liquid("```python\n" + source + "\n```"))
+        parts.append("")
+
+    page = "\n".join(parts).rstrip() + "\n"
+
+    # Guard: anything Liquid would try to evaluate must be inside a raw block
+    # by now. Jekyll fails the whole site build on a malformed expression, and
+    # notebook 18's planner prompt contains a literal `{{"tasks": ...}}`, so
+    # this is a real failure mode and not a theoretical one.
+    if unprotected_liquid(page):
+        raise SystemExit(
+            f"{stem}: unprotected Liquid syntax would break the Jekyll build:\n  "
+            + "\n  ".join(unprotected_liquid(page))
+        )
+    return f"{stem}.md", page
+
+
+def index_page(pages: list[tuple[str, str, Path]]) -> str:
+    """The Notebooks landing page: every notebook, grouped, with a Colab button."""
+    groups = [
+        ("Day 1 — Foundations", range(1, 5)),
+        ("Day 2 — Making it practical", range(5, 8)),
+        ("Day 3 — Knowledge and agents", range(8, 11)),
+        ("Day 4 — Adapt and ship", range(11, 13)),
+        ("Training track (optional)", range(13, 17)),
+        ("Agents track (optional)", range(17, 21)),
+    ]
+    lines = [
+        "---",
+        "title: Notebooks",
+        "nav_order: 3",
+        "has_children: true",
+        "---",
+        "",
+        "<!-- GENERATED by tools/nbpages.py from notebooks/. Do not edit. -->",
+        "",
+        "# The notebooks",
+        "{: .no_toc }",
+        "",
+        "Every notebook, readable right here and runnable in one click. You do not",
+        "need a GitHub account, a local install, or a GPU to start.",
+        "",
+        "{: .note }",
+        "> **Reading** happens on this site. **Running** happens in Colab (the button",
+        "> on each page) or in Jupyter if you cloned the repository. The two tracks at",
+        "> the bottom need no server at all.",
+        "",
+        "1. TOC",
+        "{:toc}",
+        "",
+        "---",
+        "",
+    ]
+    by_order = {int(stem[:2]): (stem, title) for stem, title, _ in pages}
+    for group, numbers in groups:
+        present = [n for n in numbers if n in by_order]
+        if not present:
+            continue
+        lines += [f"## {group}", "",
+                  "| # | Notebook | Read | Run |", "|---|---|---|---|"]
+        for number in present:
+            stem, title = by_order[number]
+            _, _, name = title.partition("·")
+            lines.append(
+                f"| {number:02d} | {name.strip()} | [read]({stem}.html) | "
+                f"[![Colab](https://colab.research.google.com/assets/colab-badge.svg)]"
+                f"({COLAB}/{stem}.ipynb) |"
+            )
+        lines.append("")
+    lines += [
+        "---",
+        "",
+        "## Which ones need what",
+        "",
+        "| | |",
+        "|---|---|",
+        "| **Nothing at all** | 02, 13, 14, 16, 17, 18, 19, 20 |",
+        "| **A model download** | 01, 03, 04, 08 |",
+        "| **A running server** (Ollama, vLLM, llama.cpp) | 06, 07, 09, 10, 12 |",
+        "| **A GPU, ideally** | 11, and the last cell of 15 |",
+        "",
+        "Short on time? **01, 03, 07, 09, 10** are the essential five.",
+        "",
+        "New to this? Start with [Before you start](../guides/before-you-start.html),",
+        "then [Day 1](../days/day-1.html).",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check", action="store_true",
+                        help="fail if any generated page is out of date (CI)")
+    args = parser.parse_args()
+
+    sources = sorted(NB_DIR.glob("*.ipynb"))
+    if not sources:
+        print("no notebooks found", file=sys.stderr)
+        return 1
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    rendered: dict[str, str] = {}
+    pages: list[tuple[str, str, Path]] = []
+    for path in sources:
+        name, body = render(path)
+        rendered[name] = body
+        title, _ = notebook_title(json.loads(path.read_text(encoding="utf-8"))["cells"])
+        pages.append((path.stem, title, path))
+
+    rendered["index.md"] = index_page(pages)
+
+    stale: list[str] = []
+    for name, body in rendered.items():
+        target = OUT_DIR / name
+        if args.check:
+            if not target.exists() or target.read_text(encoding="utf-8") != body:
+                stale.append(name)
+            continue
+        target.write_text(body, encoding="utf-8")
+
+    # Remove pages for notebooks that no longer exist.
+    for existing in OUT_DIR.glob("*.md"):
+        if existing.name not in rendered:
+            if args.check:
+                stale.append(f"{existing.name} (orphan)")
+            else:
+                existing.unlink()
+
+    if args.check:
+        if stale:
+            print("stale notebook pages (run `python tools/nbpages.py`):", file=sys.stderr)
+            for name in stale:
+                print(f"  - {name}", file=sys.stderr)
+            return 1
+        print(f"all {len(rendered)} notebook pages up to date")
+        return 0
+
+    total = sum(len(b) for b in rendered.values())
+    print(f"wrote {len(rendered)} pages to docs/notebooks/ ({total / 1024:.0f} KB)")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -49,10 +49,10 @@ reproduce. The technique is the lesson as much as the convenience.
 
 | Time | Activity | Notebook |
 |---|---|---|
-| 0:00–1:30 | Sandboxed tools; four memory strategies; the context budget | `17_tools_and_memory` |
-| 1:30–3:00 | Plans as graphs; waves; failure, blocking and replanning | `18_planning_and_decomposition` |
-| 3:00–4:30 | Routers, orchestrators, critic loops — and when not to | `19_multi_agent_systems` |
-| 4:30–6:00 | Outcome vs trajectory; lucky passes; a suite that runs in CI | `20_evaluating_agents` |
+| 0:00–1:30 | Sandboxed tools; four memory strategies; the context budget | [`17_tools_and_memory`](../notebooks/17_tools_and_memory.html) |
+| 1:30–3:00 | Plans as graphs; waves; failure, blocking and replanning | [`18_planning_and_decomposition`](../notebooks/18_planning_and_decomposition.html) |
+| 3:00–4:30 | Routers, orchestrators, critic loops — and when not to | [`19_multi_agent_systems`](../notebooks/19_multi_agent_systems.html) |
+| 4:30–6:00 | Outcome vs trajectory; lucky passes; a suite that runs in CI | [`20_evaluating_agents`](../notebooks/20_evaluating_agents.html) |
 
 ## The notebooks
 

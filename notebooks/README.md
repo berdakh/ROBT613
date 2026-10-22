@@ -2,6 +2,10 @@
 
 Work through these in order. Each builds on the last.
 
+**Prefer to read them in a browser?** Every notebook is rendered on the
+[course site](https://berdakh.github.io/ROBT613/notebooks/), with a Colab
+button on each page.
+
 | # | Notebook | Needs | Time | Colab |
 |---|---|---|---|---|
 | 01 | `01_llm_foundations.ipynb` | tokenizer only (~10 MB) | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/01_llm_foundations.ipynb) |
@@ -16,7 +20,6 @@ Work through these in order. Each builds on the last.
 | 10 | `10_agents_from_scratch.ipynb` | a running server | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/10_agents_from_scratch.ipynb) |
 | 11 | `11_finetuning_lora.ipynb` | GPU recommended | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/11_finetuning_lora.ipynb) |
 | 12 | `12_capstone_daily_assistant.ipynb` | a running server | rest of day 4 | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
-
 | 13 | `13_pretrain_a_tiny_model.ipynb` | nothing (CPU is fine) | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb) |
 | 14 | `14_building_a_training_dataset.ipynb` | nothing | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/14_building_a_training_dataset.ipynb) |
 | 15 | `15_preference_tuning_dpo.ipynb` | GPU for the last cell only | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/15_preference_tuning_dpo.ipynb) |

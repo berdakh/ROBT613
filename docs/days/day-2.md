@@ -22,10 +22,10 @@ No GPU? Every notebook below opens in [Google Colab](../guides/colab.html) with 
 | Time | Activity | Notebook |
 |---|---|---|
 | 0:00–0:15 | Recap; compare day-1 tokens/second across the room | — |
-| 0:15–1:15 | Quantization; GGUF; Ollama and llama.cpp | `05_quantization_and_local_runtimes` |
-| 1:15–2:15 | Serving over an OpenAI-compatible API | `06_serving_and_openai_api` |
+| 0:15–1:15 | Quantization; GGUF; Ollama and llama.cpp | [`05_quantization_and_local_runtimes`](../notebooks/05_quantization_and_local_runtimes.html) |
+| 1:15–2:15 | Serving over an OpenAI-compatible API | [`06_serving_and_openai_api`](../notebooks/06_serving_and_openai_api.html) |
 | 2:15–2:30 | *Break* | — |
-| 2:30–4:00 | Structured output: JSON, Pydantic, constrained decoding | `07_structured_output_and_tools` |
+| 2:30–4:00 | Structured output: JSON, Pydantic, constrained decoding | [`07_structured_output_and_tools`](../notebooks/07_structured_output_and_tools.html) |
 | 4:00–5:15 | Tool calling; writing safe tools | `07` (second half) |
 | 5:15–6:00 | Lab: build three tools for your capstone idea | — |
 

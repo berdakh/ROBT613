@@ -1,6 +1,6 @@
 ---
 title: Guides
-nav_order: 4
+nav_order: 5
 has_children: true
 ---
 
@@ -17,6 +17,7 @@ the material you will come back to after the workshop is over.
 | [Open-weight models](open-weight-models.html) | Day 1, or when choosing a model |
 | [The Qwen family](qwen-family.html) | When deciding which model to download |
 | [Agentic AI](agentic-ai.html) | Day 3, and again before your capstone |
+| [Glossary](glossary.html#in-plain-terms) | **Any time a word does not land.** Every term with an everyday analogy |
 | [Privacy and safety](privacy-and-safety.html) | Before you point anything at real data |
 | [Deployment](deployment.html) | When your project outgrows a notebook |
 | [Capstone ideas](capstone-ideas.html) | Day 4 |

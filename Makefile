@@ -1,6 +1,6 @@
 # Workshop maintenance tasks. Students do not need these; instructors do.
 
-.PHONY: help install install-locked lock test notebooks diagrams check lint clean models smoke
+.PHONY: help install install-locked lock test notebooks diagrams pages check lint clean models smoke
 
 help:  ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -26,9 +26,13 @@ notebooks:  ## Rebuild notebooks/*.ipynb from notebook_src/*.py
 diagrams:  ## Regenerate docs/assets/diagrams/*.svg
 	python tools/make_diagrams.py
 
+pages:  ## Render the notebooks into docs/notebooks/ for the course site
+	python tools/nbpages.py
+
 check:  ## Verify notebooks and diagrams are built and valid, links resolve, tests pass
 	python tools/nbbuild.py --check
 	python tools/make_diagrams.py --check
+	python tools/nbpages.py --check
 	python tools/check_notebooks.py
 	python tools/check_links.py
 	python -m pytest

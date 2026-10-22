@@ -18,6 +18,12 @@ when you should not use one. Read this alongside
 > of them needs a server or a GPU. Where this guide describes a mechanism, the
 > notebook makes you implement it and then shows you the failure.
 
+{: .tip }
+> **Tripped up by a word?** The
+> [glossary](glossary.html#in-plain-terms) opens with an everyday analogy for
+> every piece of jargon in this workshop — and says where each analogy stops
+> being true.
+
 1. TOC
 {:toc}
 
@@ -294,6 +300,24 @@ The pitch: specialists collaborating — a researcher, a writer, a critic.
 The reality: **you have multiplied the failure modes and the token bill.**
 Communication between agents is lossy natural language, errors compound, and
 debugging means reading several interleaved transcripts.
+
+### The patterns, in plain terms
+
+These names are the most confusing jargon in the field, and each one is an
+everyday job you already understand:
+
+| Pattern | Think of it as | And so |
+|---|---|---|
+| **Router** | The **receptionist** at a clinic — ten seconds of listening, then "third door on the left" | Decides *once*, then steps aside. Two model calls, the cheapest pattern. |
+| **Orchestrator** (map-reduce) | A **wedding planner** briefing the florist, the caterer and the photographer, then assembling the day | You pay all three whether or not you use what they say. |
+| **Pipeline** | A **passport office**: desk 1 → desk 2 → desk 3 | Nobody sees the whole case, so nobody can explain the outcome. |
+| **Critic loop** | A **writer and an editor**: draft, red pen, revise, signed off | Only works if the editor can say *no*, and if you cap the rounds. |
+| **Handoff** | **Repeating a story** to the next person | Each retelling loses detail. The cost nobody counts. |
+
+The wedding planner carries the most weight: it explains the cost (three
+suppliers, three bills), the benefit (the florist needs to know nothing about
+catering) and the characteristic failure (the planner assumed the caterer
+checked the dietary requirements, and the caterer assumed the planner had).
 
 Patterns that do earn their keep:
 

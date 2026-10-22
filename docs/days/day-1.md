@@ -25,11 +25,11 @@ No GPU? Every notebook below opens in [Google Colab](../guides/colab.html) with 
 | Time | Activity | Notebook |
 |---|---|---|
 | 0:00–0:30 | Setup check, introductions | — |
-| 0:30–1:30 | What an LLM actually is; tokenization | `01_llm_foundations` |
-| 1:30–2:15 | Your hardware; where models come from | `02_environment_and_hardware` |
+| 0:30–1:30 | What an LLM actually is; tokenization | [`01_llm_foundations`](../notebooks/01_llm_foundations.html) |
+| 1:30–2:15 | Your hardware; where models come from | [`02_environment_and_hardware`](../notebooks/02_environment_and_hardware.html) |
 | 2:15–2:30 | *Break — start your downloads now* | — |
-| 2:30–4:00 | First generation, streaming, conversation | `03_first_generation` |
-| 4:00–5:15 | Decoding parameters, thinking mode, prompting | `04_decoding_and_prompting` |
+| 2:30–4:00 | First generation, streaming, conversation | [`03_first_generation`](../notebooks/03_first_generation.html) |
+| 4:00–5:15 | Decoding parameters, thinking mode, prompting | [`04_decoding_and_prompting`](../notebooks/04_decoding_and_prompting.html) |
 | 5:15–6:00 | Lab: the message-rewriter, and discussion | — |
 
 ## The one idea

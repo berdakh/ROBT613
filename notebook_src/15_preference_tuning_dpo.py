@@ -94,6 +94,22 @@ random.seed(613)
 # does not have.
 
 # %% [markdown]
+# ### In plain terms
+#
+# | | Think of it as |
+# |---|---|
+# | **SFT** | Showing the new hire a worked example: *"write it like this."* |
+# | **Preference pair** | Showing them two drafts and saying *"this one is better."* |
+# | **RLHF** | Training a separate **judge**, then practising against the judge. |
+# | **DPO** | Skipping the judge and learning straight from the comparisons. |
+# | **β (beta)** | **How far you let them drift** from how they already write. |
+# | **Reference model** | The **before photo**. Progress is measured against it, not in absolute terms. |
+#
+# The reason preferences work at all is mundane and important: **people are
+# far more consistent at picking than at writing.** You can get thousands of
+# reliable comparisons from annotators who could not have written one good
+# answer between them.
+
 # ## 15.2 · The shape of preference data
 #
 # Three fields. That is the whole format.

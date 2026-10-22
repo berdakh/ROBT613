@@ -111,6 +111,20 @@ if in_colab() and not HAVE_SERVER:
 # If your code decides which tool runs next, you have written a **chain** —
 # which is usually the right thing to have written.
 #
+# ### In plain terms
+#
+# | | Think of it as |
+# |---|---|
+# | **Chain** | A **recipe**. Same steps, same order, every time. |
+# | **Agent** | A **cook told "make dinner"**, given a fridge and free rein. |
+# | **Router** | The **receptionist**: listens for ten seconds, sends you to the right person, and is then done. |
+# | **Tool calling** | The model **fills in a request form**. *Your code* decides whether to act on it. |
+#
+# The cook analogy is worth holding on to, because it also tells you the
+# limits: the cook has no memory of yesterday unless you leave a note
+# (notebook 17), cannot plan the week unless asked to (18), and will happily
+# keep cooking long after dinner is ready unless you stop them (`max_steps`).
+#
 # ### What an agent is not
 #
 # * **Not a model with tools.** Tool calling is one step. An agent is the loop

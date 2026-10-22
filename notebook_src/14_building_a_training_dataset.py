@@ -97,6 +97,12 @@ demo = example("What is a token?",
 print(json.dumps(demo, indent=2)[:400], "...")
 
 # %% [markdown]
+# > **In plain terms.** **Loss masking** is marking only the answers on an
+# > exam script, not the questions. The question is there for context; it is
+# > not something you want the student to learn to write. Grade the questions
+# > too and you train a model that is excellent at inventing plausible user
+# > queries — a skill nobody asked for.
+
 # ## 14.2 · Loss masking: the thing nobody mentions
 #
 # Here is a question with a non-obvious answer. When you train on that example,
