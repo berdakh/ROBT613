@@ -87,6 +87,9 @@ def _dark_css() -> str:
         rules.append(f"svg .d-{role} {{ fill: {fill}; stroke: {DARK[stroke_key]}; }}")
     for tone in ("accent", "good", "warn", "bad"):
         rules.append(f"svg .d-t-{tone} {{ fill: {DARK[tone]}; }}")
+    # Stroke-only tones, for plotted curves (see Canvas.curve).
+    for tone in ("accent", "good", "warn", "bad", "muted_fg", "fg", "stroke"):
+        rules.append(f"svg .d-s-{tone} {{ stroke: {DARK[tone]}; }}")
     body = "\n  ".join(rules)
     return f"@media (prefers-color-scheme: dark) {{\n  {body}\n}}"
 
@@ -234,6 +237,22 @@ class Canvas:
         return self.raw(
             f'<path d="{d}" stroke="{colour}" stroke-width="{2 if accent else 1.8}" '
             f'fill="none"{dashes} class="{dark_cls}"{marker}/>'
+        )
+
+    def curve(self, d: str, tone: str = "accent", dashed: bool = False,
+              width: float = 2.2) -> Canvas:
+        """A plotted line in one of the palette tones. No arrow head.
+
+        `path()` only offers the default and accent strokes, which is one
+        colour too few for a train-versus-validation plot.
+        """
+        if tone not in LIGHT:
+            raise ValueError(f"curve(): unknown tone {tone!r}")
+        dashes = ' stroke-dasharray="6 4"' if dashed else ""
+        return self.raw(
+            f'<path d="{d}" stroke="{LIGHT[tone]}" stroke-width="{width}" '
+            f'fill="none" stroke-linecap="round" stroke-linejoin="round"'
+            f'{dashes} class="d-s-{tone}"/>'
         )
 
     def circle(self, cx: float, cy: float, r: float, role: str = "accent") -> Canvas:

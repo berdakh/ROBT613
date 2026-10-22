@@ -1,11 +1,11 @@
 # Instructor solutions
 
-Worked answers to the 20 in-notebook exercises and the end-of-notebook
+Worked answers to the 30 in-notebook exercises and the 77 end-of-notebook
 checkpoint questions.
 
 | File | Contents |
 |---|---|
-| [`exercises.md`](exercises.md) | The 20 exercises, in notebook order |
+| [`exercises.md`](exercises.md) | The 30 exercises, in notebook order |
 | [`checkpoints.md`](checkpoints.md) | The "Checkpoint" questions that close each notebook |
 
 ---

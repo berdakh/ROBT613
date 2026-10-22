@@ -27,6 +27,12 @@ No GPU? Every notebook below opens in [Google Colab](../guides/colab.html) with 
 | 4:30–5:00 | Evaluate: at least 10 test cases, scored | `12` |
 | 5:00–6:00 | Demos — 5 minutes each | — |
 
+**Still hungry?** There is an [optional fifth day](training-track.html)
+on how training works from the inside: notebooks 13–16 pre-train a model
+from scratch, build a dataset properly, implement the DPO loss and teach you
+to read a loss curve. Notebook 11 showed you how to *run* a fine-tune; that
+track is about understanding one.
+
 ## The one idea
 
 > Anyone can demo an LLM. The engineering is in **measuring** it and being

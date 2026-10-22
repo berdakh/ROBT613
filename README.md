@@ -88,7 +88,20 @@ Full local setup, including Windows: **[docs/guides/setup.md](docs/guides/setup.
 | 11 | [Fine-tuning with LoRA](notebooks/11_finetuning_lora.ipynb) | Train an adapter — and decide whether you should | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/11_finetuning_lora.ipynb) |
 | 12 | [Capstone](notebooks/12_capstone_daily_assistant.ipynb) | Build, evaluate and present a daily-life assistant | rest | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
 
+| **Optional track — how training actually works** |||||
+| 13 | [Pre-train a tiny model](notebooks/13_pretrain_a_tiny_model.ipynb) | Write a transformer and train it from scratch on CPU | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb) |
+| 14 | [Building a training dataset](notebooks/14_building_a_training_dataset.ipynb) | Loss masking, dedup, leak-free splits, validation | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/14_building_a_training_dataset.ipynb) |
+| 15 | [Preference tuning with DPO](notebooks/15_preference_tuning_dpo.ipynb) | Implement the DPO loss; build pairs; run `DPOTrainer` | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/15_preference_tuning_dpo.ipynb) |
+| 16 | [Training diagnostics](notebooks/16_training_diagnostics.ipynb) | Read loss curves, find the LR, know when to stop | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/16_training_diagnostics.ipynb) |
+
 Short on time? Priority order: **01, 03, 07, 09, 10** are the essential five.
+
+**Notebooks 13–16 are an optional fifth day.** They are where chapter 3 of
+the handbook stops being reading and starts being code: you pre-train a
+language model from scratch, prepare a dataset properly, implement the DPO
+loss yourself, and learn to read a training run. Only 15's final cell needs a
+GPU — everything else runs on a laptop in seconds. See
+[the training track](docs/days/training-track.md).
 
 ## The handbook — background reading
 
@@ -128,7 +141,7 @@ evening, and it answers the questions students actually ask.
 ## What is in this repository
 
 ```
-notebooks/        12 teaching notebooks, in order
+notebooks/        16 teaching notebooks (12 core + a 4-notebook training track)
 notebook_src/     their source (percent format) - edit these, not the .ipynb
 docs/handbook/    6-chapter background handbook (no code required)
 src/qwen_workshop/
@@ -145,12 +158,13 @@ src/qwen_workshop/
 data/             sample notes, pantry, expenses, inbox, eval questions
 scripts/          check_env, download_models, smoke_test
 solutions/        exercise + checkpoint answers for instructors
-tests/            159 tests that run without a model, GPU or network
+tests/            173 tests that run without a model, GPU or network
 docs/             the GitHub Pages site
-    assets/diagrams/  31 generated SVG figures, used by notebooks and handbook
+    assets/diagrams/  35 generated SVG figures, used by notebooks and handbook
 tools/
     nbbuild.py        notebook_src/*.py  ->  notebooks/*.ipynb
-    make_diagrams.py  workshop diagrams; diagrams_handbook.py the handbook's
+    make_diagrams.py  workshop diagrams; diagrams_handbook.py and
+                      diagrams_training.py add the handbook's and the track's
                       (svgkit.py is the shared drawing kit)
     check_notebooks.py, check_links.py   validation run in CI
 ```
@@ -171,7 +185,7 @@ framework. You implement quantization in NumPy before using `bitsandbytes`. You
 see the raw `<tool_call>` text before using a parser.
 
 **Everything is generated and checked.** Notebooks come from `notebook_src/*.py`
-and the 31 figures come from `tools/make_diagrams.py`, so both stay reviewable
+and the 35 figures come from `tools/make_diagrams.py`, so both stay reviewable
 in a diff. CI fails if either drifts, if a code cell stops parsing, or if any
 link or image path breaks.
 
@@ -187,7 +201,7 @@ rather than pretending the gap is not there.
 
 ## For instructors
 
-Worked answers to all 20 exercises and 49 checkpoint questions are in
+Worked answers to all 30 exercises and 77 checkpoint questions are in
 [`solutions/`](solutions/) — with confidence markers, since the ones that depend
 on a real run are estimates until you teach it once.
 
@@ -195,7 +209,7 @@ on a real run are estimates until you teach it once.
 make install          # latest compatible versions
 make install-locked   # the exact versions you teach with
 make lock             # regenerate the lock file from a verified environment
-make test             # 159 tests, no model or network needed
+make test             # 173 tests, no model or network needed
 make check       # tests + notebooks built and valid
 make lint        # ruff
 make notebooks   # rebuild .ipynb from notebook_src/

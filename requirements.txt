@@ -26,6 +26,10 @@ numpy>=1.24
 openai>=1.40                # the client, pointed at YOUR local server
 pydantic>=2.7
 
+# --- optional, training track (notebook 13's loss plot) ---
+# Guarded by try/except, so the notebook runs without it. Colab has it already.
+matplotlib>=3.8
+
 # --- notebook environment ---
 jupyterlab>=4.0
 ipykernel>=6.29

@@ -45,6 +45,10 @@ data/private/
 outputs/
 checkpoints/
 runs/
+
+# Written by notebooks 14 and 15 when you run them.
+data/sft/
+data/dpo/
 wandb/
 
 # --- Secrets -------------------------------------------------------------

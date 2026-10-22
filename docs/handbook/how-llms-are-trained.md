@@ -165,7 +165,9 @@ difference is entirely in the data. The model learns the *shape* of being
 helpful: answer the question, use the chat format, stop when finished.
 
 This is also exactly what notebook 11 does with LoRA, at a thousandth of the
-scale.
+scale — and [notebook 14](../../notebooks/14_building_a_training_dataset.ipynb)
+is about the part that decides whether it works, which is the data rather than
+the trainer.
 
 ### Step 2: Preference optimisation
 
@@ -196,6 +198,14 @@ the RL loop entirely and optimise a single closed-form objective directly on
 Far simpler, far more stable, far cheaper. Variants — ORPO, KTO, SimPO — trade
 off data format and compute. **DPO-style methods are now the common default**,
 and `trl` implements them in roughly the same number of lines as SFT.
+
+<img src="../assets/diagrams/dpo-vs-rlhf.svg" alt="RLHF trains a reward model then loops sample-score-update with PPO; DPO scores each pair with the policy and a frozen reference and optimises one logistic loss" width="100%">
+
+{: .note }
+> [Notebook 15](../../notebooks/15_preference_tuning_dpo.ipynb) has you implement
+> that objective and answer questions about it from your own numbers: what β
+> controls, what the frozen reference is for, and why a healthy run can report a
+> *negative* reward on the answer it is learning to prefer.
 
 #### RLAIF and Constitutional AI
 
@@ -359,6 +369,22 @@ That is why every notebook in this workshop ends with a measurement.
 6. **You work in phase 3**, and almost all practical value is created there.
 7. **Use RAG for facts, fine-tuning for form.** Reversing this is the classic
    expensive error.
+
+---
+
+## Doing it rather than reading it
+
+This chapter is the map. The [training track](../days/training-track.html) —
+notebooks 13 to 16 — is the territory:
+
+| Notebook | What it makes concrete |
+|---|---|
+| [13 · Pre-train a tiny model](../../notebooks/13_pretrain_a_tiny_model.ipynb) | Phase 1, in full, on a CPU in minutes |
+| [14 · Building a training dataset](../../notebooks/14_building_a_training_dataset.ipynb) | The SFT data work this chapter describes in a paragraph |
+| [15 · Preference tuning with DPO](../../notebooks/15_preference_tuning_dpo.ipynb) | The DPO objective, implemented and interrogated |
+| [16 · Training diagnostics](../../notebooks/16_training_diagnostics.ipynb) | Reading any of these runs while it happens |
+
+Everything but one cell of notebook 15 runs on a laptop.
 
 ---
 

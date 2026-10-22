@@ -634,8 +634,9 @@ def roadmap():
     ), "The four-day roadmap"
 
 
-# Importing this module registers the handbook's diagrams into DIAGRAMS.
+# Importing these modules registers their diagrams into DIAGRAMS.
 import diagrams_handbook  # noqa: E402,F401
+import diagrams_training  # noqa: E402,F401
 
 
 def main() -> int:

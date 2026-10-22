@@ -208,3 +208,29 @@ alternatives; tools in different layers compose.
 [Chapter 6](../handbook/protocols-and-standards.html).
 
 <img src="../assets/diagrams/hb-mcp.svg" alt="Nine custom integrations become six once a protocol sits in the middle" width="100%">
+
+---
+
+## The training track
+
+### One training step
+Notebook 13. Every trainer you will ever use is this loop with more bookkeeping,
+and it reports exactly four numbers.
+
+<img src="../assets/diagrams/tr-training-loop.svg" alt="A batch goes through a forward pass, a loss, a backward pass and a weight update, then the loop repeats; clipping and the schedule modify the update" width="100%">
+
+### Loss masking
+Notebook 14. Which tokens the model is graded on, and which it only reads.
+
+<img src="../assets/diagrams/tr-loss-masking.svg" alt="System and user segments are labelled -100 and contribute no loss; only the assistant segment is graded" width="100%">
+
+### RLHF versus DPO
+Notebook 15, and [chapter 3](../handbook/how-llms-are-trained.html). Same data;
+DPO removes the reward model and the RL loop.
+
+<img src="../assets/diagrams/dpo-vs-rlhf.svg" alt="RLHF trains a reward model then loops sample-score-update with PPO; DPO scores each pair with the policy and a frozen reference and optimises one logistic loss" width="100%">
+
+### Five loss curves, five decisions
+Notebook 16. In three of the five, the train curve alone looks acceptable.
+
+<img src="../assets/diagrams/loss-curve-patterns.svg" alt="Healthy, undertrained, overfitting, stuck at chance and diverged loss curves, with the decision each one implies" width="100%">

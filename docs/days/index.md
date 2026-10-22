@@ -33,3 +33,10 @@ If time is short, this is the priority order:
 | **Important** | 02, 04, 06, 12 | hardware, decoding, serving, capstone |
 | **Valuable** | 05, 08 | quantization, embeddings |
 | **Optional** | 11 | fine-tuning — read it even if you cannot run it |
+
+## Going further
+
+Notebooks 13–16 are an [optional fifth day](training-track.html) on how training
+actually works: pre-train a model from scratch, build a dataset properly,
+implement the DPO loss, and learn to read a loss curve. Everything but one cell
+runs on a laptop.
