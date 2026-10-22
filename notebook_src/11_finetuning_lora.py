@@ -95,7 +95,7 @@ if not torch.cuda.is_available():
 # Not happening on your laptop.
 #
 # **LoRA (Low-Rank Adaptation)** freezes the original weights and learns a
-# small additive correction. For a weight matrix $W \in \mathbb{R}^{d \times k}$
+# small additive correction. For a weight matrix $$W \in \mathbb{R}^{d \times k}$$
 # it learns two thin matrices:
 #
 # $$W' = W + \frac{\alpha}{r} B A, \quad B \in \mathbb{R}^{d \times r},\ A \in \mathbb{R}^{r \times k},\ r \ll d$$

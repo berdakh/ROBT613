@@ -1,0 +1,24 @@
+<!-- MathJax 3, for the mathematics in the handbook and notebooks.
+
+     kramdown (Jekyll's Markdown engine) turns `$$...$$` into \[...\] when it
+     stands alone and \(...\) when it is inline - both of which MathJax 3
+     renders with its default delimiters, so no extra configuration is needed.
+
+     It does NOT touch single `$...$`, which therefore renders as literal
+     dollar signs. Always write `$$...$$`, inline or not.
+     tests/test_math_markup.py enforces this. -->
+<script>
+  window.MathJax = {
+    options: {
+      // Never typeset inside code: `$x$` in a Python string is not maths.
+      skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+      ignoreHtmlClass: "highlight|highlighter-rouge",
+    },
+    chtml: { displayAlign: "left", displayIndent: "0" },
+  };
+</script>
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+></script>

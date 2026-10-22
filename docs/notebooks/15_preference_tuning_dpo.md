@@ -302,16 +302,16 @@ $$\mathcal{L} = -\log \sigma\!\left(\beta\Big[\big(\log \pi(y_w) - \log \pi_{\te
 
 Read it inside out:
 
-* $\log \pi(y_w) - \log \pi_{\text{ref}}(y_w)$ — how much **more** likely the
+* $$\log \pi(y_w) - \log \pi_{\text{ref}}(y_w)$$ — how much **more** likely the
   policy makes the chosen answer than the frozen reference did. This is the
   *implicit reward*, and the reason the reference model exists: without it,
   raising the chosen answer's probability by making the model generally more
   confident would count as progress.
 * The difference of the two rewards — the **margin**. Positive means the policy
   prefers the chosen answer *more than the reference did*.
-* $\beta$ — scales the margin. Large β: pull hard, drift far from the
+* $$\beta$$ — scales the margin. Large β: pull hard, drift far from the
   reference. Small β: stay close.
-* $-\log\sigma(\cdot)$ — the logistic loss. "Classify this pair correctly."
+* $$-\log\sigma(\cdot)$$ — the logistic loss. "Classify this pair correctly."
 
 That is it. No RL, no reward model, no sampling. Let's compute it.
 

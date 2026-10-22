@@ -1,6 +1,6 @@
 # Exercise solutions
 
-All 51 in-notebook exercises, in order. See [README](README.md) for the
+All 56 in-notebook exercises, in order. See [README](README.md) for the
 confidence markers (✅ verified · 🔬 expected · ✍️ yours).
 
 ---
@@ -1812,3 +1812,197 @@ as expected-to-fail, with a comment, does three things a deleted test cannot:
 **Marking note.** Reward the comment more than the mark. `@pytest.mark.xfail`
 with no reason is just a disabled test; `xfail(reason="0.6B cannot chain three
 tools; passes on qwen3:8b")` is documentation that happens to execute.
+
+---
+
+# Notebook 21 — Attention from scratch
+
+## 21-1 · Does the scaling survive badly-scaled inputs?
+
+> Re-run the measurement with `rng.normal(scale=0.1, ...)` and `scale=3`. Does
+> $$\sqrt{d_k}$$ still produce a well-spread row?
+
+✅ **No — and that is the point.** The derivation assumes unit variance. With
+entries of standard deviation $$\sigma$$,
+
+$$\operatorname{Var}(q \cdot k) = d_k \sigma_q^2 \sigma_k^2$$
+
+so the correct divisor would be $$\sigma_q \sigma_k \sqrt{d_k}$$. Dividing by
+$$\sqrt{d_k}$$ alone leaves the scores off by a factor of $$\sigma_q\sigma_k$$.
+
+🔬 **Expected at $$d_k = 64$$:**
+
+| scale | score std after ÷√d_k | attention row |
+|---|---|---|
+| 0.1 | ≈0.01 | nearly uniform — the model cannot discriminate at all |
+| 1 | ≈1 | well spread, as designed |
+| 3 | ≈9 | saturated again, worse than unscaled at σ=1 |
+
+✅ **What it implies.** Two things, and both are real engineering:
+
+1. **Initialisation matters.** Projections are initialised so activations come
+   out near unit variance precisely so this assumption holds at step 0.
+2. **RMSNorm immediately before the projections is load-bearing.** It forces
+   the input to unit RMS every single block, so no matter how much earlier
+   layers have inflated the residual stream, $$q$$ and $$k$$ enter attention
+   at a sane scale. Section 21.6 shows a row at RMS 57 coming out at RMS 1.
+
+**The sentence to extract:** $$\sqrt{d_k}$$ is not a universal constant, it is
+the right answer *given* an assumption, and the architecture works to keep
+that assumption true.
+
+**Marking note.** A student who says "the scaling is wrong, you should divide
+by the measured standard deviation" has understood it — and has also
+re-invented a normalisation layer, which is worth telling them.
+
+---
+
+## 21-2 · `-1e9` instead of `-inf`
+
+> Replace `-np.inf` with `-1e9` and re-run the causal test. Is the leak exactly
+> zero? Then try it in `float16`.
+
+✅ **In float64: the leak is zero in practice but not by construction.**
+$$e^{-10^9}$$ underflows to exactly 0.0, so the weights are identical to the
+`-inf` version and the perturbation test still prints `0.00e+00`.
+
+So the test *passes* — which is exactly why this bug survives review.
+
+✅ **In float16 it breaks loudly.** The largest finite float16 is 65504, so
+`-1e9` becomes `-inf` on cast... but the real failure comes first: float16
+attention is normally computed with a scale factor and accumulations that can
+turn a large-negative into `nan` rather than 0. A student who reports `nan`
+output has found the genuine failure mode.
+
+✅ **The deeper point.** The mask value must be *representable* and must
+underflow to zero *in the dtype you actually compute in*. A constant chosen
+for float32 is not safe in float16 or bfloat16, and mixed-precision training
+switches dtype under you. Use `-inf`, or use the dtype's own `finfo.min`.
+
+**Push them further:** what happens with `-1e9` when a row is **entirely**
+masked (which happens with padding)? Answer: softmax of all-equal values
+gives a uniform distribution over positions that should all be forbidden —
+`nan` would arguably be safer, because at least it is visible.
+
+---
+
+## 21-3 · The RoPE frequency spectrum
+
+> Print $$\theta_t$$ for the first and last pair at $$d_k = 128$$ and work out
+> each wavelength $$2\pi/\theta_t$$ in tokens.
+
+✅ **The numbers:**
+
+```python
+d = 128
+t = np.arange(0, d, 2)
+theta = 10000.0 ** (-t / d)
+print(theta[0], 2*np.pi/theta[0])     # 1.0            -> ~6.3 tokens
+print(theta[-1], 2*np.pi/theta[-1])   # ~1.06e-4       -> ~59,000 tokens
+```
+
+| Pair | $$\theta_t$$ | Wavelength |
+|---|---|---|
+| first | 1.0 | ≈6 tokens |
+| last | ≈1.1e-4 | ≈59,000 tokens |
+
+✅ **Which pair carries long-range position: the last one**, the slow one. The
+fast pairs complete a full rotation every six tokens, so they cannot
+distinguish a gap of 7 from a gap of 1 — they encode fine local offset. The
+slow pairs have not completed even one rotation across the whole context, so
+their angle is effectively a monotonic measure of absolute distance.
+
+It is the same idea as a clock: the second hand tells you where you are within
+a minute, the hour hand tells you where you are in the day, and you need both.
+
+✅ **RoPE scaling** stretches the **slow** end. Techniques like linear
+interpolation and NTK-aware scaling increase the effective wavelength so that
+positions beyond the training context still map to angles the model has seen.
+Stretching the fast end would destroy local resolution, which is why the
+methods are frequency-dependent rather than a uniform rescale.
+
+**Marking note.** The common wrong answer is "the first pair, because it
+changes fastest". Changing fastest is precisely what makes it useless at long
+range — it wraps around.
+
+---
+
+## 21-4 · Grouped-query attention
+
+> Modify `multi_head_attention` to take `n_kv_heads`, sharing each KV head
+> between several query heads. Compute the effect on the KV cache.
+
+✅ **The change is one line of indexing:**
+
+```python
+def multi_head_attention(X, W_q, W_k, W_v, W_o, n_heads, n_kv_heads=None, ...):
+    n_kv_heads = n_kv_heads or n_heads
+    group = n_heads // n_kv_heads          # query heads per KV head
+    ...
+    for head in range(n_heads):
+        q_slice  = slice(head * head_dim, (head + 1) * head_dim)
+        kv_head  = head // group           # <- the whole of GQA
+        kv_slice = slice(kv_head * head_dim, (kv_head + 1) * head_dim)
+        q = Q_all[:, q_slice]
+        k, v = K_all[:, kv_slice], V_all[:, kv_slice]
+```
+
+✅ **The effect on the cache.** The cache stores keys and values, not queries,
+so its size is set by `n_kv_heads`:
+
+$$\text{bytes} = 2 \times n_{\text{layers}} \times n \times (n_{kv} \cdot d_{\text{head}}) \times \text{bytes}$$
+
+For Qwen3-0.6B — 16 query heads, 8 KV heads — that is **exactly half**. At 32k
+tokens the notebook's 3.8 GB becomes **1.9 GB**.
+
+✅ **Why GQA exists, in one line:** at long context the KV cache, not the
+weights, is what fills the GPU, and halving it roughly doubles how many
+concurrent requests a server can hold.
+
+**Push them further:** $$n_{kv} = 1$$ is multi-query attention (MQA), used by
+some models. Ask what it costs. Answer: quality, mildly — all query heads then
+attend over an identical key space, which removes some of the diversity that
+made multi-head worth having. GQA is the compromise that kept most of the
+quality and most of the saving.
+
+---
+
+## 21-5 · Where the FLOP terms cross
+
+> At what sequence length do the projection and attention FLOP terms cross?
+> Solve algebraically, then confirm. Redo for $$d_{\text{model}} = 4096$$.
+
+✅ **Algebra.** Setting the two terms equal:
+
+$$4n^2 d_{\text{model}} = 2n\left(4d_{\text{model}}^2 + 3 d_{\text{model}} d_{ff}\right)$$
+
+Divide by $$2 n d_{\text{model}}$$:
+
+$$2n = 8 d_{\text{model}} + 6 d_{ff} \quad\Longrightarrow\quad
+n^* = 4 d_{\text{model}} + 3 d_{ff}$$
+
+✅ **The numbers:**
+
+| Configuration | $$n^*$$ |
+|---|---|
+| $$d=1024$$, $$d_{ff}=3072$$ | $$4096 + 9216 = 13{,}312$$ tokens |
+| $$d=4096$$, $$d_{ff}=11008$$ | $$16{,}384 + 33{,}024 = 49{,}408$$ tokens |
+
+Confirm with the notebook's function: at 13,312 tokens the printed ratio is
+≈1.0.
+
+✅ **Why bigger models tolerate longer contexts.** The crossover
+$$n^* = 4d_{\text{model}} + 3d_{ff}$$ grows **linearly in the model width**.
+Widening the model adds quadratic cost to the per-token projections but only
+linear cost to the attention matmuls, so the point at which attention
+dominates moves further out.
+
+**The practical reading:** "attention is quadratic" is an asymptotic statement
+and asymptotics are about the limit. A 70B model at 8k tokens is nowhere near
+that limit — it is still paying mostly for the projections and the MLP. This
+is why FlashAttention helps long-context inference enormously and ordinary
+chat workloads much less.
+
+**Marking note.** Full credit needs the algebra *and* the observation that
+$$n^*$$ is independent of the number of layers (it cancels — both terms are
+per-block) and of the number of heads (which only splits a fixed budget).

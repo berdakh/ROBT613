@@ -186,5 +186,12 @@ it is why the workshop's answer is structural:
 
 ---
 
+{: .tip }
+> **Want the actual mathematics?** [Chapter 7](the-mathematics.html) derives
+> attention from scratch — why there are three projections, where
+> $$\sqrt{d_k}$$ comes from, why positional encoding has to exist at all — and
+> [notebook 21](../notebooks/21_attention_from_scratch.html) implements and
+> tests every claim in NumPy.
+
 **Next:** [How LLMs are trained](how-llms-are-trained.html) — where the knowledge
 and the behaviour actually come from.

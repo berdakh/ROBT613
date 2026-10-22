@@ -81,7 +81,7 @@ $$\text{weights} \approx N \times b$$
 Then add:
 
 - **KV cache** — grows with conversation length. Roughly
-  $2 \times \text{layers} \times \text{kv\_heads} \times \text{head\_dim} \times \text{tokens} \times b$.
+  $$2 \times \text{layers} \times \text{kv\_heads} \times \text{head\_dim} \times \text{tokens} \times b$$.
   For small models it is modest; for long contexts it can exceed the weights.
 - **Activations and framework overhead** — budget 1–2 GB.
 
