@@ -8,19 +8,23 @@ Why hand-rolled instead of Mermaid or Graphviz?
 * **One visual language.** Every box, arrow and label comes from here, so
   eighteen diagrams drawn over an afternoon still look like a set.
 
-**Colour strategy - read this before changing it.** Every colour is written
-twice:
+**Colour strategy - read this before changing it.** Every colour is a literal
+``fill``/``stroke`` **presentation attribute** on the element, taken from the
+light palette. No CSS is needed to render a figure correctly, which is why
+these survive nbconvert's PDF path, GitHub's sanitiser and every other
+renderer we have tried.
 
-1. as a literal ``fill``/``stroke`` **presentation attribute** on the element,
-   using the light palette;
-2. as a CSS rule inside a ``prefers-color-scheme: dark`` media query, keyed on
-   the element's class.
+An earlier version used CSS custom properties (``var(--bg)``) and rendered
+**solid black** in every tool that does not implement variables, the PDF path
+included. Do not reintroduce them.
 
-CSS beats presentation attributes, so a browser in dark mode gets the dark
-palette, while a renderer that ignores CSS entirely still produces a correct
-light diagram. An earlier version used CSS custom properties (``var(--bg)``)
-for this and rendered **solid black** in every tool that does not implement
-variables - including nbconvert's PDF path. Do not reintroduce them.
+**Why there is no dark mode.** Every element still carries a ``d-*`` class and
+:data:`DARK` still holds the matching palette, so a ``prefers-color-scheme``
+override can be switched back on by setting :data:`EMIT_DARK_MODE`. It is off
+because the course site is light: a figure that inverts with the *reader's OS*
+sits on a page that does not, so a reader in OS dark mode got dark diagrams on
+a white page. Following the page beats following the operating system, and the
+page is light.
 
 Coordinates are plain SVG user units with the origin at the top left.
 """
@@ -107,6 +111,11 @@ def _markers() -> str:
 
 # The shared registry. Any module that imports `diagram` and decorates a
 # function adds it to the set that `make_diagrams.py` renders.
+# Flip to True to re-enable the `prefers-color-scheme: dark` override. See the
+# module docstring for why it is off: the site is light, so figures that invert
+# with the reader's OS look broken on it.
+EMIT_DARK_MODE = False
+
 DIAGRAMS: list = []
 
 
@@ -284,9 +293,11 @@ class Canvas:
             f'width="{self.width}" height="{self.height}" role="img">'
             f"{desc}"
             f"<defs>{_markers()}</defs>"
-            f"<style>{_dark_css()}</style>"
-            f'<rect width="{self.width}" height="{self.height}" fill="{LIGHT["bg"]}" '
-            f'class="d-bg"/>'
+            + (f"<style>{_dark_css()}</style>" if EMIT_DARK_MODE else "")
+            + (
+                f'<rect width="{self.width}" height="{self.height}" fill="{LIGHT["bg"]}" '
+                f'class="d-bg"/>'
+            )
             + "".join(self.parts)
             + "</svg>\n"
         )
