@@ -259,3 +259,23 @@ Notebook 19. Costs rise left to right. Start at the left.
 Notebook 20. The dangerous quadrant is the one an outcome-only suite calls a pass.
 
 <img src="../assets/diagrams/ag-eval-quadrants.svg" alt="A two-by-two of answer-right against path-sane; right answer with a wrong path is the lucky pass" width="100%">
+
+---
+
+## The mathematics
+
+### One attention operation, end to end
+Notebook 21 and [chapter 7](../handbook/the-mathematics.html). Every arrow is a
+matrix multiply or an elementwise step.
+
+<img src="../assets/diagrams/mt-attention-pipeline.svg" alt="X projects to Q, K and V; Q times K transpose gives scores, which are scaled, masked and softmaxed into weights that multiply V" width="100%">
+
+### RoPE: position as rotation
+Why the score ends up depending on the gap between tokens, not on where they are.
+
+<img src="../assets/diagrams/mt-rope.svg" alt="A vector rotated further at each successive position, with its length unchanged, so the inner product depends only on the difference of positions" width="100%">
+
+### A pre-norm block
+The residual stream runs straight down; everything else is a correction to it.
+
+<img src="../assets/diagrams/mt-block-anatomy.svg" alt="A transformer block as a vertical residual stream, with RMSNorm plus attention and RMSNorm plus the SwiGLU MLP each adding a correction back" width="100%">

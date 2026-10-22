@@ -40,6 +40,7 @@ which layer a tool sits in or which problem it was born to solve.
 | 4 | [The model landscape](the-model-landscape.html) | Base vs instruct vs reasoning. Foundation vs frontier. How to read a model card. |
 | 5 | [The tool ecosystem](the-tool-ecosystem.html) | Every tool worth knowing: what problem it solves, why it was built, when to use it. |
 | 6 | [Protocols and standards](protocols-and-standards.html) | The OpenAI API as lingua franca, tool-calling formats, and MCP in depth. |
+| 7 | [The mathematics](the-mathematics.html) | **For the deep dive.** Attention derived from scratch: Q/K/V, $$\sqrt{d_k}$$, masking, RoPE, the residual stream, and what it all costs. |
 
 ## How it relates to the workshop
 
@@ -49,6 +50,7 @@ each chapter points at the notebook where you do the thing it describes.
 | Handbook | Notebook |
 |---|---|
 | How models work | 01 (tokenization), 03 (generation) |
+| The mathematics | **21 (attention from scratch)**, 13 (pre-training)
 | How LLMs are trained | 11 (LoRA fine-tuning) |
 | The model landscape | 02 (choosing a model) |
 | The tool ecosystem | 05 (runtimes), 06 (serving) |

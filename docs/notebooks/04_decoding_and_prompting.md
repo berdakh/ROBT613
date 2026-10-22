@@ -110,7 +110,7 @@ Temperature $T$ rescales the logits before softmax:
 
 $$P(t_i) = \frac{\exp(z_i / T)}{\sum_j \exp(z_j / T)}$$
 
-- $T \to 0$: the top token takes all the probability → deterministic, repetitive.
+- $$T \to 0$$: the top token takes all the probability → deterministic, repetitive.
 - $T = 1$: the model's own calibrated distribution.
 - $T > 1$: flattened → adventurous, eventually incoherent.
 

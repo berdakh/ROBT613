@@ -1,7 +1,7 @@
 # Checkpoint answers
 
-The 111 questions that close notebooks 01–11 and the training (13–16) and
-agents (17–20) tracks. Use them as an oral check, a quick
+The 119 questions that close notebooks 01–11, the training (13–16) and agents
+(17–20) tracks, and the mathematics deep dive (21). Use them as an oral check, a quick
 written quiz, or a revision sheet.
 
 Markers as in the [README](README.md): ✅ verified · 🔬 expected · ✍️ yours.
@@ -732,3 +732,70 @@ It verifies **your code**: that tool results still reach the model, that
 in CI, on every commit. It can **never** verify that the model still makes
 those decisions. That needs live, repeated runs, and it belongs before a
 release rather than on every commit.
+
+---
+
+## 21 · Attention from scratch
+
+**1. Why three projections rather than one? What question does each answer?**
+Because relevance is **asymmetric**. $$Q$$ = what this position is looking for;
+$$K$$ = what it advertises; $$V$$ = what it hands over if selected. One
+projection could only ask "how similar are these two tokens?", which is
+strictly weaker — it could not learn that *it* seeks nouns while *animal*
+advertises as one and contributes something else again.
+
+**2. Where does $$\sqrt{d_k}$$ come from, and what breaks without it?**
+If $$q, k$$ have independent unit-variance entries then
+$$q \cdot k$$ is a sum of $$d_k$$ such terms, so its variance is $$d_k$$ and
+its standard deviation $$\sqrt{d_k}$$. Without the divisor, scores grow with
+head width and softmax saturates — 96% of the weight on one position at
+$$d_k = 64$$. Since the softmax derivative goes like $$p(1-p)$$, a saturated
+row yields **no gradient** and the model stops learning.
+
+**3. Why must the mask use $$-\infty$$ rather than a large negative number?**
+Because the mask value must underflow to exactly zero **in the dtype you
+actually compute in**. `-1e9` happens to work in float64 and is not even
+representable in float16; under mixed precision the dtype changes beneath you.
+A leak here is invisible in the loss (training looks *better*) and corrupts
+evaluation, because the model learned to use a signal that is absent at
+inference.
+
+**4. State permutation equivariance and why it forces positional encoding to
+exist.**
+$$\operatorname{Attention}(PX) = P\operatorname{Attention}(X)$$ for any
+permutation $$P$$: shuffle the inputs and the outputs shuffle identically.
+Attention is defined over a **set**, so it cannot distinguish *dog bites man*
+from *man bites dog*. Position is therefore not something attention neglects —
+it is something attention **cannot represent**, so it must be injected.
+
+**5. What does RoPE make the score depend on, and why is that right for
+language?**
+Only the **gap** $$m - n$$ between positions, never the absolute positions —
+because a rotation by $$m$$ measured against a rotation by $$n$$ leaves a
+rotation by $$m-n$$. That suits language because grammatical relationships are
+relative ("the adjective before this noun"), not absolute ("the word at index
+4,312"), and it extrapolates past the training length far better than a
+learned absolute embedding.
+
+**6. Multi-head attention with $$h$$ heads costs the same as one head. Why?**
+Because $$d_k = d_{\text{model}}/h$$. The heads **split** a fixed width rather
+than adding to it, so the projections and the matmuls total the same work.
+Eight heads of width 64 cost what one head of width 512 costs — you are
+spending the same budget on several narrow views instead of one wide one.
+
+**7. What is the residual stream, and give two things it buys you.**
+The running representation that every block reads from and adds back to:
+$$X \leftarrow X + \text{sublayer}(\text{Norm}(X))$$. It buys (a) **optional
+layers** — a block whose output is near zero passes its input through
+untouched, so not every layer need fire for every token; and (b) **a short
+gradient path**, since addition passes gradient straight through, which is
+what makes very deep stacks trainable. ✅ Pre-norm matters here: the stream
+itself is never normalised, keeping that path clean.
+
+**8. Which holds more parameters, attention or the MLP? Which dominates FLOPs
+at 512 tokens?**
+The **MLP** holds more parameters: $$3d_{\text{model}}d_{ff}$$ against
+$$4d_{\text{model}}^2$$ — 9.4 M against 4.2 M at Qwen3-0.6B's dimensions. At
+512 tokens the **projections** dominate the FLOPs; the attention matmuls are
+about 8% of them. Attention only takes over past roughly
+$$n = 4d_{\text{model}} + 3d_{ff}$$ tokens, which is ≈13,000 for that model.
