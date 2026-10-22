@@ -83,7 +83,7 @@ Full local setup, including Windows: **[docs/guides/setup.md](docs/guides/setup.
 | **Day 3 — Knowledge & agents** |||||
 | 08 | [Embeddings & search](notebooks/08_embeddings_and_search.ipynb) | Semantic search, hybrid search, and when embeddings fail | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/08_embeddings_and_search.ipynb) |
 | 09 | [RAG over your notes](notebooks/09_rag_over_your_notes.ipynb) | Full RAG pipeline with citations, refusals and **evaluation** | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/09_rag_over_your_notes.ipynb) |
-| 10 | [Agents from scratch](notebooks/10_agents_from_scratch.ipynb) | Write the agent loop; ReAct; failure modes; prompt injection | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/10_agents_from_scratch.ipynb) |
+| 10 | [Agents from scratch](notebooks/10_agents_from_scratch.ipynb) | Write the agent loop; test it with no model; six failure modes; injection | 120 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/10_agents_from_scratch.ipynb) |
 | **Day 4 — Adapt & ship** |||||
 | 11 | [Fine-tuning with LoRA](notebooks/11_finetuning_lora.ipynb) | Train an adapter — and decide whether you should | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/11_finetuning_lora.ipynb) |
 | 12 | [Capstone](notebooks/12_capstone_daily_assistant.ipynb) | Build, evaluate and present a daily-life assistant | rest | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
@@ -93,6 +93,11 @@ Full local setup, including Windows: **[docs/guides/setup.md](docs/guides/setup.
 | 14 | [Building a training dataset](notebooks/14_building_a_training_dataset.ipynb) | Loss masking, dedup, leak-free splits, validation | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/14_building_a_training_dataset.ipynb) |
 | 15 | [Preference tuning with DPO](notebooks/15_preference_tuning_dpo.ipynb) | Implement the DPO loss; build pairs; run `DPOTrainer` | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/15_preference_tuning_dpo.ipynb) |
 | 16 | [Training diagnostics](notebooks/16_training_diagnostics.ipynb) | Read loss curves, find the LR, know when to stop | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/16_training_diagnostics.ipynb) |
+| **Optional track — agents in depth** |||||
+| 17 | [Tools and memory](notebooks/17_tools_and_memory.ipynb) | Sandboxed tools; four memory strategies; the context budget | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/17_tools_and_memory.ipynb) |
+| 18 | [Planning and decomposition](notebooks/18_planning_and_decomposition.ipynb) | Plans as graphs, waves, blocking, replanning | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/18_planning_and_decomposition.ipynb) |
+| 19 | [Multi-agent systems](notebooks/19_multi_agent_systems.ipynb) | Routers, orchestrators, critic loops — and when not to | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/19_multi_agent_systems.ipynb) |
+| 20 | [Evaluating agents](notebooks/20_evaluating_agents.ipynb) | Outcome vs trajectory; lucky passes; a CI suite | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/20_evaluating_agents.ipynb) |
 
 Short on time? Priority order: **01, 03, 07, 09, 10** are the essential five.
 
@@ -102,6 +107,12 @@ language model from scratch, prepare a dataset properly, implement the DPO
 loss yourself, and learn to read a training run. Only 15's final cell needs a
 GPU — everything else runs on a laptop in seconds. See
 [the training track](docs/days/training-track.md).
+
+**Notebooks 17–20 are an optional agents track.** Notebook 10 builds an
+agent; this track gives it memory, plans and teammates, and then teaches you
+to prove it works. **No server, no GPU, no downloads** — every notebook runs
+against a scripted model, which is also how you test a real agent. See
+[the agents track](docs/days/agents-track.md).
 
 ## The handbook — background reading
 
@@ -141,7 +152,7 @@ evening, and it answers the questions students actually ask.
 ## What is in this repository
 
 ```
-notebooks/        16 teaching notebooks (12 core + a 4-notebook training track)
+notebooks/        20 teaching notebooks (12 core + training and agents tracks)
 notebook_src/     their source (percent format) - edit these, not the .ipynb
 docs/handbook/    6-chapter background handbook (no code required)
 src/qwen_workshop/
@@ -152,19 +163,25 @@ src/qwen_workshop/
     client.py     OpenAI-compatible client for Ollama / vLLM / llama.cpp
     tools.py      turn Python functions into tools an LLM can call, safely
     agent.py      the agent loop (~200 lines, heavily commented)
+    scripted.py   a scripted stand-in for the model, so agents run in tests
+    memory.py     conversation buffer, window, summariser, fact store
+    planning.py   plans as dependency graphs, with replanning
+    multiagent.py routers, orchestrators, critic loops
+    agenteval.py  outcome + trajectory evaluation for agents
     rag.py        chunking, embeddings, vector index, RAG prompts
     demo_tools.py ready-made tools for the agent notebooks
     parsing.py    tolerant JSON extraction from chatty model output
 data/             sample notes, pantry, expenses, inbox, eval questions
 scripts/          check_env, download_models, smoke_test
 solutions/        exercise + checkpoint answers for instructors
-tests/            173 tests that run without a model, GPU or network
+tests/            279 tests that run without a model, GPU or network
 docs/             the GitHub Pages site
-    assets/diagrams/  35 generated SVG figures, used by notebooks and handbook
+    assets/diagrams/  39 generated SVG figures, used by notebooks and handbook
 tools/
     nbbuild.py        notebook_src/*.py  ->  notebooks/*.ipynb
     make_diagrams.py  workshop diagrams; diagrams_handbook.py and
-                      diagrams_training.py add the handbook's and the track's
+                      diagrams_training.py
+                      and diagrams_agents.py add the handbook's and the tracks'
                       (svgkit.py is the shared drawing kit)
     check_notebooks.py, check_links.py   validation run in CI
 ```
@@ -185,7 +202,7 @@ framework. You implement quantization in NumPy before using `bitsandbytes`. You
 see the raw `<tool_call>` text before using a parser.
 
 **Everything is generated and checked.** Notebooks come from `notebook_src/*.py`
-and the 35 figures come from `tools/make_diagrams.py`, so both stay reviewable
+and the 39 figures come from `tools/make_diagrams.py`, so both stay reviewable
 in a diff. CI fails if either drifts, if a code cell stops parsing, or if any
 link or image path breaks.
 
@@ -201,7 +218,7 @@ rather than pretending the gap is not there.
 
 ## For instructors
 
-Worked answers to all 30 exercises and 77 checkpoint questions are in
+Worked answers to all 51 exercises and 111 checkpoint questions are in
 [`solutions/`](solutions/) — with confidence markers, since the ones that depend
 on a real run are estimates until you teach it once.
 
@@ -209,7 +226,7 @@ on a real run are estimates until you teach it once.
 make install          # latest compatible versions
 make install-locked   # the exact versions you teach with
 make lock             # regenerate the lock file from a verified environment
-make test             # 173 tests, no model or network needed
+make test             # 279 tests, no model or network needed
 make check       # tests + notebooks built and valid
 make lint        # ruff
 make notebooks   # rebuild .ipynb from notebook_src/

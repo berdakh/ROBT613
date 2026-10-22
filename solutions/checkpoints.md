@@ -1,6 +1,7 @@
 # Checkpoint answers
 
-The 77 questions that close notebooks 01–11 and the training track (13–16). Use them as an oral check, a quick
+The 111 questions that close notebooks 01–11 and the training (13–16) and
+agents (17–20) tracks. Use them as an oral check, a quick
 written quiz, or a revision sheet.
 
 Markers as in the [README](README.md): ✅ verified · 🔬 expected · ✍️ yours.
@@ -238,27 +239,49 @@ fine-tuned facts cannot be cited, updated or removed.
 
 ## 10 · Agents
 
-**1. Write the agent loop from memory, in four steps.**
+**1. Define an agent in one sentence, then name the four properties.**
+A program in which a **model chooses the next action** from a set of available
+actions, **your code executes** them, and the results are fed back so the model
+can choose again — until it decides to stop. The four properties: a **goal**,
+**actions**, a **loop**, and **autonomy over the path**.
+
+**2. Which property separates an agent from a chain?**
+**Autonomy over the path.** In a chain your code decides which step runs next;
+in an agent the model does. Remove that one property and everything else stays
+the same — which is why most production "agents" are chains with extra cost.
+
+**3. Write the agent loop from memory, in four steps.**
 ① **Think** — model reads the transcript. ② If it requested a tool, **act** —
-*your code* runs it. ③ **Observe** — append the result. ④ Repeat until it answers
-without calling a tool, **or `max_steps` is hit**. *(Missing the step limit is
-the answer to mark down.)*
+*your code* runs it. ③ **Observe** — append the result. ④ Repeat until it
+answers without calling a tool, **or `max_steps` is hit**. *(Missing the step
+limit is the answer to mark down.)*
 
-**2. Difference between a chain and an agent?**
-In a **chain you decide the steps**; in an **agent the model decides** how many
-and which. You trade predictability for flexibility. Most production "agents"
-should have been chains — if you can draw the flowchart, write the flowchart.
+**4. Who executes the tool call, and why does it matter?**
+**Your code does.** The model only emits a *request* — a name and some JSON.
+It matters because that gap is where every guardrail lives: refusing a tool,
+requiring confirmation, containing a path, logging the attempt. An agent is
+safe-able precisely because the model cannot run anything itself.
 
-**3. Name the five failure modes.**
-① infinite loop ② wrong tool, confidently ③ ignoring the tool result
-④ cascading errors from an early mistake ⑤ prompt injection.
+**5. What does a scripted model let you test, and what can it never tell you?**
+It tests **your code**: that tool results reach the model, that `max_steps`
+holds, that errors come back as observations, that the registry was offered at
+all. It can **never** tell you whether a real model would make those decisions.
+A green scripted suite means your loop is correct, not that your agent works.
 
-**4. Why does `stop=["Observation:"]` matter in ReAct?**
+**6. Name the six failure modes. Which two are invisible if you only check the
+final answer?**
+① infinite loop ② ignoring the tool result ③ wrong tool, confidently
+④ answering without looking ⑤ cascading errors ⑥ prompt injection.
+**④ and ⑥ are invisible from the answer alone** — ④ produces a plausible
+number, and ⑥ produced a perfectly innocent "bread and milk" while
+exfiltrating the budget. ② is often invisible too; accept it as a third.
+
+**7. Why does `stop=["Observation:"]` matter in ReAct?**
 Without it the model **writes its own Observation** — inventing the tool result
 and reasoning from fiction. It has no concept of its turn ending; it just
 continues the document. Native tool calling removes this failure structurally.
 
-**5. Two defences against prompt injection that do not rely on the model.**
+**8. Two defences against prompt injection that do not rely on the model.**
 Any two of: **least privilege** (no send tool → nothing to exfiltrate with),
 **confirmation gates** on irreversible actions, **trust separation** (retrieved
 text in a user message, never the system prompt), **output filtering**,
@@ -496,3 +519,216 @@ knowledge (catastrophic forgetting), and refusals. Nothing in the objective ever
 measured them, so no number derived from the objective can report on them. ✅
 A ten-prompt before-and-after list read by a human costs five minutes and
 catches what the curve structurally cannot.
+
+---
+
+## 17 · Tools and memory
+
+**1. Why is memory the application's job rather than the model's?**
+Because the model is **stateless**. Every call knows only what is in the
+messages you send, and when it returns, nothing persists. "The agent
+remembers" always means *your code put something in the next request* — which
+turns a vague aspiration into a budget decision with a hard constraint: the
+context window is finite and you pay for every token in it twice.
+
+**2. Why does `safe_path` call `resolve()` before checking?**
+`resolve()` collapses `..` and follows symlinks **first**, so the check runs
+against the real destination. Checking the string for `".."` instead misses
+absolute paths (`/etc/passwd`), symlinks pointing outside, and any encoding the
+string check does not anticipate — and it wrongly rejects legitimate
+subdirectory paths. Containment is "resolves under the root", not "no slashes".
+
+**3. A sliding window forgets the oldest turns. Why is that wrong, and what
+does `keep_first` fix?**
+Because **people state their requirements first**. The oldest turns are the
+task statement and the standing rules; recency is a poor proxy for importance.
+`keep_first` pins the opening turns, so the task survives — but a constraint
+stated in turn three still does not, which is the argument for a fact store.
+
+**4. What does summarisation cost, and who chooses what is lost?**
+**Detail you did not know you would need**, and the choice is made by whatever
+wrote the summary — not by you, and not by the user whose constraint gets
+dropped. ✅ Also worth marking: a summariser must fold the *previous* summary
+in rather than append to it, or the summary grows until compaction costs more
+context than it saves.
+
+**5. You pay for tool schemas on every request. What follows about registry
+size?**
+That a large registry is a **permanent tax on every call**, not a one-off.
+Thirty tools is roughly 3,000 tokens per request — about 72% of a 4k window
+before a word is said. That is a better argument for small registries than
+"the model gets confused", because you can measure it.
+
+**6. One thing for a scratchpad, one for a fact store, and what goes wrong if
+you swap them.**
+Scratchpad: *"I already tried `peek_file` on the .exe and it is not text"* —
+true for the next three steps, worthless next week. Fact store: *"invoices go
+to finance"* — a standing rule. Swap them and you get either an agent that
+repeats failed calls (rule-shaped memory thrown away), or a prompt
+permanently carrying "filed 8 files on 14 March" — episodic noise in every
+future request.
+
+**7. Name three ways a model-written fact store goes bad.**
+Any three of: **inferences stored as facts** ("the user seemed irritated");
+**hedged facts** ("probably does not want..."), which nothing downstream can
+act on; **silent overwrites** that reverse a rule with no record;
+**episodic noise** stored as durable fact; **unbounded growth**. The fix
+that helps most is that a fact store is a readable file you can correct —
+which is more than a summary offers.
+
+---
+
+## 18 · Planning and decomposition
+
+**1. What can a plan check that ReAct structurally cannot?**
+**That the work is finished.** A ReAct agent stops when the model feels done;
+with a plan, "did every task reach `done`?" is a property of a data structure.
+A plan is also **reviewable before it runs**, which ReAct cannot be — the first
+time you see the shape of the work is in the trace afterwards.
+
+**2. Why is a plan a graph rather than a list? Give a consequence of each.**
+A list encodes order; a graph encodes **dependency**. Consequences: (a)
+independent tasks can run in the same wave, so you get parallelism for free;
+(b) a failure blocks exactly its descendants, so sibling branches still
+complete and their results are kept. A list gives you neither — it cannot tell
+"after" from "because of".
+
+**3. What does the wave count tell you before you run anything?**
+The **shortest the plan can possibly take**: a plan in three waves needs at
+least three sequential rounds however much you parallelise. Useful for costing
+a plan, and for noticing that a "parallel" plan is secretly a chain.
+
+**4. Name three invalid plans a model will actually produce.**
+**Cycles** (step 3 "verifies step 5" which depends on 3), **dependencies on
+task ids that do not exist**, **empty plans**, and **tasks with no
+description**. All four are caught by `Plan.from_dicts` on the way in, which
+is the point — fail at parse time, loudly, not three steps into execution.
+
+**5. Distinguish `failed` from `blocked`, and say why conflating them hurts.**
+A **failed** task ran and broke. A **blocked** task never ran, because
+something it depended on failed. Conflating them sends you debugging a task
+that did nothing wrong, and it breaks replanning: you only need to replace the
+tasks that actually stuck, and `blocked` ones may be fine once their
+dependency is fixed.
+
+**6. Why does replanning keep completed tasks?**
+Because re-running work that succeeded is slower and, with a flaky dependency,
+can loop forever. Keeping them also constrains the new plan usefully: a
+replacement task may depend on completed work, and `replan_after_failure`
+**refuses** a replacement that depends on the wreckage it is replacing.
+
+**7. Give two situations where ReAct is the better choice.**
+When **what to do next genuinely depends on what you just found** (planning in
+ignorance is worse than adapting), and when the task is **two or three steps**,
+so the planning call is pure overhead. Also acceptable: an unpredictable
+environment where plans go stale immediately.
+
+**8. Why is a plan a better place for a human check than a step?**
+Because **nothing has happened yet**, the whole shape of the work is visible at
+once, and the check is cheap — an eleven-line `approve` caught a `Delete
+everything` task before it ran. Checking at each step means deciding under
+time pressure with no view of what comes next, and by the time you see the
+delete the agent is already asking to do it.
+
+---
+
+## 19 · Multi-agent systems
+
+**1. Give the three cases where a team is genuinely justified.**
+① **Different tools that must not mix** — a security boundary. ② **Different
+context that will not fit one window** — four specialists are four windows.
+③ **Adversarial roles** — a critic that has not seen the writer's reasoning.
+
+**2. Which of them can nothing else provide, and why?**
+**Capability separation (①).** Context can be managed other ways and criticism
+can be a second prompt, but "this agent cannot spend money" is enforced by
+construction only if the tool was never given to it. Everything else relies on
+the model behaving, which is not a guarantee.
+
+**3. Name three bad reasons for multiple agents and what each really wants.**
+"It mirrors how our team works", "each agent has a clear responsibility", "it's
+more modular" — all three want **functions with good names**. Also: "agents can
+specialise in a domain" usually wants a better system prompt, and "it's easier
+to debug" is simply false (see question 8).
+
+**4. What are the only three new mechanisms a team introduces?**
+**Routing** (who handles this), **a handoff format** (what crosses the
+boundary), and **a termination rule** (when the exchange stops). Everything
+else is the single-agent loop you already have.
+
+**5. Why is the `description` field the most important part of a `Specialist`?**
+Because it is **the routing signal**, not documentation — the roster is what
+the router reads to choose. "Handles data" routes nothing. It is the same
+lesson as tool descriptions in notebook 10.5, one level up.
+
+**6. What is the handoff cost of an orchestrator with three specialists?**
+About **three times the model calls** of one agent with three tools (roughly 8
+versus 3), plus **seven handoff messages**, each a lossy summary. You are
+buying context and tool separation; if you do not need either, you are paying
+for nothing.
+
+**7. Why does the critic loop need both a round cap and an accept token?**
+The **cap** because the pair will otherwise trade refinements forever, sounding
+productive at two model calls per round. The **token** because prose has no
+reliable way to express approval — "Looks good to me, although the tone is off"
+is not an acceptance, and without an explicit `APPROVED` it will be read as one.
+
+**8. Why is a team harder to debug than one agent, not easier?**
+In one agent, a single transcript holds every fact and decision and you can
+read it. In a team the context is **scattered across members**, and the only
+record of what they told each other is the handoff log — which is why `Team`
+records every message. Multi-agent is easier to *draw*, not to debug.
+
+---
+
+## 20 · Evaluating agents
+
+**1. Give four ways an agent produces a correct answer you should not trust.**
+It **guessed** and was right; it used **eleven tools where two would do**; it
+called a **forbidden tool** (sent an email on a read-only question); it
+**looped to `max_steps`** and then bluffed confidently. All four score a
+perfect outcome.
+
+**2. Define outcome and trajectory evaluation. Which catches a sent email?**
+**Outcome**: is the final answer right. **Trajectory**: were the right tools
+called, in a sane order, without doing anything forbidden. Only **trajectory**
+catches the sent email — the answer "Done, I let your landlord know" is
+perfectly accurate.
+
+**3. What is a lucky pass, and why is it the most important thing in a report?**
+A case where the **outcome passed and the trajectory did not** — right answer,
+wrong path. It is the most important number because it is the **gap between
+what you measured and what you have**: every lucky pass is a test that will
+keep passing until the day the luck runs out.
+
+**4. Why does `AgentTestCase` refuse to be built with no expectations?**
+Because a case that asserts nothing **can never fail**, and a suite full of
+them reports 100% forever. It is the most common broken test and the cheapest
+possible thing to prevent.
+
+**5. What does `max_tool_calls` protect against? Is it a correctness check?**
+Against **cost regressions and wandering** — an agent answering correctly in
+fourteen calls where it used to take three has regressed. It is **not** a
+correctness check; the answer may be perfect. ✅ It also will not catch a
+two-call loop, for which repetition is the better signal.
+
+**6. Name three ways an LLM judge misleads you.**
+It **prefers long, confident answers** (the same bias preference tuning
+instals); it is **a model, so it is wrong sometimes**, giving the suite a noise
+floor; and if it is **the same model you are evaluating** it grades its own
+style generously. A fourth worth credit: two checks agreeing is not two pieces
+of evidence when both are downstream of the same flaw.
+
+**7. Distinguish pass@k from pass^k. Which applies to an agent that can send
+email?**
+**pass@k**: did it pass at least once in k runs — right when the user can
+retry. **pass^k**: did it pass *every* run — right when the agent acts on the
+world. For anything that can send email, **pass^k**, because one bad run is the
+incident, and it is a much harsher number.
+
+**8. What can a replayed trace verify, and what can it never verify?**
+It verifies **your code**: that tool results still reach the model, that
+`max_steps` holds, that forbidden-tool checks still fire — instantly, free,
+in CI, on every commit. It can **never** verify that the model still makes
+those decisions. That needs live, repeated runs, and it belongs before a
+release rather than on every commit.

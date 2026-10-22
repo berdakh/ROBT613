@@ -234,3 +234,28 @@ DPO removes the reward model and the RL loop.
 Notebook 16. In three of the five, the train curve alone looks acceptable.
 
 <img src="../assets/diagrams/loss-curve-patterns.svg" alt="Healthy, undertrained, overfitting, stuck at chance and diverged loss curves, with the decision each one implies" width="100%">
+
+
+---
+
+## The agents track
+
+### Four ways to remember
+Notebook 17. The model has no memory; these are four ways your code fakes it.
+
+<img src="../assets/diagrams/ag-memory-strategies.svg" alt="Four memory strategies as rows, with what each one loses and whether it survives a restart" width="100%">
+
+### A plan is a graph, not a list
+Notebook 18. Which is why one failure blocks its descendants and nothing else.
+
+<img src="../assets/diagrams/ag-plan-graph.svg" alt="A plan in three waves; a failed search blocks its descendants while the parallel branch completes" width="100%">
+
+### Four ways to wire several agents
+Notebook 19. Costs rise left to right. Start at the left.
+
+<img src="../assets/diagrams/ag-team-patterns.svg" alt="Router, orchestrator, pipeline and critic loop side by side with the model-call cost of each" width="100%">
+
+### Outcome is half the picture
+Notebook 20. The dangerous quadrant is the one an outcome-only suite calls a pass.
+
+<img src="../assets/diagrams/ag-eval-quadrants.svg" alt="A two-by-two of answer-right against path-sane; right answer with a wrong path is the lucky pass" width="100%">

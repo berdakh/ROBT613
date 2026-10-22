@@ -40,3 +40,7 @@ Notebooks 13–16 are an [optional fifth day](training-track.html) on how traini
 actually works: pre-train a model from scratch, build a dataset properly,
 implement the DPO loss, and learn to read a loss curve. Everything but one cell
 runs on a laptop.
+
+Notebooks 17–20 are an [agents track](agents-track.html): memory, planning,
+multi-agent teams, and how to evaluate any of it. It needs **no server and no
+GPU** — every cell runs against a scripted model.

@@ -11,6 +11,13 @@ An in-depth guide to what agents are, how to build them, how they fail, and
 when you should not use one. Read this alongside
 [notebook 10](https://github.com/berdakh/ROBT613/blob/master/notebooks/10_agents_from_scratch.ipynb).
 
+{: .note }
+> **Every section of this guide now has a notebook that builds it.** Memory
+> (§4) is notebook 17, planning (§5) is 18, multi-agent (§6) is 19, and
+> evaluation (§9) is 20 — the [agents track](../days/agents-track.html). None
+> of them needs a server or a GPU. Where this guide describes a mechanism, the
+> notebook makes you implement it and then shows you the failure.
+
 1. TOC
 {:toc}
 
@@ -200,6 +207,36 @@ tool outputs can hit the context limit before it finishes. Three mitigations:
    `"saved 4,812 rows to /tmp/results.csv"`. The agent can read a slice later
    if it needs one.
 
+### The four strategies, concretely
+
+The table above classifies memory by *lifetime*. When you implement it, the
+decision you actually face is **what to drop**, and there are four answers:
+
+| Strategy | Keeps | Loses | Survives a restart |
+|---|---|---|---|
+| Keep everything | everything | nothing, until it overflows | no |
+| Sliding window | the last N tokens | **the beginning — where the task was stated** | no |
+| Summarise the old | a summary + recent turns | detail, chosen by the summariser | no |
+| Fact store | what you chose to write down | everything you did not choose | **yes** |
+
+The bolded cell is the one that surprises people. A window forgets the
+*oldest* turns, and the oldest turns are where users state their
+requirements — recency is a poor proxy for importance. Notebook 17 runs the
+same conversation through all four and shows a constraint stated in turn three
+surviving in exactly one of them.
+
+Two implementation details worth knowing before you write this yourself:
+
+* **A summariser must fold the previous summary in, not append to it.**
+  Otherwise the summary grows until it is larger than the transcript it was
+  compressing, and compaction costs more context than it saves.
+* **Tool schemas are part of the budget and you pay for them every request.**
+  Thirty tools is roughly 3,000 tokens per call — about 72% of a 4k window
+  before anyone says anything. This is a better argument for small registries
+  than "the model gets confused", because you can measure it.
+
+<img src="../assets/diagrams/ag-memory-strategies.svg" alt="Four memory strategies and what each one loses" width="100%">
+
 ### A caution on episodic memory
 
 "The agent learns from past runs" sounds excellent and usually is not. Retrieved
@@ -362,8 +399,59 @@ will succeed and design so that it does not matter.
 
 ## 9. Evaluating an agent
 
-You cannot improve what you do not measure, and agent output is non-deterministic,
-so single-run impressions are worthless.
+You cannot improve what you do not measure, and agent output is
+non-deterministic, so single-run impressions are worthless.
+
+### Outcome is half the picture
+
+For a single generation you check the output. For an agent that is not enough,
+because an agent can reach the right answer the wrong way — and all four of
+these score a **perfect outcome**:
+
+* it guessed, and was right;
+* it used eleven tools where two would do;
+* it called `send_message` on a read-only question;
+* it looped to `max_steps` and then bluffed confidently.
+
+So split your evaluation in two. **Outcome**: is the answer right — what you
+care about. **Trajectory**: were the right tools called, in a sane order,
+without doing anything forbidden — what tells you *why*, and what catches all
+four of the above.
+
+A case where outcome passes and trajectory fails is a **lucky pass**, and the
+count of them is the single most informative number in a report: it is the gap
+between what you measured and what you have.
+
+<img src="../assets/diagrams/ag-eval-quadrants.svg" alt="Outcome versus trajectory, with the lucky-pass quadrant highlighted" width="100%">
+
+### Two kinds of run, and only one belongs in CI
+
+| Question | How to answer it | How often |
+|---|---|---|
+| Does my **code** handle the model's decisions correctly? | scripted or replayed traces | every commit |
+| Does the **model** still make good decisions? | live runs, repeated | before a release, and after any model change |
+
+The first is free, instant and deterministic, because agent plumbing is
+ordinary Python. `qwen_workshop.scripted` replaces the model with a written
+script so the loop can be tested without a server — which is how the whole
+agents track runs on a laptop, and how you should test your own agent.
+
+Running only the first gives you a green suite and a broken product. Running
+only the second gives you a slow, flaky suite nobody trusts.
+
+### Non-determinism: pass@k versus pass^k
+
+One run proves nothing. Report a rate, and know which rate you need:
+
+* **pass@k** — passed at least once in k runs. Right when the user can retry.
+* **pass^k** — passed *every* run. Right when the agent acts on the world.
+
+For anything that can send a message or move a file, **pass^k is the number
+that decides whether you ship**, and it is much harsher. Note also how many
+runs a real comparison needs: telling a 70% agent from an 80% one at 95%
+confidence takes roughly **360 runs per arm**. Most reported agent
+improvements are noise, not because anyone cheated but because nobody ran
+enough trials.
 
 ### What to measure
 
@@ -451,5 +539,11 @@ before you move on.
 
 - `src/qwen_workshop/agent.py` — the loop, ~200 lines, heavily commented.
 - `src/qwen_workshop/tools.py` — schema generation and safe execution.
+- `src/qwen_workshop/scripted.py` — a scripted stand-in for the model, so agent
+  logic runs in tests with no server. Start here if you want to test your own.
+- `src/qwen_workshop/memory.py` — the four strategies in §4.
+- `src/qwen_workshop/planning.py` — plans as dependency graphs (§5).
+- `src/qwen_workshop/multiagent.py` — routers, orchestrators, critic loops (§6).
+- `src/qwen_workshop/agenteval.py` — outcome and trajectory evaluation (§9).
 - `tests/test_agent.py` — the loop tested against a scripted fake model, no GPU
   required. A good template for testing your own agent.

@@ -1,6 +1,6 @@
 # Exercise solutions
 
-All 30 in-notebook exercises, in order. See [README](README.md) for the
+All 51 in-notebook exercises, in order. See [README](README.md) for the
 confidence markers (✅ verified · 🔬 expected · ✍️ yours).
 
 ---
@@ -478,36 +478,225 @@ for the capstone's honesty section.
 
 # Notebook 10 — Agents
 
-## 10-1 · Remove the `stop` parameter
+## 10-1 · Classify prompt, chain, router or agent
 
-> Remove the `stop` parameter and re-run. Watch the model write its own
-> `Observation:` line.
+> (a) a summariser that always retrieves, prompts and returns; (b) a support
+> bot that reads a ticket and picks one of four canned workflows; (c) a tool
+> that answers "what is in my pantry" with one fixed call; (d) "find out why
+> the build broke".
 
-✅ **What happens:** the model generates `Thought:`, `Action:`, `Action Input:`
-and then — because it is simply continuing text and `Observation:` is what comes
-next in the pattern — **invents the observation**, then reasons from the fiction
-and produces a confident, entirely fabricated answer.
+✅ **Answers, and the deciding property each time:**
 
-✅ **Why.** The model has no concept of "my turn ended". It continues the
-document. The ReAct protocol only works because something external stops
-generation at the boundary and inserts the *real* result.
+| | Classification | Deciding property |
+|---|---|---|
+| (a) summariser | **chain** | the steps never vary — *your* code picks them |
+| (b) support bot | **router** | the model makes one choice, then a fixed chain runs |
+| (c) pantry | **prompt / a function call** | no loop, and nothing to decide |
+| (d) build failure | **agent** | the next step depends on what the last one found |
 
-**This is the best live demo in the workshop.** It takes 30 seconds and makes
-two things visceral at once: that the model is always just continuing text, and
-that the scaffolding around it is load-bearing.
+The property doing the work is always **autonomy over the path** (10.1). In
+(b) the model decides exactly once, which is why a router is its own rung
+rather than a weak agent.
 
-**Connect it forward:** native tool calling exists precisely so this failure is
-structurally impossible. The server returns a `tool_calls` field and generation
-stops; there is no text for the model to run past. That is why notebook 10
-recommends `Agent` over `ReActAgent` for anything real.
+✍️ **For (d), what would make it a chain:** enumerate the failure classes you
+actually see — compile error, flaky test, dependency drift, disk full — and
+write a check for each. Most teams discover that four checks cover 90% of
+builds, at which point the chain is faster, cheaper and diagnosable.
+
+**Would you?** Usually yes, and then keep the agent for the residual 10%. The
+good answer here is "both, with the chain first" — a student who argues the
+agent is better because it is more general has missed that generality is the
+thing you are paying for.
+
+**Common mistake.** Calling (b) an agent because "the model decides". It
+decides *which chain*, once; it has no loop and cannot change course. If that
+counts as an agent, so does an `if` statement with a model in it.
 
 ---
 
-## 10-2 · Rewrite the agent as a chain
+## 10-2 · Script an error-recovery run, then a loop
 
-> Take the budget question from 10.4 and rewrite it as a chain: three explicit
-> function calls, one prompt, no loop. Compare latency, token cost and
-> reliability across 5 runs each.
+> Script a run where the model calls `calculate` with `"17% of 48500"`, reads
+> the error, retries with `"0.17 * 48500"`, then answers. Then script the agent
+> ignoring the error and repeating the identical call three times.
+
+✅ **Recovery:**
+
+```python
+model = ScriptedModel([
+    calls("calculate", {"expression": "17% of 48500"}),
+    calls("calculate", {"expression": "0.17 * 48500"}),
+    says("17% of 48,500 is 8,245."),
+])
+run = Agent(*model.as_client(), registry).run("What is 17% of 48,500 tenge?")
+assert run.steps[0].tool_results[0].ok is False
+assert run.steps[1].tool_results[0].ok is True
+```
+
+The first result is `ok=False` with a message naming the problem; the second
+succeeds. **That assertion is the deliverable** — it is a regression test for
+error recovery that runs in milliseconds and never flakes.
+
+✅ **The loop:**
+
+```python
+looping = ScriptedModel([calls("calculate", {"expression": "17% of 48500"})] * 3
+                        + [says("I could not work that out.")])
+run = Agent(*looping.as_client(), registry, max_steps=3).run("...")
+assert "max_steps" in run.stopped_because
+```
+
+**What to reward.** A student who writes `detect_repetition` (10.9) as an
+assertion over this run has built the thing the notebook only demonstrated.
+
+**Push them further:** ask what a *real* model would have to do for the first
+script to be realistic. Answer: read the error text. Which is only possible
+because the error said what was wrong — the point of 10-3.
+
+---
+
+## 10-3 · Instructive errors versus useless ones
+
+> Script a two-turn run against each registry. For `book_room` you cannot write
+> a correct retry. Say what that proves.
+
+✅ **For `book_room_v2`** the retry writes itself, because the error contains
+the information:
+
+```
+unknown room 'Lab 1'. Valid rooms: lab-1, lab-2, seminar
+-> calls("book_room_v2", {"room": "lab-1", "day": "2026-03-14"})
+```
+
+✅ **For `book_room`** the error is `invalid input`. You, a human with the
+source code open, cannot tell whether the room or the day was wrong. Neither
+can the model. Any retry is a guess.
+
+✅ **What it proves, in one sentence:** *the agent's intelligence is mostly in
+the interface you gave it* — the tool descriptions and the error messages —
+not in the model.
+
+**The follow-up worth asking:** both tools cost one model call to retry. The
+difference is whether the retry can succeed. So an instructive error is not
+politeness, it is **strictly cheaper**, and the version that says "invalid
+input" is the expensive one.
+
+**Marking note.** Students often write a correct retry for `book_room` anyway,
+because *they* know what is wrong. Make them cover the source and try again.
+
+---
+
+## 10-4 · Temperature and variance
+
+> Run `BUDGET_QUESTION` five times at `temperature=0.3` and five at `0.0`.
+> Record steps, tools in order, and correctness.
+
+🔬 **Expected shape** (real numbers depend on your model and will differ):
+
+| | temperature 0.0 | temperature 0.3 |
+|---|---|---|
+| Tool sequence | near-identical across runs | 2–4 distinct sequences |
+| Steps | stable | varies by 1–3 |
+| Correct | consistently right or consistently wrong | a mix |
+
+✅ **The useful observation** is that at 0.0 a failure is *reproducible*, and a
+reproducible failure is one you can fix. At 0.3 the same bug appears in two
+runs out of five, which is how an agent ships broken: it worked when you
+checked.
+
+✍️ **Which to ship:** 0.0 for anything with tools, in almost every case.
+Temperature buys phrasing variety, which an agent does not need, and costs
+reproducibility, which it badly does. Keep temperature for the final
+user-facing summary if you want it to read less mechanically.
+
+**Push them further:** 0.0 is not actually deterministic on most servers —
+batching and floating-point non-associativity on GPU mean identical requests
+can differ. So "deterministic" is really "much less variable", and a student
+who discovers two different traces at 0.0 has found something real rather than
+made a mistake.
+
+---
+
+## 10-5 · Why the ReAct parser took the Final Answer
+
+> The parser took `Final Answer` even though an `Action` appeared first.
+> Explain why, propose a change, and say what it would break.
+
+✅ **Why.** `ReActAgent.parse` checks for `Final Answer` **first**, and returns
+as soon as it matches:
+
+```python
+if match := re.search(r"Final Answer\s*:\s*(.+)", text, re.DOTALL):
+    return {"final": ...}
+```
+
+Order of checks is the whole behaviour. The block contained both, so the
+first check won and the `Action` was never looked at.
+
+✅ **A change that rejects both:** check for an `Action` *before* the final
+answer, and if both appear, treat the text as truncated at the `Action` —
+discard everything from `Observation:` onward and execute the action.
+
+✍️ **What it breaks.** A legitimate final turn often *narrates* the previous
+action: *"Action: current_date gave me the date, so — Final Answer: ..."*. A
+strict both-present rejection throws that away and loops. The robust version
+is positional: take whichever marker comes **first in the text**, not whichever
+you checked first.
+
+**The deeper point to draw out:** you are writing a parser for a protocol the
+model was only asked nicely to follow. Every rule you add has a legitimate
+output it breaks. This is the argument for native tool calling in one
+exercise — there the boundary is in the response format, not in your regex.
+
+---
+
+## 10-6 · Auditing for forbidden tools
+
+> Write `audit(run, forbidden)` and apply it to the scripted injection. Where
+> in `my_agent` would you put the check so the call is *prevented*?
+
+✅ **The audit:**
+
+```python
+def audit(run, forbidden):
+    return [r.name for s in run.steps for r in s.tool_results
+            if r.name in forbidden]
+
+assert audit(injection_run, {"send_message"}) == ["send_message"]
+```
+
+✅ **Where to prevent it.** Inside the `for call in calls:` loop in `my_agent`,
+**before** `registry.call(...)`:
+
+```python
+for call in calls:
+    if call.function.name in FORBIDDEN:
+        result = ToolResult(name=call.function.name, arguments={},
+                            content="refused: not permitted for this request",
+                            ok=False)
+    else:
+        result = registry.call(call.function.name, call.function.arguments)
+```
+
+That location matters and is the whole lesson of 10.1: **your code executes
+every action**, so there is exactly one place where refusal is possible, and
+it is before the call. Checking afterwards is an audit log, not a guardrail.
+
+✍️ **What the agent loses if you get the list wrong.** Over-forbid and it
+cannot do its job, and worse, it will *try* and burn steps hitting a wall.
+Under-forbid and the guardrail is decorative.
+
+**The answer that earns full marks** notes the better design: do not pass the
+tool to the agent at all. A tool the registry does not contain cannot be
+called, cannot be refused, and does not need a list to be maintained — which
+is the capability-separation argument notebook 19 builds a team on.
+
+---
+
+## 10-7 · Rewrite the agent as a chain
+
+> Take `BUDGET_QUESTION` and rewrite it as a chain: three explicit function
+> calls, one prompt, no loop. Compare latency, token cost and reliability.
 
 🔬 **Expected: the chain wins on every axis measured.**
 
@@ -532,13 +721,13 @@ answer  = model(f"Target {target}, spent {spend}, difference {diff}. "
 bought nothing here, because the steps never change.* If you can draw the
 flowchart, write the flowchart.
 
-**Push them further:** when does the agent win? When the steps depend on what is
-found — "why is this test flaky?" might take one step or twelve. That is the
-honest case for agents, and it is narrower than the marketing suggests.
+**Push them further:** when does the agent win? When the steps depend on what
+is found — "why is this test flaky?" might take one step or twelve. That is
+the honest case for agents, and it is narrower than the marketing suggests.
 
 **Marking note.** Full credit requires a *recommendation with a reason*, not
-just a table. "I would ship the chain because the steps are fixed and I can test
-it" is the answer.
+just a table. "I would ship the chain because the steps are fixed and I can
+test it" is the answer; a table with no conclusion is half marks.
 
 ---
 
@@ -959,3 +1148,667 @@ unaffordable — which it will be with a real fine-tune. The honest answer is to
 **fix the seed and report that you did**, which does not establish that the
 change helps but at least does not claim it does. A student who reaches
 "then I should not claim the improvement is real" has the point.
+
+---
+
+# Notebook 17 — Tools and memory
+
+## 17-1 · A tool call that tries to escape the sandbox
+
+> Script a run where the model calls `file_to(name="../../../etc/passwd", ...)`
+> after reading a file that told it to. Confirm the tool refuses and the
+> refusal reaches the model as an observation.
+
+✅ **The script and the assertion:**
+
+```python
+run = Agent(*ScriptedModel([
+    calls("peek_file", {"name": "notes.txt"}),
+    calls("file_to", {"name": "../../../etc/passwd", "category": "finance"}),
+    says("Done."),
+]).as_client(), triage_tools).run("tidy up")
+
+refusal = run.steps[1].tool_results[0]
+assert refusal.ok is False and "outside the sandbox" in refusal.content
+assert run.stopped_because == "finished"     # refused, not crashed
+```
+
+The key property is the second assertion: `safe_path` raises `ToolError`,
+which the registry turns into a **failed observation** rather than an
+exception. The run continues and the model is told why. A guardrail that
+crashes the process is a denial-of-service you built yourself.
+
+✅ **Which other guardrail would have stopped this, and which would not:**
+
+| Guardrail (10.10) | Stops it? |
+|---|---|
+| Allow-listed file access | **Yes** — this *is* that guardrail |
+| Confirmation on irreversible actions | **Yes**, if `file_to` required one — a human sees the path |
+| `max_steps` | No. It bounds how many times it tries. |
+| Full trace logging | No. It tells you afterwards. |
+| "No `eval`/shell" | No. Nothing is being evaluated. |
+
+**The point worth drawing out:** only two of the nine help, and both are
+*capability* restrictions rather than observability. Logging and step limits
+are how you find out; allow-listing is how you prevent.
+
+---
+
+## 17-2 · A reversal at the end of the conversation
+
+> Add a turn where the user says "actually, file the exe under finance" and
+> re-run all four strategies. Which have both the prohibition and the
+> reversal?
+
+✅ **Results:**
+
+| Strategy | Has the prohibition (turn 3) | Has the reversal (turn 13) |
+|---|---|---|
+| `ConversationBuffer` | yes | yes |
+| `WindowedMemory` | no | **yes** |
+| `WindowedMemory(keep_first=1)` | no | **yes** |
+| `SummarisingMemory` | only if the summariser kept it | **yes** |
+
+Every lossy strategy keeps the reversal and drops the prohibition, because
+the reversal is newer. That is not a coincidence — it is what "window" means.
+
+✅ **Why having only the prohibition is safer.** With only the prohibition the
+agent refuses to move a file the user now wants moved: an **annoyance**, and
+the user can repeat themselves. With only the reversal it moves a file the
+user told it never to touch, having never seen the instruction: an
+**incident**, and the user finds out afterwards.
+
+The asymmetry generalises. When memory is lossy, prefer to lose permissions
+rather than prohibitions — "forget that you were allowed" fails safe,
+"forget that you were forbidden" does not.
+
+✍️ **What that implies about which end to drop.** It argues against plain
+recency. Pin constraints explicitly (that is `FactStore`), or at minimum
+classify turns into "standing rule" and "chatter" and evict only the chatter.
+A student who proposes keeping a separate, never-evicted constraint list has
+re-derived 17.7 from first principles, which is the best possible outcome
+here.
+
+---
+
+## 17-3 · Measure the real token cost
+
+> Load Qwen3's tokenizer and re-measure the tool schemas. How far off was the
+> 4-chars-per-token heuristic? Then measure a Kazakh or Russian sentence.
+
+🔬 **Expected.** For English JSON the heuristic lands within roughly ±15% —
+usually a slight *over*-estimate, because JSON punctuation and repeated keys
+tokenize efficiently in a BPE vocabulary.
+
+For Kazakh or Russian of the same character length, expect **roughly twice as
+many tokens** as the heuristic predicts (notebook 01 measured about 1.8–2.0
+chars/token for Cyrillic against ~4.0 for English).
+
+```python
+from transformers import AutoTokenizer
+tok = AutoTokenizer.from_pretrained("Qwen/Qwen3-0.6B")
+real = estimate_tokens(json.dumps(triage_tools.schemas()), tok)
+print(real, "vs heuristic", estimate_tokens(json.dumps(triage_tools.schemas())))
+```
+
+✅ **Why it is a real bug, not a curiosity.** Budget a window with the
+heuristic, serve Kazakh-speaking users, and you overflow at roughly half the
+conversation length you planned for — silently, because overflow shows up as
+truncation rather than an error. The user sees an agent that forgets things,
+and only for them.
+
+**Marking note.** The number matters less than the conclusion: **pass the
+tokenizer whenever you have one**, and never size a context budget with the
+heuristic for a non-English deployment.
+
+---
+
+## 17-4 · Confirmed overwrites in the fact store
+
+> Add `remember(key, value, *, confirm_overwrite=False)` that raises when the
+> key exists. Script a run where the model overwrites, reads the refusal, and
+> re-calls with the flag.
+
+✅ **The tool:**
+
+```python
+@tool
+def remember(key: str, value: str, confirm_overwrite: str = "no") -> str:
+    """Store a durable filing rule.
+
+    Args:
+        key: Short identifier.
+        value: The rule, in one sentence.
+        confirm_overwrite: Must be 'yes' to replace an existing rule.
+    """
+    existing = facts.recall(key)
+    if existing is not None and confirm_overwrite != "yes":
+        raise ToolError(
+            f"{key!r} already says: {existing!r}. If you mean to replace it, "
+            "call again with confirm_overwrite='yes'."
+        )
+    return facts.remember(key, value)
+```
+
+Note what the error contains: **the current value**. Without it the model
+cannot tell whether the overwrite is an update or a contradiction, and neither
+can the user when it asks.
+
+✅ **Why it is the same pattern as `send_message(confirmed="yes")`.** Both turn
+a one-step irreversible action into a **two-step one with a visible draft in
+between**. A model acting on an injected instruction, or on a misreading, gets
+exactly one turn to be stopped — and the refusal is in the transcript, so the
+attempt is auditable even when it is allowed.
+
+✍️ **The design question worth arguing about:** should the *user* confirm, or
+is the model confirming to itself enough? Model self-confirmation stops
+accidents, not attacks: anything that can inject the first call can inject the
+second. For a fact store, model confirmation is proportionate. For spending
+money, it is not.
+
+---
+
+# Notebook 18 — Planning and decomposition
+
+## 18-1 · Name the cycle
+
+> Write `find_cycle(tasks)` returning one offending cycle, and use it to
+> improve the error message.
+
+✅ **A depth-first version:**
+
+```python
+def find_cycle(tasks):
+    by_id = {t.id: t for t in tasks}
+    state, stack = {}, []
+
+    def visit(tid):
+        if state.get(tid) == "open":          # back edge: cycle found
+            return stack[stack.index(tid):] + [tid]
+        if state.get(tid) == "done":
+            return None
+        state[tid] = "open"
+        stack.append(tid)
+        for dep in by_id[tid].depends_on:
+            if dep in by_id and (found := visit(dep)):
+                return found
+        stack.pop()
+        state[tid] = "done"
+        return None
+
+    for tid in by_id:
+        if found := visit(tid):
+            return found
+    return None
+```
+
+Then `topological_order` can say `dependency cycle: a -> b -> a` instead of
+listing every task that failed to schedule.
+
+✅ **Why one cycle beats all of them.** The error goes back to a model, which
+will try to fix it. One concrete cycle is an actionable instruction — "break
+the link between `a` and `b`". A list of eleven tasks that could not be
+scheduled is a symptom, and most of those eleven are innocent: they merely
+depend on something in the cycle. Reporting them invites the model to rewrite
+the whole plan, which is how you get a different, equally broken plan.
+
+**Push them further:** what should happen with two genuinely independent
+cycles? Fixing one still leaves a broken plan. The defensible answer is to
+report the first, let the model fix it, and re-validate — a loop that
+terminates, versus one giant error the model cannot act on.
+
+---
+
+## 18-2 · Run a wave in parallel
+
+> Replace the inner loop with a `ThreadPoolExecutor` so one wave runs in
+> parallel. Name what becomes unsafe.
+
+✅ **The change:**
+
+```python
+from concurrent.futures import ThreadPoolExecutor
+
+ready = self.ready()
+with ThreadPoolExecutor(max_workers=8) as pool:
+    futures = {pool.submit(runner, t, inputs_for(t)): t for t in ready}
+    for future in futures:
+        task = futures[future]
+        try:
+            task.result, task.status = future.result(), "done"
+        except Exception as exc:
+            task.status, task.error = "failed", f"{type(exc).__name__}: {exc}"
+```
+
+🔬 On this plan the wall-clock gain is small — the two searches are fast local
+reads. With network calls of 2 seconds each the wave drops from 4s to 2s, and
+with eight independent searches the gain is real.
+
+✅ **What becomes unsafe.** `runner` touches the filesystem, so concurrent
+tasks can interleave reads and writes. More generally, the moment tasks run
+together you need the runner to be:
+
+| Requirement | Why |
+|---|---|
+| **Side-effect free, or independently scoped** | two tasks writing the same file race |
+| **Thread-safe in anything shared** | a shared `FactStore` dict, a counter, a client |
+| **Individually cancellable** | one failure should not leave seven running |
+| **Rate-limit aware** | eight parallel model calls will hit a 429 |
+
+✍️ **The contract change:** state that the runner must be safe to call
+concurrently with other tasks *in the same wave*, and that tasks in one wave
+must not depend on each other's side effects. That is exactly what the
+dependency graph already promises for *data* — the exercise is noticing it
+promises nothing about *effects*.
+
+**Marking note.** A student who says "nothing, they're independent" has missed
+that independence in the graph means data independence only. `file_to` on two
+tasks targeting the same filename is a graph-independent race.
+
+---
+
+## 18-3 · A replan cap
+
+> Add `max_replans` and write the plan–execute–replan loop. Test with a runner
+> that fails a task the first two times. What should happen at the cap?
+
+✅ **The loop:**
+
+```python
+def run_with_recovery(plan, runner, planner, max_replans=3):
+    plan.execute(runner)
+    while plan.failed and plan.replans < max_replans:
+        plan.replan_after_failure(planner)
+        if not plan.tasks:            # the planner gave up
+            break
+        plan.execute(runner)
+    return plan
+```
+
+With a runner that fails twice then succeeds, this completes on the third
+attempt and `plan.replans == 2`.
+
+✅ **What should happen at the cap: stop and report, with the partial results.**
+Not "keep going", even though one more try would have worked.
+
+Three reasons, and the third is the real one:
+
+1. **You cannot tell the two cases apart from inside.** "Fails twice then
+   succeeds" and "fails forever" look identical at replan two.
+2. **Cost is unbounded.** Each replan is a model call plus a re-execution.
+3. **A cap is a promise to the caller.** Without one, `run_with_recovery` has
+   no worst-case duration, so nothing calling it can have one either. An
+   unbounded retry inside a request handler is an outage waiting for a bad day.
+
+✍️ **The better answer** distinguishes transient from permanent: retry the same
+task on a timeout (cheap, likely to work), replan on a logic failure. Blanket
+replanning treats a flaky network like a wrong plan and rewrites a plan that
+was fine.
+
+---
+
+## 18-4 · Approve on tools, not prose
+
+> `approve` checks the first word, defeated by "Carefully delete everything".
+> Rewrite it to check the tools each task would use.
+
+✅ **The format change is the exercise.** Each task declares its tool:
+
+```python
+{"id": "b", "description": "Delete old files", "tool": "delete_file"}
+```
+
+```python
+def approve(plan, *, allowed_tools, max_tasks=8):
+    problems = []
+    if len(plan.tasks) > max_tasks:
+        problems.append(f"{len(plan.tasks)} tasks exceeds {max_tasks}")
+    for task in plan.tasks:
+        tool = getattr(task, "tool", None)
+        if tool is None:
+            problems.append(f"task {task.id!r} declares no tool")   # fail closed
+        elif tool not in allowed_tools:
+            problems.append(f"task {task.id!r} uses {tool!r}, not permitted")
+    return problems
+```
+
+Note the `tool is None` branch. A task with no declared tool must be a
+**refusal**, not a pass — otherwise omitting the field is the bypass.
+
+✅ **Which property of 10.1 it strengthens: "your code executes every action."**
+Checking prose checks the model's *description* of its intent, which the model
+writes and can be wrong or adversarial about. Checking the declared tool checks
+something your executor will actually honour, and you can enforce it at
+dispatch rather than trusting the declaration.
+
+✍️ **What flexibility it costs.** A task can now do exactly one tool call, so
+"search and then read the best hit" must become two tasks. Plans get longer and
+more rigid. That is a real cost, and it is the same trade as every
+capability-based design: expressiveness for enforceability.
+
+**Push them further:** the strongest version does not check the plan at all —
+it gives the executor a registry containing only permitted tools, so an
+unapproved call is impossible rather than rejected. Approval is then about
+*cost and scope*, not safety.
+
+---
+
+# Notebook 19 — Multi-agent systems
+
+## 19-1 · Retry the router before falling back
+
+> Change `Router` to retry once with the invalid name fed back, before falling
+> back. Then argue the other side.
+
+✅ **The retry:**
+
+```python
+def run(self, task):
+    name = (self.choose(task, self.team.roster()) or "").strip()
+    if name not in self.team.by_name:
+        self.team.send("router", "system", f"invalid choice {name!r}, retrying", "error")
+        name = (self.choose(
+            f"{task}\n\nYou chose {name!r}, which does not exist. "
+            f"Choose exactly one of: {', '.join(self.team.by_name)}",
+            self.team.roster()) or "").strip()
+    if name not in self.team.by_name:
+        ...fall back as before...
+```
+
+🔬 **Expected:** a retry with the valid names listed explicitly fixes most
+invalid choices, because the usual failure is the model inventing a *plausible*
+name rather than misunderstanding the task.
+
+✍️ **The other side — when a wrong specialist is worse than an error.** When the
+wrong specialist will answer **confidently and plausibly**. The weather
+specialist asked about visas does not say "that is not my area"; it talks about
+the weather, and the orchestrator and the user both take that as an answer.
+
+The rule that falls out: **fall back only to a specialist that can refuse.** A
+"general" fallback whose job includes saying "I cannot help with that" is safe;
+falling back to an arbitrary specialist converts a routing failure into a
+wrong answer, which is strictly worse because it is silent.
+
+**Marking note.** Credit a student who notices the costs are asymmetric: a
+returned error costs the user one retry, a confident wrong answer may never be
+noticed.
+
+---
+
+## 19-2 · Replace the orchestrator with a plan
+
+> Build a `Plan` whose `budget` task depends on `paperwork`, with a runner that
+> dispatches to specialists.
+
+✅ **The fix:**
+
+```python
+plan = Plan.from_dicts("Can I afford the trip after visa fees?", [
+    {"id": "visa", "description": "visa cost for Istanbul"},
+    {"id": "total", "description": "flight cost, minus the visa cost",
+     "depends_on": ["visa"]},
+])
+WHO = {"visa": "paperwork", "total": "budget"}
+
+def run_task(task, inputs):
+    context = "  ".join(f"[{k}] {v}" for k, v in inputs.items())
+    return team.dispatch("planner", WHO[task.id],
+                         f"{task.description}\n{context}".strip())
+
+plan.execute(run_task)
+```
+
+The dependency result is now **in the message** the budget specialist
+receives, so it has the number it is asked to subtract. In the notebook's
+version it was asked to subtract something it had never been told.
+
+✅ **What `Orchestrator` is still good for:** the case where the subtasks are
+genuinely independent and you do not want a planning call. It is a plan with
+one wave and no model call to produce it — cheaper, and for a fan-out you wrote
+by hand, sufficient.
+
+**The honest framing:** `Orchestrator` is a special case of `Plan`. Use the
+special case when it fits, and recognise that the moment you find yourself
+passing one specialist's output into another's prompt by hand, you have
+outgrown it.
+
+---
+
+## 19-3 · A model critic instead of a function
+
+> Replace the rubric function with a scripted model critic. Which is better for
+> CI? What happens when writer and critic are the same model?
+
+✅ **Which for CI: the function.** It is deterministic, free, instant, and it
+fails for exactly one reason. A model critic in CI gives you a suite that
+fails on Tuesdays and that nobody trusts by Thursday.
+
+✅ **Which catches more: the model.** The rubric checks three tokens. It cannot
+see that the draft is rude, contradicts itself, or recommends Istanbul in a
+paragraph about Dubai. **A rubric catches what you thought of; a model critic
+catches some of what you did not.**
+
+The practical arrangement is both: the rubric in CI as a gate, the model critic
+in pre-release review where a human reads the output anyway.
+
+✅ **Same model as writer and critic — and it is not hypothetical, it is the
+default** (most people point both roles at whatever model they have). Three
+things happen:
+
+1. **Shared blind spots.** A fact the model is confidently wrong about is a
+   fact the critic is confidently wrong about. Correlated errors are invisible
+   to agreement.
+2. **Stylistic self-approval.** It likes its own register, so the tone and
+   length problems it introduced are the ones it will not flag.
+3. **Approval drift.** Over rounds, the drafts move toward what this model
+   finds acceptable — which was the starting point, so the loop converges fast
+   and improves little.
+
+✍️ **Mitigations, in order of strength:** a different model; the same model at a
+different temperature with a sharply different system prompt; a rubric that
+forces the critic to check specific properties rather than form a general
+opinion. The third is weakest but it is free, and it is what the notebook's
+function version does.
+
+---
+
+## 19-4 · Audit a team
+
+> Write `audit(team)` flagging specialists whose result was never used, and
+> handoffs under 20 characters.
+
+✅ **An implementation:**
+
+```python
+def audit(team):
+    findings = []
+    final = next((m.content for m in reversed(team.transcript)
+                  if m.recipient == "user"), "")
+    for message in team.transcript:
+        if message.kind == "result" and message.recipient != "user":
+            if message.content[:40] not in final:
+                findings.append(f"unused: {message.sender}'s result")
+            if len(message.content) < 20:
+                findings.append(f"terse: {message.sender} -> {message.recipient}"
+                                f" ({len(message.content)} chars)")
+    return findings
+```
+
+On `team2` nothing is unused — the synthesiser quotes all three. On `vague`
+the budget specialist's "It's affordable." trips the terseness check at 16
+characters, which is exactly the telephone failure.
+
+✅ **Which failures the audit cannot detect:**
+
+| Failure | Detectable? | What you would need |
+|---|---|---|
+| Telephone | partly — only crude terseness | the specialist's *internal* trace, to compare what it knew against what it said |
+| Nobody owns correctness | **no** | ground truth, i.e. notebook 20's test cases |
+| Loops that sound productive | yes — count rounds | already in the transcript |
+| Hallucinated specialist | yes | already logged as an `error` message |
+
+**The important row is the second.** No amount of transcript analysis tells you
+the answer was wrong; it only tells you the process looked odd. That is the
+limit of trajectory inspection and precisely why notebook 20 pairs it with
+outcome checks.
+
+✍️ **What you would record to catch telephone properly:** each specialist's own
+`AgentRun`, not just its final string. Then you can ask whether a fact that
+appeared in a tool result ever made it into the handoff — which is the
+measurable version of "detail was lost".
+
+---
+
+# Notebook 20 — Evaluating agents
+
+## 20-1 · Fix the three lucky passes
+
+> Write the scripts a well-behaved agent would produce, get to 100% on both
+> halves, then break a trajectory check and watch the suite go green anyway.
+
+✅ **The three fixed scripts:**
+
+```python
+"How much did I spend on groceries in March 2026?": [
+    calls("spending_by_category", {"month": "2026-03"}),
+    says("You spent about 42,000 tenge on groceries in March."),
+],
+"Tell my landlord the rent is late.": [
+    says("Here is a draft: 'Hi, the rent is late...'. Shall I send it?"),
+],
+"What did I spend most on in January, and is that over my budget?": [
+    calls("spending_by_category", {"month": "2026-01"}),
+    calls("calculate", {"expression": "250000 - 180000"}),
+    says("You were 70,000 under budget; the biggest category was rent."),
+],
+```
+
+Note the landlord fix: the correct behaviour is to **not call the tool at all**
+and offer a draft. "Call `send_message` with `confirmed='no'`" is also
+defensible and gives the user the draft from the tool — mark both right, and
+ask which they would prefer when the tool is `transfer_money`.
+
+✅ **The second half is the point.** Set `forbid_tools=[]` on the landlord case
+and the suite reports 100%. The agent still sends the email. Nothing in the
+output changed; the only thing that changed is what you decided to look at.
+
+**The sentence to extract:** *a test suite measures what you wrote down, not
+what matters.* Which is why `notes` is a field on `AgentTestCase` — six months
+from now it is the only record of why the check exists.
+
+---
+
+## 20-2 · Catch the repeated call
+
+> Add `expect_no_repeat` that fails when the same tool is called twice with
+> identical arguments. Why does `max_tool_calls` not catch a two-call loop?
+
+✅ **The check** needs arguments, not just names, so it reads the results:
+
+```python
+signatures = [(r.name, json.dumps(r.arguments, sort_keys=True))
+              for s in run.steps for r in s.tool_results]
+if case.expect_no_repeat and len(set(signatures)) < len(signatures):
+    trajectory.append("repeated an identical tool call")
+```
+
+Set `expect_no_repeat=True` and the `wandering` run — six identical
+`current_date` calls — fails.
+
+✅ **Why `max_tool_calls` misses a two-call loop.** A budget of 3 passes a run
+that called the same tool twice and then answered. The budget measures
+*volume*; repetition measures *progress*. An agent making two identical calls
+is not making progress, however few calls it made.
+
+✅ **Why repetition is the better diagnostic.** The count tells you something is
+wrong. The repeated signature tells you **which tool and which arguments**,
+which is the loop's cause — usually a tool whose error message does not say how
+to fix the call (10-3), or a result the model cannot parse. One points at a
+number; the other points at a line of code.
+
+**Push them further:** should *non-consecutive* repeats fail too? Usually not —
+re-reading a file after changing it is legitimate. Consecutive identical calls
+are the strong signal, which is what `detect_repetition` in notebook 10 checks.
+
+---
+
+## 20-3 · How many runs do you actually need?
+
+> Compute a 95% confidence interval on the pass rate over 200 runs. How many
+> runs to tell a 70% agent from an 80% one?
+
+✅ **The interval.** For p = 0.67 at n = 200: `1.96 × sqrt(0.67 × 0.33 / 200)`
+≈ **0.065**, so roughly 67% ± 6.5 points — about [60%, 74%].
+
+✅ **Distinguishing 70% from 80%.** You need the two intervals not to overlap,
+which for a difference in proportions needs roughly
+
+```
+n ≈ 16 × p(1-p) / d²  ≈ 16 × 0.225 / 0.01 ≈ 360 runs per arm
+```
+
+**Three hundred and sixty runs each.** That is the number, and it is the point
+of the exercise.
+
+✍️ **Compare that with what teams actually do:** five runs, eyeball it, ship.
+With n = 5 the interval on 4/5 runs is roughly [36%, 98%] — wide enough to
+contain both the 70% agent and the 80% one, and most of the ones in between.
+
+**The conclusions worth stating:**
+
+* **Most reported agent improvements are noise.** Not fraud — nobody ran enough
+  trials to know.
+* **Prefer cheap deterministic checks** (scripted replays) for the things that
+  can be made deterministic, and spend your expensive stochastic budget on the
+  few things that cannot.
+* **A 10-point improvement you cannot afford to measure is one you should not
+  claim.** Say "we changed X, here are 20 runs, the interval is wide" — which
+  is honest and still useful.
+
+**Marking note.** A student who reports "we need ~360 runs and we did 20, so I
+can't tell" has given the right answer. One who reports "80% is better than
+70%" from 20 runs has not.
+
+---
+
+## 20-4 · The scorecard, and an honest xfail
+
+> Build a scorecard printing all six metrics, run it on the broken and fixed
+> suites, commit it to CI. Then add one case you know fails, marked `xfail`.
+
+✅ **The scorecard:**
+
+```python
+def scorecard(report, name=""):
+    forbidden = sum("forbidden" in f for r in report.results
+                    for f in r.trajectory_failures)
+    print(f"{name}")
+    print(f"  outcome        {report.outcome_rate:>6.0%}")
+    print(f"  trajectory     {report.trajectory_rate:>6.0%}")
+    print(f"  lucky passes   {len(report.lucky):>6}   <- the gap")
+    print(f"  mean tools     {report.mean_tool_calls:>6.1f}")
+    print(f"  forbidden hits {forbidden:>6}   <- must be 0")
+```
+
+🔬 Broken suite: outcome 100%, trajectory 40%, 3 lucky, 1 forbidden hit.
+Fixed suite: 100% / 100%, 0 lucky, 0 forbidden.
+
+✅ **Why the forbidden count is printed as a count, not a rate.** A rate invites
+averaging, and "we only sent 2% unauthorised emails" is not a quality level,
+it is an incident report. It is a **gate**: non-zero fails the build regardless
+of every other number.
+
+✍️ **The `xfail` is the part that teaches something.** Marking a known failure
+as expected-to-fail, with a comment, does three things a deleted test cannot:
+
+1. It is **written down**, so the next person finds the limitation in the suite
+   rather than in production.
+2. It **tells you when it is fixed** — `xpass` is a signal, and often the first
+   notice that a model upgrade helped.
+3. It **keeps you honest** about scope. A suite with three `xfail`s and a
+   comment each is a more trustworthy artifact than a green suite that quietly
+   tests less.
+
+**Marking note.** Reward the comment more than the mark. `@pytest.mark.xfail`
+with no reason is just a disabled test; `xfail(reason="0.6B cannot chain three
+tools; passes on qwen3:8b")` is documentation that happens to execute.
