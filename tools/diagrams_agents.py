@@ -127,60 +127,64 @@ def plan_graph():
 
 @diagram
 def team_patterns():
-    c = Canvas(900, 450)
+    c = Canvas(900, 470)
     c.title("Four ways to wire several agents",
             "Costs rise left to right. Start at the left.")
 
     # --- Router ---
-    c.text(120, 84, "Router", "lbl")
-    c.text(120, 101, "2 model calls", "small t-good")
-    c.box(60, 112, 120, 40, "router", role="accent")
-    c.arrow(120, 156, 86, 184)
-    c.arrow(120, 156, 154, 184)
-    c.box(40, 188, 86, 38, "A", role="default")
-    c.box(136, 188, 86, 38, "B", role="default")
-    c.text(120, 248, "one specialist runs", "small")
+    c.text(120, 80, "Router", "lbl")
+    c.text(120, 96, "the receptionist", "small")
+    c.text(120, 112, "2 model calls", "small t-good")
+    c.box(60, 124, 120, 40, "router", role="accent")
+    c.arrow(120, 168, 86, 196)
+    c.arrow(120, 168, 154, 196)
+    c.box(40, 200, 86, 38, "A", role="default")
+    c.box(136, 200, 86, 38, "B", role="default")
+    c.text(120, 260, "one specialist runs", "small")
 
     # --- Orchestrator ---
-    c.text(360, 84, "Orchestrator", "lbl")
-    c.text(360, 101, "~3x the calls", "small t-warn")
-    c.box(300, 112, 120, 40, "orchestrator", role="accent")
+    c.text(360, 80, "Orchestrator", "lbl")
+    c.text(360, 96, "the wedding planner", "small")
+    c.text(360, 112, "~3x the calls", "small t-warn")
+    c.box(300, 124, 120, 40, "orchestrator", role="accent")
     # Three children centred on 360: width 76, gap 8, so 238 / 322 / 406.
     for x in (238, 322, 406):
-        c.arrow(360, 156, x + 38, 184)
-        c.box(x, 188, 76, 38, {238: "A", 322: "B", 406: "C"}[x], role="default")
-    c.path("M 276 226 L 276 250 L 444 250 L 444 226", arrow=False)
-    c.arrow(360, 250, 360, 272)
-    c.box(300, 276, 120, 38, "synthesise", role="good")
-    c.text(360, 332, "all specialists run,", "small")
-    c.text(360, 348, "used or not", "small")
+        c.arrow(360, 168, x + 38, 196)
+        c.box(x, 200, 76, 38, {238: "A", 322: "B", 406: "C"}[x], role="default")
+    c.path("M 276 238 L 276 262 L 444 262 L 444 238", arrow=False)
+    c.arrow(360, 262, 360, 284)
+    c.box(300, 288, 120, 38, "synthesise", role="good")
+    c.text(360, 344, "all specialists run,", "small")
+    c.text(360, 360, "used or not", "small")
 
     # --- Pipeline ---
-    c.text(600, 84, "Pipeline", "lbl")
-    c.text(600, 101, "lossy at each step", "small t-warn")
-    for i, (label, yy) in enumerate((("A", 112), ("B", 170), ("C", 228))):
+    c.text(600, 80, "Pipeline", "lbl")
+    c.text(600, 96, "the passport office", "small")
+    c.text(600, 112, "lossy at each step", "small t-warn")
+    for i, (label, yy) in enumerate((("A", 124), ("B", 182), ("C", 240))):
         c.box(548, yy, 104, 38, label, role="default")
         if i < 2:
             c.arrow(600, yy + 38, 600, yy + 54)
-    c.text(600, 292, "each step sees only", "small")
-    c.text(600, 308, "the one before it", "small")
+    c.text(600, 304, "each step sees only", "small")
+    c.text(600, 320, "the one before it", "small")
 
     # --- Critic loop ---
-    c.text(810, 84, "Critic loop", "lbl")
-    c.text(810, 101, "2 calls per round", "small t-warn")
-    c.box(752, 112, 116, 40, "writer", role="accent")
-    c.box(752, 196, 116, 40, "critic", role="warn")
-    c.arrow(790, 156, 790, 192, label="draft", label_dy=-4)
-    c.path("M 838 196 L 858 196 L 858 152 L 838 152", accent=True)
-    c.text(810, 256, "until APPROVED", "small")
-    c.text(810, 272, "or rounds run out", "small")
+    c.text(810, 80, "Critic loop", "lbl")
+    c.text(810, 96, "writer and editor", "small")
+    c.text(810, 112, "2 calls per round", "small t-warn")
+    c.box(752, 124, 116, 40, "writer", role="accent")
+    c.box(752, 208, 116, 40, "critic", role="warn")
+    c.arrow(790, 168, 790, 204, label="draft", label_dy=-4)
+    c.path("M 838 208 L 858 208 L 858 164 L 838 164", accent=True)
+    c.text(810, 268, "until APPROVED", "small")
+    c.text(810, 284, "or rounds run out", "small")
 
-    c.rule(28, 372, 872, 372)
-    c.text(28, 396, "A team is only justified by: separate tool permissions, "
+    c.rule(28, 388, 872, 388)
+    c.text(28, 412, "A team is only justified by: separate tool permissions, "
                     "context that will not fit one window,", "small", anchor="start")
-    c.text(28, 416, "or an adversarial role. Everything else is functions with "
+    c.text(28, 432, "or an adversarial role. Everything else is functions with "
                     "good names.", "small", anchor="start")
-    c.text(28, 440, "Only the critic loop benefits from the information loss; "
+    c.text(28, 458, "Only the critic loop benefits from the information loss; "
                     "for the rest it is the price.", "small", anchor="start")
 
     return "ag-team-patterns.svg", c.render(

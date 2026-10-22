@@ -81,6 +81,19 @@ from qwen_workshop.planning import Plan, PlanError, Task, topological_order
 # compare against. With a plan, "did every task reach `done`?" is a property
 # of a data structure.
 #
+# ### In plain terms
+#
+# **ReAct** is walking into a city and asking directions at each corner.
+# **Plan-then-execute** is writing the itinerary before you leave.
+#
+# The itinerary lets someone else check it, lets you book two things for the
+# same afternoon, and tells you how far through you are. It is also written by
+# somebody who has not seen the city yet — which is the whole trade.
+#
+# A **wave** is just "everything you could do this afternoon", and a task is
+# **blocked** rather than **failed** when the museum is shut because your
+# train never arrived: the museum did nothing wrong.
+#
 # The cost is real: **a plan written before step 1 ran is a plan written in
 # ignorance.** That is what replanning (18.6) is for, and why serious systems
 # loop plan → execute → replan rather than picking a side.

@@ -13,7 +13,15 @@ works, and ship something you actually use.
 {: .fs-6 .fw-300 }
 
 [Start with Day 1](days/day-1.html){: .btn .btn-primary .mr-2 }
+[Browse the notebooks](notebooks/){: .btn .mr-2 }
 [Get the code](https://github.com/berdakh/ROBT613){: .btn }
+
+All 20 notebooks are **readable on this site** and open in Google Colab with one
+click — no GitHub account, no install, no GPU to get started.
+
+New to the vocabulary? The [glossary](guides/glossary.html#in-plain-terms)
+opens with an everyday analogy for every term — a router is a receptionist, an
+orchestrator is a wedding planner, overfitting is memorising past exam papers.
 
 ---
 

@@ -317,6 +317,22 @@ print("\nThey match, so the model starts out genuinely uncertain.")
 # %% [markdown]
 # <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/tr-training-loop.svg" alt="One training step: batch, forward, loss, backward, weight update, then repeat. Gradient clipping and the learning-rate schedule modify the update. The loop reports train loss, validation loss, learning rate and gradient norm." width="100%">
 #
+# ### In plain terms
+#
+# The training loop has four pieces of jargon and they are all everyday ideas:
+#
+# | | Think of it as |
+# |---|---|
+# | **Loss** | Your score on a practice test — except **lower is better**. |
+# | **Gradient** | Which way to turn each dial, and how hard, to score better. |
+# | **Learning rate** | **Stride length.** Too short and you never arrive; too long and you stride past the door. |
+# | **Epoch** | One full pass through the textbook. |
+#
+# And the thing people get wrong: a model that has learned *nothing* does not
+# score zero. It scores `ln(vocabulary size)` — the score you get for guessing
+# uniformly. Knowing that number is how you tell "learning slowly" from
+# "not learning at all".
+
 # ## 13.6 · Train it
 #
 # Now the loop. Read it once: this is the whole of pre-training, and the only
@@ -443,6 +459,10 @@ except ImportError:
 # > and starts memorising.
 
 # %% [markdown]
+# > **In plain terms.** Rising validation loss with falling training loss is
+# > **memorising past exam papers**: perfect on the ones you have seen, lost on
+# > the real thing. The fix is more papers, not more revision.
+
 # ## 13.9 · Scale is the only difference
 #
 # You have now done, end to end, what costs labs millions of dollars. The

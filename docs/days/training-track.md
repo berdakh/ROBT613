@@ -49,10 +49,10 @@ for a GPU queue.
 
 | Time | Activity | Notebook |
 |---|---|---|
-| 0:00–1:30 | Write a transformer; train it from scratch; watch it learn | `13_pretrain_a_tiny_model` |
-| 1:30–2:45 | Loss masking, dedup, leak-free splits, validation | `14_building_a_training_dataset` |
-| 2:45–4:15 | Implement the DPO loss; build preference pairs; `DPOTrainer` | `15_preference_tuning_dpo` |
-| 4:15–5:30 | Read five real loss curves; find a learning rate; know when to stop | `16_training_diagnostics` |
+| 0:00–1:30 | Write a transformer; train it from scratch; watch it learn | [`13_pretrain_a_tiny_model`](../notebooks/13_pretrain_a_tiny_model.html) |
+| 1:30–2:45 | Loss masking, dedup, leak-free splits, validation | [`14_building_a_training_dataset`](../notebooks/14_building_a_training_dataset.html) |
+| 2:45–4:15 | Implement the DPO loss; build preference pairs; `DPOTrainer` | [`15_preference_tuning_dpo`](../notebooks/15_preference_tuning_dpo.html) |
+| 4:15–5:30 | Read five real loss curves; find a learning rate; know when to stop | [`16_training_diagnostics`](../notebooks/16_training_diagnostics.html) |
 
 ## The notebooks
 

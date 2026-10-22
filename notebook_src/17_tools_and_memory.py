@@ -87,6 +87,19 @@ from qwen_workshop.tools import ToolError, ToolRegistry, tool
 # The last column is why the fourth row is a different kind of thing. The
 # first three are ways to fit a conversation into a window. Only `FactStore`
 # is memory in the sense people mean when they say an assistant "knows them".
+#
+# ### In plain terms
+#
+# | | Think of it as |
+# |---|---|
+# | `ConversationBuffer` | **Keeping every receipt.** Complete, until the drawer is full. |
+# | `WindowedMemory` | **A desk that holds ten pages.** Put a new one down and the oldest falls off the back — and the oldest is where the job was explained. |
+# | `SummarisingMemory` | **Meeting minutes** replacing the recording. Shorter, and whoever wrote them decided what mattered. |
+# | `FactStore` | **The sticky note on the fridge.** Deliberate, few, and still there next month. |
+# | `Scratchpad` | **The back of an envelope** while cooking. Binned when dinner is served. |
+#
+# The fridge note is the only one you can walk up to, read, and correct. Try
+# that with a summary.
 
 # %% [markdown]
 # ## 17.2 · The domain: a downloads folder nobody has tidied

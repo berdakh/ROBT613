@@ -69,6 +69,10 @@ Full local setup, including Windows: **[docs/guides/setup.md](docs/guides/setup.
 
 ## The notebooks
 
+**You can read every notebook on the [course site](https://berdakh.github.io/ROBT613/notebooks/)
+and open it in Colab with one click** — no clone, no install, no GPU to begin.
+
+
 | # | Notebook | You learn to | Time | Colab |
 |---|---|---|---|---|
 | **Day 1 — Foundations** |||||
@@ -179,6 +183,7 @@ docs/             the GitHub Pages site
     assets/diagrams/  39 generated SVG figures, used by notebooks and handbook
 tools/
     nbbuild.py        notebook_src/*.py  ->  notebooks/*.ipynb
+    nbpages.py        notebooks/*.ipynb  ->  docs/notebooks/*.md (the site)
     make_diagrams.py  workshop diagrams; diagrams_handbook.py and
                       diagrams_training.py
                       and diagrams_agents.py add the handbook's and the tracks'

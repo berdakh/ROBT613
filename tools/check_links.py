@@ -18,6 +18,26 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
 IMG = re.compile(r'<img[^>]+src="([^"]+)"')
+FENCE = re.compile(r"^\s*(```|~~~)")
+
+
+def strip_code(text: str) -> str:
+    """Blank out fenced code blocks before looking for links.
+
+    Python is full of ``thing[key](args)``, which is exactly the shape of a
+    markdown link. Since docs/notebooks/ is generated from real notebooks, the
+    checker reported `allowed[type(node.op)](evaluate(node.left)` as a broken
+    link to a file called `evaluate(node.left`. Lines are replaced rather than
+    removed so reported line numbers would still line up.
+    """
+    out, inside = [], False
+    for line in text.splitlines():
+        if FENCE.match(line):
+            inside = not inside
+            out.append("")
+            continue
+        out.append("" if inside else line)
+    return "\n".join(out)
 
 
 def resolve(source: Path, target: str) -> bool:
@@ -43,7 +63,7 @@ def main() -> int:
     for path in files:
         if not path.exists():
             continue
-        content = path.read_text(encoding="utf-8")
+        content = strip_code(path.read_text(encoding="utf-8"))
         for label, target in LINK.findall(content):
             if target.startswith(("http://", "https://", "#", "mailto:")):
                 continue

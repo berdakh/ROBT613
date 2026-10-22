@@ -10,13 +10,16 @@ description: >-
   building agents, and shipping something you actually use. ROBT613.
 lang: en
 
-# just-the-docs gives us a sidebar, search and dark mode with no vendoring.
+# just-the-docs gives us a sidebar and search with no vendoring.
 remote_theme: just-the-docs/just-the-docs@v0.10.1
 plugins:
   - jekyll-remote-theme
   - jekyll-seo-tag
 
-color_scheme: dark
+# Light. The diagrams are drawn with a dark-mode CSS override keyed on
+# prefers-color-scheme, so they follow the reader's OS setting either way -
+# the page chrome is what this sets.
+color_scheme: light
 search_enabled: true
 search:
   heading_level: 3

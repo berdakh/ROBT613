@@ -43,6 +43,9 @@ jobs:
       - name: Verify diagrams are in sync with their generator
         run: python tools/make_diagrams.py --check
 
+      - name: Verify the site's notebook pages are in sync
+        run: python tools/nbpages.py --check
+
       - name: Validate notebook structure, syntax and links
         run: python tools/check_notebooks.py
 

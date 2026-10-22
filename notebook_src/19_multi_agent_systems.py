@@ -95,6 +95,24 @@ from qwen_workshop.tools import ToolError, ToolRegistry, tool
 # **a handoff format** (what crosses the boundary), and **a termination rule**
 # (when the exchange stops). That is why the module behind this notebook is
 # short.
+#
+# ### In plain terms
+#
+# The pattern names are the most confusing jargon in this workshop, and every
+# one of them is an everyday job you already understand:
+#
+# | Pattern | Think of it as | And so |
+# |---|---|---|
+# | **Router** | The **receptionist** at a clinic. Ten seconds of listening, then "third door on the left". | Decides **once**, then steps aside. Two model calls. |
+# | **Orchestrator** | A **wedding planner**. Asks the florist, the caterer and the photographer each for their piece, then assembles the day. | You pay all three whether or not you use what they say. |
+# | **Pipeline** | A **passport office**. Desk 1 → desk 2 → desk 3. | Nobody sees your whole case, so nobody can explain the outcome. |
+# | **Critic loop** | A **writer and an editor**. Draft, red pen, revise, signed off. | Only works if the editor can say *no* — and if you cap the rounds. |
+# | **Handoff** | **Repeating a story** to the next person. | Each retelling loses detail. This is the cost nobody counts. |
+#
+# Hold on to the wedding planner in particular. It explains the cost (three
+# suppliers, three bills), the benefit (the florist does not need to know
+# about catering), and the failure (the planner assumes the caterer checked
+# the dietary requirements, and the caterer assumed the planner did).
 
 # %% [markdown]
 # ## 19.2 · The domain: planning a trip

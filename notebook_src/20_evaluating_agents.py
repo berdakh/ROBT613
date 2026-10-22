@@ -93,6 +93,18 @@ print("pinned today:", TODAY)
 #
 # > Outcome alone cannot tell a working agent from a lucky one. On a
 # > non-deterministic system, that distinction is the whole game.
+#
+# ### In plain terms
+#
+# **Outcome** is the final number on a maths exam. **Trajectory** is the
+# working underneath it.
+#
+# A student who copied their neighbour and a student who worked it out get the
+# same mark. Mark only the number and you cannot tell them apart — and next
+# week's exam is different, so one of them is about to fail it.
+#
+# A **lucky pass** is the driver who arrived on time having run three red
+# lights. Nothing in "arrived on time" tells you that happened.
 
 # %% [markdown]
 # <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/ag-eval-quadrants.svg" alt="A two-by-two of answer-right versus path-sane; the right-answer wrong-path quadrant is the lucky pass an outcome-only suite reports as success" width="100%">

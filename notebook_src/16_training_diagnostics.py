@@ -101,6 +101,20 @@ CHANCE = math.log(2)
 # prints `ln(VOCAB_SIZE)` before training for exactly this reason.
 
 # %% [markdown]
+# ### In plain terms
+#
+# | | Think of it as |
+# |---|---|
+# | **Train loss** | Your score on the practice papers you have been drilling. |
+# | **Validation loss** | Your score on a paper you have never seen. **The only one that counts.** |
+# | **Overfitting** | Memorising past papers. Perfect on those, lost on the real exam. |
+# | **Early stopping** | Handing it in when you stop improving, not fiddling until the bell. |
+# | **Gradient clipping** | A **seatbelt**: useless on an ordinary journey, decisive in the one crash. |
+# | **Learning-rate schedule** | Starting slow, speeding up, slowing down to park. |
+#
+# The seatbelt is the one to remember, because clipping is routinely
+# misunderstood as a brake. It is not. 16.5 measures what it actually does.
+
 # ## 16.2 · Something real to watch
 #
 # A two-layer `tanh` network on a problem no linear model can solve. Roughly
