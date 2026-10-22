@@ -1,5 +1,8 @@
-# Day 4: LoRA fine-tuning (notebook 11). Needs a GPU to be practical.
-# Install the core requirements first.
+# LoRA fine-tuning (notebook 11) and DPO preference tuning (notebook 15).
+# Both need a GPU to be practical. Install the core requirements first.
+#
+# Notebooks 13, 14 and 16 need nothing from this file - they run on CPU with
+# only torch and numpy.
 
 peft>=0.12
 trl>=0.11

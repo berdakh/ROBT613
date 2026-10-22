@@ -1,6 +1,6 @@
 # Exercise solutions
 
-All 20 in-notebook exercises, in order. See [README](README.md) for the
+All 30 in-notebook exercises, in order. See [README](README.md) for the
 confidence markers (✅ verified · 🔬 expected · ✍️ yours).
 
 ---
@@ -611,3 +611,351 @@ catastrophic forgetting, and it is a better finding than a clean win.
 **Marking note.** A student who says "I made it honour `meals` and then realised
 my test did not check the quantities actually changed" has learned the lesson
 this exercise exists for.
+
+---
+
+# Notebook 13 — Pre-training a tiny model
+
+## 13-1 · Train for 6000 steps
+
+> Train for 6000 steps instead of 2000. Does validation loss turn upward? At
+> which step? That step is where this model stops learning and starts
+> memorising.
+
+🔬 **Expected: yes, it turns.** The corpus is a few hundred KB and the model has
+~800k parameters, so there is far more capacity than data. Validation loss
+typically bottoms somewhere in the **2,500–4,500** range and then climbs while
+train loss keeps falling.
+
+**The exact step does not matter and students should be told so.** What matters
+is the shape:
+
+| Observation | What it proves |
+|---|---|
+| Train loss still falling at step 6000 | Train loss is not evidence of anything |
+| Val loss bottoms, then rises | The optimum is a point, not an endpoint |
+| The gap widens monotonically after the bottom | Every step past it is damage |
+
+**Push them further:** ask what you would change to move the bottom later.
+Answers in rough order of effect: **more data** (the real fix), a smaller model,
+dropout, weight decay. Getting "more data" first is the point.
+
+**Common mistake.** Reporting "it overfit" without the step number. The whole
+exercise is locating the turn; `min(history, key=lambda h: h[2])` does it in one
+line and notebook 16 generalises it into `early_stop`.
+
+---
+
+## 13-2 · Double `n_embed`, halve the steps
+
+> Double `n_embed` to 256 and halve `MAX_STEPS`. You now have roughly 4× the
+> parameters and half the training. Does validation loss end up better or worse?
+> This is the scaling-law trade-off, at a scale you can actually run.
+
+🔬 **Expected: worse, or no better.** The run is already data-limited, so paying
+for capacity with steps trades away the thing that was actually binding.
+
+Note the arithmetic first — `n_embed` enters the parameter count roughly
+quadratically through the attention and MLP matrices, so doubling it is about
+4× the parameters *and* about 4× the time per step. Halving `MAX_STEPS` does not
+make the run cheaper; it makes it about twice as expensive for less training.
+
+✅ **The transferable result** is Chinchilla's: compute split between model size
+and tokens seen has an optimum, and both sides of it are worse. Students who
+have only heard "bigger is better" should leave this exercise unable to believe
+that again.
+
+**Marking note.** A student who reports "worse, and it took longer" has the
+whole lesson. A student who reports "better" has probably not held the seed
+fixed — run-to-run variance at this scale is large, which is itself exercise
+16-3's point.
+
+---
+
+# Notebook 14 — Building a training dataset
+
+## 14-1 · Ten much-longer answers
+
+> Add ten examples whose answers are deliberately much longer than the rest.
+> Re-run `describe`. Then predict what the fine-tuned model's answer length
+> distribution would look like, and why that is a problem.
+
+✅ **What `describe` shows:** the mean answer length jumps, and — more
+informative — the distribution goes **bimodal**. Students should be pushed to
+look at the spread, not the mean: a mean that moves from 80 to 140 characters
+tells you much less than "there are now two clusters".
+
+🔬 **The prediction:** the model does *not* learn "answer at two different
+lengths depending on the question". It learns something closer to the average,
+and it applies it indiscriminately — short questions get padded answers and long
+ones get truncated. Length is a style feature with no conditioning signal
+attached, so the model has nothing to condition on.
+
+**Why that is a problem, in one sentence:** you have taught a behaviour you
+never chose, and it will show up on every output.
+
+**Push them further:** how would you *deliberately* teach two lengths? The
+answer is to put the signal in the prompt — "answer in one line" versus "explain
+in detail" — so there is something to condition on. That is the difference
+between a dataset with a confound and a dataset with a feature.
+
+---
+
+## 14-2 · Corrupt 25% of the set
+
+> Take the twenty examples here and deliberately make five of them inconsistent
+> — different answer length, different tone, markdown where the others have none.
+> You now have a 25% corruption rate. Predict what the fine-tuned model does,
+> then test the prediction by feeding the corrupted file to notebook 11's LoRA
+> run.
+
+🔬 **Prediction:** the model becomes *inconsistent*, not *wrong*. It will
+sometimes use markdown and sometimes not, with no apparent pattern. This is
+worse than uniformly bad output, because it cannot be fixed downstream — you
+cannot write a parser for "sometimes".
+
+✅ **The principle, which is the actual deliverable:** every inconsistency in the
+data is an instruction to be inconsistent. The model has no way to know that
+five of twenty examples were a mistake; from inside the loss, they are evidence.
+
+**Marking note.** 25% is deliberately large. Ask what they think the threshold
+is. There is no clean answer, and the honest one is instructive: **a few percent
+of contradictory examples is enough to show up in the outputs**, which is why
+"read every example" is realistic advice at 50 examples and why curation
+pipelines exist at 50,000.
+
+**If they actually run it:** the training loss will be *higher* and flatter than
+on the clean set, because contradictory targets cannot all be fit. That is a
+detectable signature — and a good reason to compare loss curves between data
+versions rather than looking at one in isolation.
+
+---
+
+# Notebook 15 — Preference tuning with DPO
+
+## 15-1 · A rule for a different checkable property
+
+> Write a `score` function for a different checkable property — "the answer
+> cites at least one source in `[n]` form", or "the code compiles". Feed it
+> three candidates and confirm `pair_by_rule` picks the pair you expect. Then
+> say in one sentence why this approach cannot teach the model to be *tactful*.
+
+✅ **A correct answer for the compile case:**
+
+```python
+def compiles_score(text):
+    try:
+        compile(text, "<candidate>", "exec")
+    except (SyntaxError, ValueError):
+        return 0.0
+    return 1.0
+```
+
+and for citations, `1.0 if re.search(r"\[\d+\]", text) else 0.0`.
+
+**What to check in their code:**
+
+- **It returns a number, not a bool**, so `sorted` ranks rather than groups.
+- **It catches the right exceptions.** `compile` raises `ValueError` on embedded
+  null bytes as well as `SyntaxError`; a bare `except Exception` is acceptable
+  here and worth discussing rather than marking down.
+- **They checked the `None` case.** Three candidates that all score the same
+  must produce no pair. A student who did not test that has not understood why
+  the guard is in `pair_by_rule`.
+
+✅ **Why it cannot teach tact:** tact is not a computable property of the text —
+there is no function from the string to a score, which is precisely the
+condition under which you need a human or a judge model.
+
+**Push them further:** ask which of the four failure modes in 15.8 a
+rules-generated dataset is *immune* to. Answer: sycophancy, because no annotator
+preference entered the data. It remains fully exposed to length bias if the
+rule correlates with length.
+
+---
+
+## 15-2 · Margins of −20 and +20
+
+> The sign of the margin matters more than its size. Compute `dpo_loss` for
+> margins of −20 and +20 at β=0.1 and explain the asymmetry in the gradient:
+> which of the two pairs would dominate a batch containing both, and why is
+> that the behaviour you want?
+
+✅ **The numbers**, at β=0.1 (so βm = ∓2):
+
+| margin | loss | dL/dmargin |
+|---|---|---|
+| −20 | 2.1269 | −0.0881 |
+| +20 | 0.1269 | −0.0119 |
+
+The loss is **17× larger** on the wrong pair, and the gradient is about **7×
+larger**.
+
+✅ **Which dominates:** the −20 pair, decisively. The logistic loss is
+asymptotically linear on the wrong side and asymptotically flat on the right
+side, so a batch's gradient is dominated by the pairs the model currently gets
+wrong.
+
+**Why that is what you want:** training capacity goes to the examples that still
+carry information. A pair the model already ranks correctly with a wide margin
+has nothing left to teach, and continuing to push it would only increase drift
+from the reference for no behavioural gain.
+
+**Push them further:** what does this imply about adding more easy pairs to a
+preference set? Answer: almost nothing happens — you pay for the forward passes
+and get gradients near zero. Preference-set *difficulty* matters more than
+preference-set size, which is the opposite of the usual intuition about data.
+
+---
+
+## 15-3 · Negative `reward_chosen` with a falling loss
+
+> Using `dpo_loss` (which returns `loss, reward_chosen, reward_rejected, grad`),
+> find policy log-probs where `reward_chosen` is negative and the loss is
+> nonetheless below the starting 0.693. Then say what you would check in a real
+> run that showed this, and what the `grad` value tells you about whether the
+> run will keep moving.
+
+✅ **One worked answer**, against the notebook's reference of `(−42, −38)`:
+
+```python
+dpo_loss(-50.0, -60.0, -42.0, -38.0)
+# loss 0.2204, reward_chosen -8.0, reward_rejected -22.0, grad -0.01978
+```
+
+The policy made the chosen answer **8 nats less likely** than the reference did,
+and the loss went *down*, because it made the rejected answer 22 nats less
+likely. Margin +14. Any pair where both rewards are negative and
+`reward_chosen > reward_rejected` works.
+
+✅ **What to check in a real run:** the **reward levels**, not the margin —
+`rewards/chosen` and `rewards/rejected` in the trainer's logs. Both sinking well
+below zero is the degenerate drift of 15.8. Then: generate from the model.
+Suppressing everything shows up as bland, hedging, interchangeable answers long
+before any metric catches it.
+
+**The `grad` reading:** −0.0198 against −0.0500 at step 0, so the pair is still
+contributing about **40%** of its initial pull. It has not saturated, and the
+run **will keep moving in this direction**. That is the part students miss: a
+falling loss with sinking reward levels is not a run that is about to
+self-correct. It is one that is 60% of the way to not caring any more, with the
+reward levels still heading down.
+
+**Fixes, in order:** lower the learning rate, lower β, then look at the pairs —
+if `chosen` and `rejected` are both poor answers, the data is the problem and no
+hyperparameter will rescue it.
+
+---
+
+# Notebook 16 — Training diagnostics
+
+## 16-1 · Break one of `diagnose`'s thresholds
+
+> `diagnose` has four hard-coded thresholds: `10 * chance_loss`, `0.95`, `1.10`
+> and `0.05`. Pick one, find a run where it gives the wrong answer, and say what
+> you would use instead. Hint: the `0.05` tail-slope test is the most fragile —
+> what does `every=1000` do to it?
+
+✅ **The `0.05` tail slope is the intended answer, and the hint gives it away on
+purpose.** The test compares the first and last entries of the final quarter of
+the *history*, and history length depends on `every`. With `every=1000` over
+3,000 steps there are 4 entries, the "final quarter" is one entry, the
+`max(2, ...)` floor kicks in, and the test is now comparing two points a third
+of the run apart. The same run logged with `every=100` gives a completely
+different verdict.
+
+**The fix:** measure the slope **per step**, not per logged entry —
+`(loss[-2] - loss[-1]) / (step[-1] - step[-2])`, compared against a threshold
+scaled by the loss level. Logging frequency should not change a diagnosis.
+
+✅ **The others, for students who pick them:**
+
+| Threshold | How to break it | Better |
+|---|---|---|
+| `1.10` overfit | The `enough data` run *is* past its minimum by step 4000; a 1.02 threshold flags it, 1.10 does not | Compare against the noise level of the val curve, e.g. 2× its step-to-step standard deviation |
+| `0.95` chance | A genuinely hard task can sit just under chance for thousands of steps and then learn | Require it to *stay* there for N evaluations |
+| `10 × chance` | Catches `nan` late; a run can be unrecoverable at 3× | Flag the first *increase* over a window, not an absolute level |
+
+**Marking note.** The real lesson is that every one of these is a judgement call
+dressed as a constant, and a student who says "all four are arbitrary and should
+be derived from the variance of the curve" has got further than the notebook
+did.
+
+---
+
+## 16-2 · Consistently labelled outliers
+
+> Change `y_outlier` to `[0.0, 0.0]`, so the extreme points are now labelled
+> *consistently* with `sign(x1 * x2)`. Does the spike go away? Print the
+> per-parameter norms for both labellings and for an ordinary batch, and explain
+> which parameter the spike lives in and why.
+
+✅ **No. The spike barely shrinks, and the damage is almost identical.** Measured
+after 50 ordinary steps at `lr=0.3`, `seed=0`:
+
+| Batch | ‖∇W1‖ | ‖∇W2‖ | total | val loss after one step |
+|---|---|---|---|---|
+| ordinary (`X_small`) | — | — | **0.10** | — |
+| outlier, mislabelled `[1, 1]` | 24.42 | 1.58 | **24.48** | 0.5045 → 0.8454 |
+| outlier, consistent `[0, 0]` | 15.20 | 1.60 | **15.29** | 0.5045 → 0.8221 |
+
+This is the result almost nobody predicts, and the exercise exists for it.
+
+✅ **Where the spike lives: `W1`, the first layer.** Its gradient is
+`X.T @ dh` — the input matrix multiplies in directly. With `|x| = 40` against
+training inputs of order 1, the first-layer gradient is inflated by roughly that
+factor **whatever the label says**. `W2`'s gradient is `h.T @ dz`, and `h` is a
+`tanh` output bounded in [−1, 1], so it stays ordinary in both rows. The spike is
+a property of the **input magnitude**, not of the error.
+
+✅ **Why the error does not rescue the consistent case either.** Print `z` for
+those two points and you get ≈ −2.42 and +2.17, so `sigmoid(z)` ≈ 0.08 and 0.90.
+With labels `[0, 0]` the errors are 0.08 and **0.90** — the model is confidently
+wrong on one of them regardless, because nothing in 40 training points in
+[−3, 3] ever constrained its behaviour at (−40, 40). **Out-of-distribution
+inputs produce arbitrary predictions**, so "correctly labelled" is no protection.
+
+**The transferable point, and it is the opposite of the usual summary:** a
+gradient-norm spike means *this batch is unlike the others*, not *this batch is
+mislabelled*. In a real run the causes are an abnormally long example, a
+tokenizer failure producing a wall of `<unk>`, a corrupt record, or a genuine
+distribution shift — mislabelling is only one of them. Go and look at the batch;
+the norm tells you which one to look at, not what is wrong with it.
+
+**Push them further:** what does this say about clipping? It caps the damage
+without removing the cause, and it works here because the problem is magnitude —
+exactly the thing a norm threshold can see. Log the norm *before* clipping, as
+the notebook's `train` does, or you destroy the signal while fixing the symptom.
+
+**Marking note.** Credit the measurement over the prediction. A student who
+predicted "the spike disappears", ran it, and reported "it does not, and here is
+why" has done the thing this whole notebook is about.
+
+---
+
+## 16-3 · Seed-to-seed variance
+
+> Run `train` twice with the same arguments but different `seed`, and record
+> both with `run_log`. How large is the seed-to-seed difference in
+> `best_val_loss`? Now state the rule it implies for comparing two
+> hyperparameter settings.
+
+🔬 **Expected: a difference of a few hundredths to a tenth** on the small-data
+run, which is the same order as the gap between neighbouring learning rates in
+16.6's sweep. The exact value depends on which seeds they pick, and the variance
+itself varies — students should run **more than two**.
+
+✅ **The rule:** a hyperparameter change is only believable when it beats the
+seed-to-seed spread. In practice: run each setting at ≥3 seeds and compare
+distributions, not single numbers. One run per setting is a coin flip with extra
+steps.
+
+**Why it matters more than it sounds.** This is the mechanism behind a large
+share of published and internal "improvements" that do not reproduce. Nobody
+cheated; they ran one seed per arm and reported the winner.
+
+**Push them further:** ask what they would do if three seeds per setting is
+unaffordable — which it will be with a real fine-tune. The honest answer is to
+**fix the seed and report that you did**, which does not establish that the
+change helps but at least does not claim it does. A student who reaches
+"then I should not claim the improvement is real" has the point.

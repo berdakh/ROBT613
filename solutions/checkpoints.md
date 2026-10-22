@@ -1,6 +1,6 @@
 # Checkpoint answers
 
-The 49 questions that close notebooks 01–11. Use them as an oral check, a quick
+The 77 questions that close notebooks 01–11 and the training track (13–16). Use them as an oral check, a quick
 written quiz, or a revision sheet.
 
 Markers as in the [README](README.md): ✅ verified · 🔬 expected · ✍️ yours.
@@ -297,3 +297,202 @@ This generalises well past fine-tuning.
 inference overhead, and it can be converted to GGUF. **Keep separate** when you
 want several behaviours from one base model, hot-swapping adapters against a
 single loaded backbone.
+
+---
+
+## 13 · Pre-training a tiny model
+
+**1. What is the training objective, in one sentence?**
+Given every prefix of the text, predict the **next token**, and minimise the
+cross-entropy between the predicted distribution and the token that actually
+came next. That is the entire objective of pre-training, at every scale.
+
+**2. Why does one sequence of length `n` give `n` training signals?**
+Because the causal mask lets the model make a prediction at **every position
+simultaneously** — position `i` predicts token `i+1` using only tokens `0..i`.
+One forward pass therefore produces `n` predictions and `n` loss terms, which is
+why transformers train so much more efficiently than the RNNs they replaced.
+
+**3. What does the causal mask prevent, and what would happen without it?**
+It prevents position `i` from attending to positions after it. Without it, the
+model can see the token it is being asked to predict: training loss collapses to
+near zero within a few steps and the model generates nonsense, because it
+learned to copy an answer that is not there at inference time. ✅ **Loss that
+drops impossibly fast is the classic signature of a broken mask.**
+
+**4. What loss does an untrained model have, and why that number?**
+`ln(vocab_size)`. A model with no information assigns uniform probability
+`1/V` to every token, and `−ln(1/V) = ln(V)`. For this notebook's character
+vocabulary that is about **4.6**; for Qwen3's 151,936 tokens it is **11.9**.
+Knowing this number is what lets you tell "slow start" from "not training".
+
+**5. What does rising validation loss with falling training loss mean?**
+**Memorisation.** The model is fitting the training text specifically rather
+than learning the structure of the language, so the optimum is the step where
+validation bottomed — everything after that is damage. Notebook 16 turns this
+into `early_stop`.
+
+**6. Name three things this model lacks that an instruct model has.**
+Any three of: **instruction tuning** (it continues text, it does not answer),
+**a chat template** (no roles, no turn boundaries), **preference tuning** (no
+notion of a better answer), **scale** (~800k parameters against billions),
+**a real tokenizer** (characters, not subwords), **safety behaviour**, and
+**any knowledge not in a few hundred KB of corpus**. The valuable observation is
+that only the first three are *training phases* — the rest are resources.
+
+---
+
+## 14 · Building a training dataset
+
+**1. What shape does a fine-tuning example take, and why `.jsonl`?**
+`{"messages": [{"role": ..., "content": ...}, ...]}` — the same chat structure
+used at inference, so training matches serving. `.jsonl` because one JSON object
+per line means you can stream a file larger than memory, append without
+rewriting, and `wc -l` it; a single top-level JSON array gives up all three.
+
+**2. What is loss masking, and which scheme is the usual default?**
+Marking which tokens the loss is computed on. The usual default is
+**completion-only**: the system and user tokens are labelled `-100` so they are
+read as context but never graded, and only the assistant tokens contribute to
+the loss. Grading the prompt teaches the model to generate plausible user
+questions — a skill nobody wanted.
+
+**3. Why are near-duplicates worse than exact duplicates?**
+Exact duplicates are trivially detectable by hashing, so they get removed.
+Near-duplicates survive every naive check, so they quietly over-weight whatever
+they have in common — and if one lands in train and its twin in eval, your
+evaluation is measuring memorisation and reporting it as generalisation.
+
+**4. Why must you deduplicate *before* splitting?**
+Deduplicating afterwards leaves a copy on each side of the split. The leak is
+then invisible: both files pass their own dedup check, and the evaluation score
+is inflated by exactly the examples the model has already seen.
+
+**5. Name three distributional problems you would look for before training.**
+Any three of: **length imbalance** (one cluster of very long answers teaches
+length), **topic concentration** (half the set about one subject), **format
+drift** (markdown in some answers, none in others), **role errors** (examples
+not ending on an assistant turn), **near-duplicate clusters**, **systematic tone
+differences** between batches written by different people.
+
+**6. Fifty careful examples or a thousand scraped ones — which, and why?**
+The fifty, in almost every case. Every inconsistency in the data is an
+instruction to be inconsistent, and a scraped set has inconsistencies you have
+not read. The practical test is the one in the notebook: **if you cannot explain
+why each example is in the set, it probably should not be.**
+
+---
+
+## 15 · Preference tuning with DPO
+
+**1. What can preference data teach that a demonstration cannot?**
+*Comparative* judgement — that one fluent answer is better than another fluent
+answer. Demonstrations say "do this"; none says "not that", and none carries a
+degree. Preferences are also far cheaper to collect reliably, because picking
+between two answers is much easier than writing a good one.
+
+**2. Why must SFT come first?**
+Preference tuning only **reweights behaviour the model can already produce**.
+The loss moves probability between two candidate answers; it cannot create a
+capability that was never there. Running DPO on a base model gives you a base
+model with slightly different preferences about its own rambling.
+
+**3. Why is 0.693 the number to look for at step 0?**
+Because at step 0 the policy equals the reference, so every margin is exactly 0
+and the loss is `−log σ(0) = log 2 ≈ 0.693` on every pair. ✅ **A DPO run that
+does not start near 0.693 has a bug** — usually a wrong reference model or a
+masking error — and that is worth catching in the first ten seconds rather than
+after the run.
+
+**4. What is the reference model's job, and what goes wrong without it?**
+It makes the loss measure **change** rather than absolute log-probability, which
+is how the KL constraint from the RLHF objective survives into DPO. Without it,
+a pair the reference already ranked correctly looks like a solved problem the
+policy deserves credit for, and a pair the policy genuinely fixed looks like no
+progress — the notebook shows the unanchored loss giving the opposite verdict on
+both.
+
+**5. Your run shows rising margins and sinking reward levels. Diagnose it.**
+**Degenerate drift.** The margin is a difference, so it can be opened by pushing
+the rejected answer down rather than the chosen answer up — and both can sink
+together. The model is becoming less likely to produce either answer, which
+shows up as bland, hedging, interchangeable output. Lower the learning rate,
+lower β, and inspect the pairs: if `chosen` and `rejected` are both poor, the
+data is the problem.
+
+**6. Chosen answers average twice the length of rejected ones. What will the
+model learn, and what do you do about it?**
+It will learn **length**, because length is the most reliable signal in the set
+and the model has no way to separate it from quality. Fix it in the data:
+deliberately write pairs where the chosen answer is the shorter one, balance the
+distribution, and check it at the set level rather than per pair. Length
+normalisation (or SimPO) helps, but it is a patch over a data problem.
+
+**7. Why is a general eval set non-negotiable here?**
+Because preference tuning's characteristic failure is a model that is better at
+exactly what you measured and worse at everything else. Only an evaluation set
+with **no relationship to your preference data** can see that, and by the time
+users report it the run is already deployed.
+
+---
+
+## 16 · Training diagnostics
+
+**1. Name the four numbers and what each one rules out.**
+**Train loss** — is it learning at all. **Validation loss** — is it
+generalising, and the only one you may make decisions from. **Learning rate** —
+is the step size sane, and schedulers change it under you. **Gradient norm** —
+is anything exploding; it is usually boring, which is exactly what makes a spike
+informative.
+
+**2. What is the chance loss for Qwen3, and what does a run that sits there
+mean?**
+`ln(151936) ≈ 11.9`. A run sitting there is **not learning slowly, it is
+broken** — the usual causes are a learning rate near zero, a label or masking
+bug that grades nothing, or frozen parameters. Check before you wait.
+
+**3. Your train loss falls 96% and the model gets worse. Where do you look?**
+At the **validation curve**, which will have bottomed early and climbed since.
+Then at the step where it bottomed — that checkpoint is the model you wanted.
+✅ In the notebook's run, train loss falls 0.976 → 0.036 while validation goes
+0.354 (step 300) → 0.689 (step 3000).
+
+**4. Why did clipping at 1.0 fail to rescue the `lr=30` run?**
+Because the gradients were never large. Every logged norm stayed below 1.0 and
+the clip fired on only 52 of 401 steps. The failure was a **sane gradient times
+an insane learning rate**, and no threshold on the gradient can detect that.
+Clipping at 0.1 "worked" only by firing on a third of the steps, which is a
+step-size cap doing the learning rate's job badly.
+
+**5. What is gradient clipping actually for, then?**
+**Rare, catastrophic batches.** One abnormal example, one full-size step, and a
+healthy run is damaged. In the notebook a single bad batch (norm 24.5 against a
+usual 0.10) costs 0.34 of validation loss unclipped and 0.01 clipped. Clipping
+bounds the damage from a batch unlike the others; it does not tune anything.
+
+**6. Describe the range test, and the rule for picking from its output.**
+Train briefly at logarithmically spaced learning rates and find where it breaks.
+The rule of thumb is the **largest stable rate divided by two or three** — but
+use it to pick the *range*, then choose inside it on **validation** loss. In the
+notebook's sweep `lr=3` reaches a much lower train loss than `lr=0.3` and a much
+worse validation loss, and `lr=0.3` is the right answer.
+
+**7. Why is `load_best_model_at_end=True` not optional?**
+Because without it early stopping detects the problem and then hands you the
+damaged final checkpoint anyway. Detection without retention is worthless. The
+related trap: patience counts **evaluations**, not steps, so `eval_steps=500`
+with `patience=3` permits 1,500 steps past the optimum.
+
+**8. Give three reasons a lower perplexity does not mean a better model.**
+It is **not comparable across tokenizers**; it measures the **training
+objective, not the task**, so instruction-following can get worse as it falls;
+it is **meaningless under contamination**, measuring memory rather than
+modelling; and for preference tuning the loss means something else entirely — a
+DPO loss near zero is compatible with degenerate drift.
+
+**9. Which behavioural probes can a loss curve never replace, and why not?**
+The ones testing behaviour you **did not train on**: the adjacent task, general
+knowledge (catastrophic forgetting), and refusals. Nothing in the objective ever
+measured them, so no number derived from the objective can report on them. ✅
+A ten-prompt before-and-after list read by a human costs five minutes and
+catches what the curve structurally cannot.

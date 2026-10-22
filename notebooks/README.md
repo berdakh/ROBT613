@@ -17,6 +17,15 @@ Work through these in order. Each builds on the last.
 | 11 | `11_finetuning_lora.ipynb` | GPU recommended | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/11_finetuning_lora.ipynb) |
 | 12 | `12_capstone_daily_assistant.ipynb` | a running server | rest of day 4 | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
 
+| 13 | `13_pretrain_a_tiny_model.ipynb` | nothing (CPU is fine) | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb) |
+| 14 | `14_building_a_training_dataset.ipynb` | nothing | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/14_building_a_training_dataset.ipynb) |
+| 15 | `15_preference_tuning_dpo.ipynb` | GPU for the last cell only | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/15_preference_tuning_dpo.ipynb) |
+| 16 | `16_training_diagnostics.ipynb` | nothing | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/16_training_diagnostics.ipynb) |
+
+**13–16 are an optional training track** — see
+[`docs/days/training-track.md`](../docs/days/training-track.md). They are
+independent of the capstone and can be taken any time after notebook 11.
+
 "A running server" means Ollama (or vLLM / llama.cpp). Start it with:
 
 ```bash
@@ -38,7 +47,7 @@ Skipping it is the single most common cause of `ModuleNotFoundError`.
 
 Each notebook embeds SVG diagrams from `../docs/assets/diagrams/`. They render
 in JupyterLab, on GitHub and on the course site, and adapt to light or dark
-themes. All 18 are collected on one page:
+themes. All 35 are collected on one page:
 [`docs/guides/diagrams.md`](../docs/guides/diagrams.md).
 
 ## Editing these notebooks
