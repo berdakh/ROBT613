@@ -27,6 +27,8 @@ search:
 heading_anchors: true
 
 aux_links:
+  "Notebooks on GitHub":
+    - "https://github.com/berdakh/ROBT613/tree/master/notebooks"
   "Repository":
     - "https://github.com/berdakh/ROBT613"
 aux_links_new_tab: true
