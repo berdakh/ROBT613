@@ -16,6 +16,13 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 
+# These fakes predate `qwen_workshop.scripted` and are deliberately kept: they
+# are the minimal shape, used to test the loop's handling of odd responses.
+# For writing agent tests of your own, prefer `scripted.ScriptedModel` - it is
+# the same idea with a nicer API, and it ships in the library so notebooks and
+# student code can use it too.
+
+
 class FakeToolCall:
     """Mimics the OpenAI SDK's tool-call object shape."""
 

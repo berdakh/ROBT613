@@ -21,6 +21,14 @@ Work through these in order. Each builds on the last.
 | 14 | `14_building_a_training_dataset.ipynb` | nothing | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/14_building_a_training_dataset.ipynb) |
 | 15 | `15_preference_tuning_dpo.ipynb` | GPU for the last cell only | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/15_preference_tuning_dpo.ipynb) |
 | 16 | `16_training_diagnostics.ipynb` | nothing | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/16_training_diagnostics.ipynb) |
+| 17 | `17_tools_and_memory.ipynb` | nothing | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/17_tools_and_memory.ipynb) |
+| 18 | `18_planning_and_decomposition.ipynb` | nothing | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/18_planning_and_decomposition.ipynb) |
+| 19 | `19_multi_agent_systems.ipynb` | nothing | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/19_multi_agent_systems.ipynb) |
+| 20 | `20_evaluating_agents.ipynb` | nothing | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/20_evaluating_agents.ipynb) |
+
+**17–20 are an optional agents track** — see
+[`docs/days/agents-track.md`](../docs/days/agents-track.md). They need no
+server at all: every cell runs against a scripted model.
 
 **13–16 are an optional training track** — see
 [`docs/days/training-track.md`](../docs/days/training-track.md). They are
@@ -47,7 +55,7 @@ Skipping it is the single most common cause of `ModuleNotFoundError`.
 
 Each notebook embeds SVG diagrams from `../docs/assets/diagrams/`. They render
 in JupyterLab, on GitHub and on the course site, and adapt to light or dark
-themes. All 35 are collected on one page:
+themes. All 39 are collected on one page:
 [`docs/guides/diagrams.md`](../docs/guides/diagrams.md).
 
 ## Editing these notebooks

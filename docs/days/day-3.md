@@ -95,6 +95,14 @@ leaves your machine.
 7. Give two defences against prompt injection that do **not** rely on the model
    being sensible.
 
+## Going further on agents
+
+Notebook 10 is the foundation; notebooks 17–20 are an
+[optional agents track](agents-track.html) that gives the agent memory, plans
+and teammates, and then teaches you to prove it works. It needs **no server and
+no GPU** — every cell runs against a scripted model, which is also how you test
+a real agent.
+
 ## Optional reading
 
 - [Protocols and standards](../handbook/protocols-and-standards.html) — the handbook chapter behind today's material
