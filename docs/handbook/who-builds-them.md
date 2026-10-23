@@ -233,6 +233,79 @@ no incentive to tell you either way.
 This is why **"which model is bigger?" is rarely a question worth asking**, and
 "which is cheaper per token on *my* task at *my* quality bar?" always is.
 
+## Which model for which project
+
+Everything above is background. This is the part you use when you have to pick
+one on a Tuesday.
+
+**Two rules before the tables.** First, choose by **task**, then clamp to your
+hardware — [The Qwen family](../guides/qwen-family.html#which-one) maps VRAM to
+a specific model and is the table to read second. Second, **start one size
+smaller than you think you need.** Debugging a 0.6B model takes seconds per
+iteration; a 14B takes minutes. Scale up when you have evidence, not a feeling.
+
+### By what you are building
+
+Sizes below assume int4 quantization, which is what you will actually run.
+
+| What you are building | Start with | Step up to if it struggles | The thing that actually bites |
+|---|---|---|---|
+| **Classification, routing, tagging** | Qwen3-0.6B | 1.7B | Nothing — this is the one task small models genuinely do well. Give it a fixed label set. |
+| **Format conversion, extraction to JSON** | Qwen3-1.7B | 4B | Schema adherence, not intelligence. Use constrained decoding (notebook 07) before you use a bigger model. |
+| **Summarising, rewriting, tone** | Qwen3-4B | 8B | Length control. Small models ignore "in three sentences". |
+| **RAG over your own notes** | Qwen3-4B + `Qwen3-Embedding-0.6B` | 8B | Retrieval quality, not the generator. A bigger model cannot fix a bad chunking strategy. |
+| **Tool-calling assistant** (kitchen, budget coach) | Qwen3-8B | 14B | Tool-choice reliability. Below 4B, multi-tool selection degrades fast. |
+| **Multi-step agent** (inbox triage, trip planner) | Qwen3-8B | 14B, then 30B-A3B | Recovery from a failed step. This is where small models fall off a cliff — see notebook 20. |
+| **Code assistant** | `Qwen2.5-Coder-7B` | `Qwen3-Coder` | Use a *code* model. A 7B coder beats a 14B generalist at code and runs on less. |
+| **Documents, screenshots, images** (lab notebook assistant) | `Qwen3-VL` | larger VL | Resolution and page count — the limits are visual, not linguistic. |
+| **Mathematical reasoning** | `Qwen2.5-Math` or a thinking-mode model | 14B+ with thinking on | Narrow models are strong in-domain and poor outside it. |
+| **Anything in Kazakh or Russian** | as above, **+ measure first** | — | Your context budget, roughly halved. [Measure the multiplier](../notebooks/22_kazakh_and_russian.html) before sizing anything. |
+
+{: .tip }
+> **The capstone sweet spot is Qwen3-8B at int4.** It does tool calling and RAG
+> reliably, fits 8 GB of VRAM, and runs on a free Colab T4. Most
+> [capstone projects](../guides/capstone-ideas.html) do not need more, and the
+> ones that do usually need better retrieval or a tighter harness rather than
+> more parameters.
+
+### By family
+
+When Qwen is not the answer — a licence constraint, a specific strength, a
+reproducibility requirement.
+
+| Family | Sizes | Licence | Pick it when | Caveat |
+|---|---|---|---|---|
+| **Qwen** | 0.6B → 480B+, dense and MoE | Apache 2.0 (main line) | Default. Widest size range, strong multilingual, matching embedding and reranker models | — |
+| **Llama** | 1B → 405B | Meta Community | You need the deepest tooling ecosystem; most tools target it first | Not a standard open-source licence — read it before shipping a product |
+| **DeepSeek** | large MoE | MIT (some) | Reasoning and code at the top end | Sizes are server-class; little for a laptop |
+| **Mistral** | 7B → MoE | Apache 2.0 (some) | European languages; efficient at a given size | Licence varies by model — check each |
+| **Gemma** | 270M → 27B | Gemma terms | Best quality-per-parameter at the small end | Custom licence with use restrictions |
+| **Phi** | ~1B → 14B | MIT | Very small, strong on curated reasoning | Trained heavily on synthetic data; brittle outside its distribution |
+| **OLMo** | 1B → 32B | Apache 2.0 | **You need provenance** — data and code published | Behind the frontier on raw capability; that is not the point of it |
+| **gpt-oss** | 21B, 117B (MoE) | Apache 2.0 | A permissive OpenAI-lineage model; 20b fits 16 GB | Text only |
+
+### When you actually need a closed model
+
+Be honest about this rather than ideological in either direction. Reach for an
+API when:
+
+* **the task needs frontier capability** you cannot reach locally — long-horizon
+  reasoning, hard code, nuanced judgement;
+* **you have no hardware** and no budget for rental;
+* **you need multimodal breadth** beyond what open VL models cover;
+* **time-to-first-demo matters more** than anything else.
+
+Stay with open weights when **data cannot leave your machine** (the common case
+for a university project touching real student or patient data), when you need
+**reproducibility** across a term, when **per-token cost at volume** would hurt,
+or when you need to **fine-tune the weights themselves**. The
+[privacy and safety guide](../guides/privacy-and-safety.html) covers the first
+one properly.
+
+A pattern worth knowing: **prototype against an API, ship on open weights.** Get
+the product right where iteration is fastest, then port once you know what you
+are building and what quality bar it has to clear.
+
 ## A dated snapshot
 
 {: .warning }
@@ -280,6 +353,8 @@ parameter count.
    context and your own measurements instead of rumoured numbers.
 6. **Check primary sources.** Model card, then technical report, then Epoch,
    then your own eval.
+7. **Choose by task, then clamp to hardware** — and start a size smaller than
+   you think. [The table is above](#which-model-for-which-project).
 
 ---
 
