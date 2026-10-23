@@ -1,11 +1,11 @@
 # Instructor solutions
 
-Worked answers to the 61 in-notebook exercises and the 127 end-of-notebook
+Worked answers to the 62 in-notebook exercises and the 129 end-of-notebook
 checkpoint questions.
 
 | File | Contents |
 |---|---|
-| [`exercises.md`](exercises.md) | The 61 exercises, in notebook order |
+| [`exercises.md`](exercises.md) | The 62 exercises, in notebook order |
 | [`checkpoints.md`](checkpoints.md) | The "Checkpoint" questions that close each notebook |
 
 ---
@@ -92,7 +92,7 @@ Rough, assuming students work in pairs:
 | 17 | 4 | 45 |
 | 18 | 4 | 50 |
 | 19 | 4 | 45 |
-| 20 | 4 | 50 |
+| 20 | 5 | 65 |
 | 21 | 5 | 60 |
 | 22 | 5 | 45 |
 

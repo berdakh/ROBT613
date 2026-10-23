@@ -101,7 +101,7 @@ and open it in Colab with one click** — no clone, no install, no GPU to begin.
 | 17 | [Tools and memory](notebooks/17_tools_and_memory.ipynb) | Sandboxed tools; four memory strategies; the context budget | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/17_tools_and_memory.ipynb) |
 | 18 | [Planning and decomposition](notebooks/18_planning_and_decomposition.ipynb) | Plans as graphs, waves, blocking, replanning | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/18_planning_and_decomposition.ipynb) |
 | 19 | [Multi-agent systems](notebooks/19_multi_agent_systems.ipynb) | Routers, orchestrators, critic loops — and when not to | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/19_multi_agent_systems.ipynb) |
-| 20 | [Evaluating agents](notebooks/20_evaluating_agents.ipynb) | Outcome vs trajectory; lucky passes; a CI suite | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/20_evaluating_agents.ipynb) |
+| 20 | [Evaluating agents](notebooks/20_evaluating_agents.ipynb) | Outcome vs trajectory; lucky passes; why the harness moves the score; a CI suite | 2 h | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/20_evaluating_agents.ipynb) |
 | **Optional — the mathematics** |||||
 | 21 | [Attention from scratch](notebooks/21_attention_from_scratch.ipynb) | Derive attention, prove the causal mask, implement RoPE | 2 h | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/21_attention_from_scratch.ipynb) |
 | **Optional — building in Kazakh or Russian** |||||
@@ -183,7 +183,7 @@ src/qwen_workshop/
 data/             sample notes, pantry, expenses, inbox, eval questions
 scripts/          check_env, download_models, smoke_test
 solutions/        exercise + checkpoint answers for instructors
-tests/            293 tests that run without a model, GPU or network
+tests/            294 tests that run without a model, GPU or network
 docs/             the GitHub Pages site
     assets/diagrams/  43 generated SVG figures, used by notebooks and handbook
 tools/
@@ -228,7 +228,7 @@ rather than pretending the gap is not there.
 
 ## For instructors
 
-Worked answers to all 61 exercises and 127 checkpoint questions are in
+Worked answers to all 62 exercises and 129 checkpoint questions are in
 [`solutions/`](solutions/) — with confidence markers, since the ones that depend
 on a real run are estimates until you teach it once.
 
@@ -236,7 +236,7 @@ on a real run are estimates until you teach it once.
 make install          # latest compatible versions
 make install-locked   # the exact versions you teach with
 make lock             # regenerate the lock file from a verified environment
-make test             # 293 tests, no model or network needed
+make test             # 294 tests, no model or network needed
 make check       # tests + notebooks built and valid
 make lint        # ruff
 make notebooks   # rebuild .ipynb from notebook_src/

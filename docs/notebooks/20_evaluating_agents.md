@@ -20,7 +20,7 @@ nav_order: 20
 
 ---
 
-**Agents track · ~90 minutes · no server needed**
+**Agents track · ~2 hours · no server needed**
 
 You have built agents with tools, memory, plans and teams. Here is the
 question none of those notebooks answered: **does it work?**
@@ -36,7 +36,8 @@ By the end you will be able to:
 3. catch a **lucky pass** — right answer, wrong path;
 4. use a model as a judge, and name three ways that misleads you;
 5. handle non-determinism honestly with repeated runs;
-6. build a regression suite that runs in CI without a GPU.
+6. show that the **harness** moves the score as much as the model does;
+7. build a regression suite that runs in CI without a GPU.
 
 **Everything here runs without a model.** That is not a limitation of the
 notebook — it is the technique.
@@ -472,7 +473,150 @@ individual verdict.
 > matters: how many runs do you need before you can tell a 70% agent from an
 > 80% one? Compare that with how many runs your team would actually do.
 
-## 20.7 · A regression suite that runs in CI
+## 20.7 · The harness is half the score
+
+Every section so far varied the **agent**. Now hold the agent perfectly
+still and vary only the code around it.
+
+A benchmark number is produced by two things: what the model said, and the
+**harness** that decides what that reply *means* — the prompt format, the
+answer extraction, the retry policy, the scoring rule. Leaderboards report
+the first and hide the second.
+
+Ten questions. The model's reply to each is fixed below and never changes.
+Only the reading of it changes.
+
+```python
+import re
+
+# (what the model said, what it says if the harness asks again, the right answer)
+TRANSCRIPTS = [
+    ("Final Answer: 42000",                   "42000",  "42000"),
+    ("Final Answer: 42,000",                  "42000",  "42000"),
+    ("**Final Answer:** 7300",                "7300",   "7300"),
+    ("Final Answer: 15500 tenge",             "15500",  "15500"),
+    ("The answer is 8900.",                   "8900",   "8900"),
+    ("I think you spent about 23,400 tenge.", "23400",  "23400"),
+    ("Across March 2026, the total was 5100.", "5100",  "5100"),
+    ("Let me add that up... 61200.",          "61200",  "61200"),
+    ("I would need to look that up.",         "19750",  "19750"),
+    ("Final Answer: 31000",                   "31000",  "44000"),   # wrong answer
+]
+```
+
+Three harnesses. Nothing here touches the model — this is all *our* code.
+
+```python
+def strict(reply, ask_again):
+    """Only an exact `Final Answer: <digits>` line counts."""
+    match = re.fullmatch(r"Final Answer:\s*(\d+)", reply.strip())
+    return match.group(1) if match else None
+
+
+def lenient(reply, ask_again):
+    """Take the first number-ish run of digits anywhere in the reply."""
+    match = re.search(r"\d[\d,]*", reply)
+    return match.group(0).replace(",", "") if match else None
+
+
+def lenient_retry(reply, ask_again):
+    """Lenient, and if nothing parsed, ask the model once more."""
+    got = lenient(reply, ask_again)
+    return got if got is not None else lenient(ask_again(), ask_again)
+
+
+HARNESSES = {"strict": strict, "lenient": lenient, "lenient+retry": lenient_retry}
+```
+
+```python
+def score(harness):
+    """Run every fixed transcript through one harness. Returns (rate, extracted)."""
+    extracted = [harness(reply, lambda r=retry: r)
+                 for reply, retry, _ in TRANSCRIPTS]
+    marks = [got == correct
+             for got, (_, _, correct) in zip(extracted, TRANSCRIPTS)]
+    return sum(marks) / len(marks), extracted
+
+
+results = {name: score(h) for name, h in HARNESSES.items()}
+
+print(f"{'harness':<16}{'score':>8}")
+for name, (rate, _) in results.items():
+    print(f"{name:<16}{rate:>7.0%}")
+```
+
+**Same ten replies. Same model. Three different scores.** Nobody touched a
+weight; we changed a regular expression.
+
+The headline spread is not the interesting part. Print what each harness
+actually *pulled out* of each reply, rather than whether it got a mark:
+
+```python
+def cell(got, correct):
+    if got is None:
+        return "-"                      # parsed nothing; scored wrong
+    return f"{got}{'' if got == correct else ' !'}"
+
+
+print(f"{'the model said':<40}{'strict':>9}{'lenient':>9}{'+retry':>9}"
+      f"   {'wanted':>7}")
+for i, (reply, _, correct) in enumerate(TRANSCRIPTS):
+    cells = "".join(f"{cell(results[n][1][i], correct):>9}" for n in HARNESSES)
+    shown = reply if len(reply) <= 38 else reply[:35] + "..."
+    print(f"{shown:<40}{cells}   {correct:>7}")
+print("\n- = parsed nothing   ! = parsed the wrong number")
+```
+
+Read down the columns and the comfortable story falls apart.
+
+**Lenient is not "strict but better".** Look at
+`Across March 2026, the total was 5100.` Both harnesses score it wrong, but
+they fail in opposite ways: strict pulls out **nothing** and abstains, while
+lenient confidently returns **2026** — the first run of digits in the
+sentence. One failure is visible in your logs; the other looks exactly like
+a real answer. A looser extractor lifts your score on some items and
+silently corrupts others, and the aggregate hides both.
+
+**Retrying only rescues one specific failure**: the reply that parsed to
+nothing. It cannot touch a reply that parsed to the wrong thing, because
+nothing signalled a problem. That is the whole +10 points between the last
+two columns — one row. Retry policies look powerful and are narrow.
+
+**No harness fixes the last row.** The model gave a confident, perfectly
+formatted, wrong answer; every harness extracts `31000` and marks it wrong.
+That is the one thing they should all agree on, and the reminder that a
+harness can only lose information the model supplied — never add any.
+
+### What this means for every number you read
+
+The spread you just measured came from one regex and one retry. Published
+comparisons differ by much more than that — prompt template, few-shot count
+and ordering, stop sequences, whether a truncated answer counts, how ties
+are scored.
+
+Three rules follow, and they are the practical content of this section:
+
+1. **"Model X beats model Y" is incomplete.** Ask *under whose harness?*
+   A gap smaller than the harness spread is not a result.
+2. **Fix the harness before comparing anything.** Changing the model and
+   the extraction rule in the same experiment measures neither.
+3. **Most "the model can't do this" is "my harness threw it away".** Before
+   you blame the weights, print the raw replies your scorer rejected. The
+   hallucinated `Observation:` in notebook 10 is this exact bug: a parser
+   that read too far, not a model that lied.
+
+This is why the rest of this notebook pins everything it can — `TODAY`, the
+seeds, the scripted replies. Not tidiness. Without it, a rerun measures the
+harness drifting rather than the agent changing.
+
+> **Exercise 4.** Add a fourth harness that asks the model to *reformat*
+> its own answer when parsing fails, instead of re-answering — then explain
+> why that is safer than `lenient+retry` for an agent that has already taken
+> actions. Then do the harder one: write an extractor that scores row 7
+> correctly without breaking any other row, and say what assumption you had
+> to add about the answer's shape.
+
+## 20.8 · A regression suite that runs in CI
 
 Here is the pay-off of the scripted model, and the reason this notebook
 needs no GPU: **record what a real model did once, replay it forever.**
@@ -533,7 +677,7 @@ print("CI would", "FAIL:" if failures else "pass.", "; ".join(failures))
 print(f"\n(mean {report.mean_tool_calls:.1f} tool calls - track this across commits too)")
 ```
 
-## 20.8 · What to track over time
+## 20.9 · What to track over time
 
 Six numbers. Report them together; any one of them alone is misleading.
 
@@ -555,7 +699,7 @@ how an incident gets shipped with a green dashboard.
 > An agent you cannot trace is an agent you cannot debug; an agent you only
 > score on its answers is an agent you cannot trust.
 
-> **Exercise 4.** Build a scorecard function that takes a report and prints
+> **Exercise 5.** Build a scorecard function that takes a report and prints
 > all six metrics, then run it against both the broken `SCRIPTS` and your
 > fixed versions from exercise 1. Commit the suite as
 > `tests/test_my_agent.py` and make it run in CI. Then write down the one
@@ -572,7 +716,12 @@ how an incident gets shipped with a green dashboard.
 6. Name three ways an LLM judge misleads you.
 7. Distinguish pass@k from pass^k. Which applies to an agent that can
    send email, and why?
-8. What can a replayed trace verify, and what can it never verify?
+8. The same ten replies scored 10%, 70% and 80%. What changed, and what
+   does that imply about any two models compared in different papers?
+9. On `Across March 2026, the total was 5100.` both the strict and the
+   lenient harness are wrong. Why is the lenient failure the more dangerous
+   of the two?
+10. What can a replayed trace verify, and what can it never verify?
 
 ➡️ **Where next:** that is the end of the agents track. Take the
 [capstone](12_capstone_daily_assistant.html) if you have not, and build its
