@@ -95,6 +95,14 @@ actively misleading, the entry says so.
 
 ## A to Z
 
+**Active parameters** — How many parameters actually run for each token, as
+opposed to how many are stored. Identical to the total in a dense model; far
+smaller in an *MoE* one, where `Qwen3-30B-A3B` means 30B total and 3B active.
+**Total parameters predict memory; active parameters predict speed and serving
+cost; neither predicts quality.** A comparison that quotes one without saying
+which is not a comparison. See
+[handbook chapter 8](../handbook/who-builds-them.html#total-parameters-and-active-parameters).
+
 **Adapter** — A small set of trained weights added to a frozen base model. See
 *LoRA*. A few megabytes rather than a few gigabytes.
 
@@ -261,7 +269,8 @@ probability. Robust at high temperature.
 
 **MoE (Mixture of Experts)** — Only a subset of parameters ("experts") is used
 per token. Qwen3-30B-A3B has 30B total but ~3B active: memory of a large model,
-speed closer to a small one.
+speed closer to a small one. See *active parameters*, and
+[handbook chapter 8](../handbook/who-builds-them.html#total-parameters-and-active-parameters).
 
 **Open weights** ⭐ — The trained parameters are published; the training data
 usually is not. Distinct from *open source*. See

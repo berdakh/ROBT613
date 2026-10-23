@@ -163,7 +163,7 @@ evening, and it answers the questions students actually ask.
 ```
 notebooks/        22 teaching notebooks (12 core + training, agents, maths, language)
 notebook_src/     their source (percent format) - edit these, not the .ipynb
-docs/handbook/    7-chapter background handbook (no code required)
+docs/handbook/    8-chapter background handbook (no code required)
 src/qwen_workshop/
     config.py     model catalogue and sampling presets
     env.py        hardware and package detection
@@ -185,7 +185,7 @@ scripts/          check_env, download_models, smoke_test
 solutions/        exercise + checkpoint answers for instructors
 tests/            294 tests that run without a model, GPU or network
 docs/             the GitHub Pages site
-    assets/diagrams/  43 generated SVG figures, used by notebooks and handbook
+    assets/diagrams/  46 generated SVG figures, used by notebooks and handbook
 tools/
     nbbuild.py        notebook_src/*.py  ->  notebooks/*.ipynb
     nbpages.py        notebooks/*.ipynb  ->  docs/notebooks/*.md (the site)
@@ -212,7 +212,7 @@ framework. You implement quantization in NumPy before using `bitsandbytes`. You
 see the raw `<tool_call>` text before using a parser.
 
 **Everything is generated and checked.** Notebooks come from `notebook_src/*.py`
-and the 43 figures come from `tools/make_diagrams.py`, so both stay reviewable
+and the 46 figures come from `tools/make_diagrams.py`, so both stay reviewable
 in a diff. CI fails if either drifts, if a code cell stops parsing, or if any
 link or image path breaks.
 

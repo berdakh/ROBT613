@@ -68,7 +68,7 @@ Skipping it is the single most common cause of `ModuleNotFoundError`.
 
 Each notebook embeds SVG diagrams from `../docs/assets/diagrams/`. They render
 in JupyterLab, on GitHub and on the course site, and adapt to light or dark
-themes. All 43 are collected on one page:
+themes. All 46 are collected on one page:
 [`docs/guides/diagrams.md`](../docs/guides/diagrams.md).
 
 ## Editing these notebooks

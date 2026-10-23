@@ -636,6 +636,7 @@ def roadmap():
 
 # Importing these modules registers their diagrams into DIAGRAMS.
 import diagrams_agents  # noqa: E402,F401
+import diagrams_economics  # noqa: E402,F401
 import diagrams_handbook  # noqa: E402,F401
 import diagrams_language  # noqa: E402,F401
 import diagrams_maths  # noqa: E402,F401
