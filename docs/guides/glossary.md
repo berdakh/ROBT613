@@ -1,7 +1,7 @@
 ---
 title: Glossary
 parent: Guides
-nav_order: 10
+nav_order: 7
 ---
 
 # Glossary

@@ -1,6 +1,6 @@
 # Exercise solutions
 
-All 56 in-notebook exercises, in order. See [README](README.md) for the
+All 61 in-notebook exercises, in order. See [README](README.md) for the
 confidence markers (✅ verified · 🔬 expected · ✍️ yours).
 
 ---
@@ -2006,3 +2006,161 @@ chat workloads much less.
 **Marking note.** Full credit needs the algebra *and* the observation that
 $$n^*$$ is independent of the number of layers (it cancels — both terms are
 per-block) and of the number of heads (which only splits a fixed budget).
+
+---
+
+# Notebook 22 — Working in Kazakh and Russian
+
+## 22-1 · Measure your own multiplier
+
+> Replace `SAMPLES` with three sentences of your own and re-run 22.3 and 22.4.
+> Then compare a technical Kazakh sentence with borrowed terms against a purely
+> Kazakh one.
+
+✍️ **The number is theirs, not mine** — that is the point of the exercise. What
+to check in their write-up:
+
+- **They used held-out text.** If their sentences appear in the training
+  corpus the measurement is meaningless. This is the mistake the notebook
+  admits to making.
+- **They reported chars/token, not token counts.** A longer sentence has more
+  tokens; only the ratio is comparable.
+
+🔬 **Expected on the borrowed-terms question: the technical sentence is
+*cheaper*.** Words like `компьютер`, `университет`, `информация` and
+`студент` are international borrowings that appear in Russian, Ukrainian,
+Bulgarian and transliterated English across the training corpus, so a
+multilingual tokenizer has usually learned merges for them. Purely Kazakh
+vocabulary — `ауа райы`, `өтінеміз`, `бағасы` — has not.
+
+**The uncomfortable implication**, worth drawing out: *the tokenizer is
+cheapest exactly where Kazakh is least itself.* A register that borrows
+heavily from Russian costs less than careful literary Kazakh. That is a real
+economic pressure on language use, created by an implementation detail.
+
+---
+
+## 22-2 · Fix the balanced-corpus experiment
+
+> Assemble a varied Kazakh corpus of 50,000+ words, retrain the BPE balanced
+> against the English, and report all three ratios. Watch English too.
+
+✍️ **Open-ended, and the most valuable exercise in the notebook.** Sources
+worth pointing students at: Kazakh Wikipedia dumps, `adilet.zan.kz` for open
+legal texts, Kazakh-language news archives, and the `kk` splits of OSCAR or
+CC-100.
+
+🔬 **Expected outcome, in two parts:**
+
+1. **Kazakh improves substantially** — from ~1.1 chars/token toward 2.5–3.5,
+   because the BPE can finally learn Kazakh subwords and suffixes. Kazakh is
+   agglutinative, so common suffixes (`-дың`, `-мен`, `-ларда`) are
+   high-frequency and merge early once the data is there.
+2. **English gets worse.** This is the part students miss and the part that
+   matters. The merge budget is fixed, so every merge spent on Kazakh is one
+   not spent on English.
+
+✅ **The principle:** vocabulary is **zero-sum at a fixed size**. A tokenizer
+serving many languages well needs a *bigger* vocabulary, which costs embedding
+parameters and output-layer compute in every model that uses it. This is why
+multilingual tokenizers are large, and why "just add more languages" is not
+free.
+
+**Marking note.** Credit the measurement of English degradation at least as
+much as the Kazakh improvement. A student who reports only the good news has
+run the experiment without understanding the trade-off.
+
+**Push them further:** does the Kazakh improvement come mostly from suffixes
+or from stems? Have them inspect the learned merges. Suffix merges should
+dominate, which is a nice confirmation that BPE discovers morphology without
+being told it exists.
+
+---
+
+## 22-3 · Context budgets with a real document
+
+> Measure how much of a real Kazakh and English document fits in a 4k and a
+> 32k window. Does your chunking strategy from notebook 09 still work?
+
+🔬 **Expected shape:** whatever multiplier they measured in 22-1, the Kazakh
+document fits in roughly `1/multiplier` of the space. At 2x, half.
+
+✅ **The answer to the design question is no, and for a specific reason.**
+Notebook 09 chunks by a token count. With the same token budget per chunk, a
+Kazakh chunk holds about half the *content* of an English one — so at the same
+`k`, retrieval returns half as much information.
+
+**The fix is one line:** chunk by **characters**, not tokens. Then chunks hold
+comparable content in both languages, and you size `k` against content rather
+than against an encoding artefact.
+
+**Push them further:** what breaks if you chunk by characters? Your chunks are
+no longer a predictable number of tokens, so you can overflow the context
+window if you are not careful. The honest answer is to chunk by characters and
+*check* the token count, rather than to let the tokenizer dictate your
+semantics.
+
+---
+
+## 22-4 · A Kazakh evaluation set
+
+> Write ten test cases from the probe list, run them against `qwen3:0.6b` and
+> `qwen3:8b`, and score them.
+
+✍️ **Genuinely open — and genuinely scarce.** There is no published
+Kazakh-language evaluation of Qwen3 that I am aware of, which is exactly why
+this exercise exists.
+
+✅ **What makes a submission good, regardless of the numbers:**
+
+| | |
+|---|---|
+| **Test cases written before running anything** | otherwise the criteria drift to match the output |
+| **Code-switching checked automatically** | `script_report` makes this free; counting Kazakh-specific letters is the discriminator |
+| **Both models run on identical prompts** | the 0.6B→8B comparison is the most informative axis |
+| **Repeated runs** | notebook 20's point: one run per arm is a coin flip |
+| **Disagreements recorded** | where two students scored the same output differently, that is a rubric problem worth naming |
+
+🔬 **What I would expect, stated as a prediction to be falsified:** the 0.6B
+model code-switches substantially on Kazakh prompts and produces
+Russian-inflected Kazakh; the 8B is markedly better on both. I have **not**
+measured this and students should be told so plainly — if their results
+contradict it, their results win.
+
+**Marking note.** This is a publishable artefact. A class that does it
+carefully has produced something that does not currently exist, and it is
+worth putting somewhere public with the methodology attached.
+
+---
+
+## 22-5 · Kazakh RAG with and without hybrid search
+
+> Build a Kazakh version of notebook 09's evaluation: 10 questions over Kazakh
+> documents with verified sources. Measure recall@3 with embeddings alone and
+> with hybrid search.
+
+✍️ **The single most useful measurement in the notebook.**
+
+✅ **Method notes to insist on**, all inherited from notebook 09:
+
+- **Verify every expected source by reading the text.** When this workshop
+  built its own English evaluation set, that check rejected two questions
+  whose answers turned out to be in a different document. Expect the same rate.
+- **Report recall@1 and recall@3**, not just one.
+- **Keep the question set fixed** between the two runs, or you are comparing
+  nothing.
+
+🔬 **Expected: hybrid search helps more in Kazakh than it does in English.**
+Two reasons, and students should be able to give both:
+
+1. The embedding model is weaker in Kazakh, so the dense half of the hybrid is
+   contributing less — leaving more headroom for BM25 to add.
+2. BM25 is script-agnostic. Names, institutions and borrowed technical terms
+   match exactly regardless of how well the embedding model understands
+   Kazakh.
+
+**The complication worth raising:** Kazakh is agglutinative, so `қаладан`,
+`қалада` and `қалаға` are all forms of `қала`. Naive BM25 treats them as three
+unrelated terms. A student who notices this and adds even crude suffix
+stripping should see a further jump — and has discovered why stemming matters
+more for Kazakh than for English.

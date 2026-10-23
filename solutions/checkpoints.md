@@ -1,8 +1,8 @@
 # Checkpoint answers
 
-The 119 questions that close notebooks 01–11, the training (13–16) and agents
-(17–20) tracks, and the mathematics deep dive (21). Use them as an oral check, a quick
-written quiz, or a revision sheet.
+The 127 questions that close notebooks 01–11, the training (13–16) and agents
+(17–20) tracks, the mathematics deep dive (21) and the Kazakh/Russian material
+(22). Use them as an oral check, a quick written quiz, or a revision sheet.
 
 Markers as in the [README](README.md): ✅ verified · 🔬 expected · ✍️ yours.
 Unmarked answers are definitional and safe to assert.
@@ -799,3 +799,61 @@ $$4d_{\text{model}}^2$$ — 9.4 M against 4.2 M at Qwen3-0.6B's dimensions. At
 512 tokens the **projections** dominate the FLOPs; the attention matmuls are
 about 8% of them. Attention only takes over past roughly
 $$n = 4d_{\text{model}} + 3d_{ff}$$ tokens, which is ≈13,000 for that model.
+
+---
+
+## 22 · Working in Kazakh and Russian
+
+**1. How many bytes does a Cyrillic character take in UTF-8, and why is that
+only a floor?**
+**Two**, against one for ASCII — exact and unavoidable. It is only a floor
+because bytes are not tokens: the tokenizer adds a further penalty on top, and
+that second penalty is larger and is a design choice rather than a property of
+the encoding.
+
+**2. Why does a tokenizer trained on English-dominant data split Kazakh into
+single letters?**
+BPE repeatedly merges the **most frequent adjacent pair**. In a corpus that is
+99% English, no Cyrillic pair is ever frequent enough to win a merge, so
+Cyrillic never gets merged beyond single characters. Not malice or bad design —
+a greedy algorithm optimising for the data it was given.
+
+**3. Does a bigger vocabulary narrow or widen the gap?**
+**Widens it.** The notebook measures the multiplier growing from 2.0x to 3.2x
+as merges go from 500 to 4,000. Extra merges go to whatever is frequent, which
+is English, so scaling the vocabulary scales the advantage. The fix is a
+corpus where the language is not a rounding error — not a bigger vocabulary.
+
+**4. Give the three practical costs of a 2x token multiplier.**
+**Context** — a 32k window holds ~131k characters of English but only ~65k of
+Kazakh, so users silently get half the document. **Cost** — twice the bill for
+the same content on per-token pricing. **Latency** — roughly twice the
+generation time, since tokens are produced one at a time. ✅ The third is the
+most visible to users and the least discussed.
+
+**5. Why does checking "is the answer Cyrillic?" fail to detect
+code-switching, and what works?**
+Because **Russian is Cyrillic too** — a Russian reply to a Kazakh question
+scores 1.0 on that test. What works is counting the nine letters Kazakh has
+and Russian does not: **ә ғ қ ң ө ұ ү һ і**. Almost any real Kazakh sentence
+contains several; a Russian sentence contains none.
+
+**6. Name the two compounding reasons RAG degrades in Kazakh.**
+**Chunks hold less** — chunking by tokens means a Kazakh chunk carries about
+half the content, so retrieval is half as informative at the same `k`. And
+**embeddings are weaker**, because embedding models are trained on the same
+skewed corpora, so recall drops *on top of* the smaller chunks. Fix the first
+immediately by chunking on characters.
+
+**7. Will LoRA fine-tuning reduce your token costs?**
+**No.** An adapter changes behaviour, not the vocabulary. The tokenizer is
+untouched, so your Kazakh text costs exactly the same number of tokens after
+fine-tuning as before. People expect otherwise and are disappointed.
+
+**8. What is the root cause underneath all of this?**
+**The scarcity of varied Kazakh text on the public internet.** Not the script,
+not the grammar, not the agglutinative morphology. The tokenizer is unfair
+because the corpus is skewed; model quality is lower for the same reason; and
+fine-tuning is hard because the data is not there. ✅ The notebook demonstrates
+this accidentally — the author could not build the balanced-corpus comparison
+precisely because no varied Kazakh corpus was to hand.

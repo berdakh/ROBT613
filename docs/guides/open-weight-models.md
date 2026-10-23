@@ -1,7 +1,7 @@
 ---
 title: Open-weight models
 parent: Guides
-nav_order: 2
+nav_order: 3
 ---
 
 # Open-weight models — the full picture

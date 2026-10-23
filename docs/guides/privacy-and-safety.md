@@ -1,7 +1,7 @@
 ---
 title: Privacy and safety
 parent: Guides
-nav_order: 5
+nav_order: 8
 ---
 
 # Privacy and safety

@@ -1,7 +1,7 @@
 ---
 title: Capstone rubric
 parent: Guides
-nav_order: 8
+nav_order: 11
 ---
 
 # Capstone rubric

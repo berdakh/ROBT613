@@ -104,6 +104,8 @@ and open it in Colab with one click** — no clone, no install, no GPU to begin.
 | 20 | [Evaluating agents](notebooks/20_evaluating_agents.ipynb) | Outcome vs trajectory; lucky passes; a CI suite | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/20_evaluating_agents.ipynb) |
 | **Optional — the mathematics** |||||
 | 21 | [Attention from scratch](notebooks/21_attention_from_scratch.ipynb) | Derive attention, prove the causal mask, implement RoPE | 2 h | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/21_attention_from_scratch.ipynb) |
+| **Optional — building in Kazakh or Russian** |||||
+| 22 | [Kazakh and Russian](notebooks/22_kazakh_and_russian.ipynb) | Measure the tokenizer tax; build a tokenizer to see why | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/22_kazakh_and_russian.ipynb) |
 
 Short on time? Priority order: **01, 03, 07, 09, 10** are the essential five.
 
@@ -159,7 +161,7 @@ evening, and it answers the questions students actually ask.
 ## What is in this repository
 
 ```
-notebooks/        21 teaching notebooks (12 core + training, agents and maths)
+notebooks/        22 teaching notebooks (12 core + training, agents, maths, language)
 notebook_src/     their source (percent format) - edit these, not the .ipynb
 docs/handbook/    7-chapter background handbook (no code required)
 src/qwen_workshop/
@@ -181,9 +183,9 @@ src/qwen_workshop/
 data/             sample notes, pantry, expenses, inbox, eval questions
 scripts/          check_env, download_models, smoke_test
 solutions/        exercise + checkpoint answers for instructors
-tests/            279 tests that run without a model, GPU or network
+tests/            293 tests that run without a model, GPU or network
 docs/             the GitHub Pages site
-    assets/diagrams/  42 generated SVG figures, used by notebooks and handbook
+    assets/diagrams/  43 generated SVG figures, used by notebooks and handbook
 tools/
     nbbuild.py        notebook_src/*.py  ->  notebooks/*.ipynb
     nbpages.py        notebooks/*.ipynb  ->  docs/notebooks/*.md (the site)
@@ -210,7 +212,7 @@ framework. You implement quantization in NumPy before using `bitsandbytes`. You
 see the raw `<tool_call>` text before using a parser.
 
 **Everything is generated and checked.** Notebooks come from `notebook_src/*.py`
-and the 42 figures come from `tools/make_diagrams.py`, so both stay reviewable
+and the 43 figures come from `tools/make_diagrams.py`, so both stay reviewable
 in a diff. CI fails if either drifts, if a code cell stops parsing, or if any
 link or image path breaks.
 
@@ -226,7 +228,7 @@ rather than pretending the gap is not there.
 
 ## For instructors
 
-Worked answers to all 56 exercises and 119 checkpoint questions are in
+Worked answers to all 61 exercises and 127 checkpoint questions are in
 [`solutions/`](solutions/) — with confidence markers, since the ones that depend
 on a real run are estimates until you teach it once.
 
@@ -234,7 +236,7 @@ on a real run are estimates until you teach it once.
 make install          # latest compatible versions
 make install-locked   # the exact versions you teach with
 make lock             # regenerate the lock file from a verified environment
-make test             # 279 tests, no model or network needed
+make test             # 293 tests, no model or network needed
 make check       # tests + notebooks built and valid
 make lint        # ruff
 make notebooks   # rebuild .ipynb from notebook_src/
