@@ -252,7 +252,9 @@ makes reasoning visible, and matching embedding and reranker models. It is also
 a rare family where the *small* models are good, which matters when your
 students have laptops.
 
-See [The Qwen family](qwen-family.html) for which specific model to pick.
+See [The Qwen family](qwen-family.html) for which specific model to pick,
+and [handbook chapter 8](../handbook/who-builds-them.html) for how these
+families are built, what that costs, and how closed models compare.
 
 ---
 

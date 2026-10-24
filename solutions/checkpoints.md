@@ -1,6 +1,6 @@
 # Checkpoint answers
 
-The 127 questions that close notebooks 01–11, the training (13–16) and agents
+The 129 questions that close notebooks 01–11, the training (13–16) and agents
 (17–20) tracks, the mathematics deep dive (21) and the Kazakh/Russian material
 (22). Use them as an oral check, a quick written quiz, or a revision sheet.
 
@@ -726,7 +726,27 @@ retry. **pass^k**: did it pass *every* run — right when the agent acts on the
 world. For anything that can send email, **pass^k**, because one bad run is the
 incident, and it is a much harsher number.
 
-**8. What can a replayed trace verify, and what can it never verify?**
+**8. The same ten replies scored 10%, 70% and 80%. What changed, and what does
+that imply about any two models compared in different papers?**
+✅ **Only the harness changed** — one regular expression and one retry policy.
+The model's ten replies were fixed bytes throughout. The implication: a score
+is a property of the *pair* (model, harness), never of the model alone. Two
+numbers from different papers are not comparable unless the harnesses match,
+and a gap smaller than the harness spread — 60 points here, from a regex — is
+not a result. The practical rule: fix the harness, then vary the model.
+
+**9. On `Across March 2026, the total was 5100.` both the strict and the lenient
+harness are wrong. Why is the lenient failure the more dangerous of the two?**
+✅ **Because of *how* each one is wrong.** Strict parses nothing and abstains;
+the failure is visible in the logs as a missing answer and someone goes and
+looks. Lenient confidently returns **2026** — the first run of digits in the
+sentence — which is indistinguishable from a real answer downstream. A silent
+wrong value propagates into aggregates, dashboards and decisions; a visible
+abstention stops. *(This is the same distinction as a crash versus silent data
+corruption, and the same reason the forbidden-tool count in the scorecard is a
+gate rather than a rate.)*
+
+**10. What can a replayed trace verify, and what can it never verify?**
 It verifies **your code**: that tool results still reach the model, that
 `max_steps` holds, that forbidden-tool checks still fire — instantly, free,
 in CI, on every commit. It can **never** verify that the model still makes

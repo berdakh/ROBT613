@@ -136,6 +136,12 @@ Plus a cluster of thousands of GPUs, an interconnect fast enough to keep them
 busy, and engineers who can keep a weeks-long run from dying. **You will not do
 this**, and that is fine — it is exactly why open weights matter.
 
+{: .note }
+> Those are order-of-magnitude bands. For the two models that have disclosed
+> real figures — and for why a quoted training cost is always a floor rather
+> than a price tag — see
+> [chapter 8](who-builds-them.html#what-it-costs-to-build-one).
+
 ### What comes out: a base model
 
 A **base model** completes text. It does not follow instructions, has no chat

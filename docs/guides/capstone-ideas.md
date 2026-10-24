@@ -171,6 +171,19 @@ recurring annoyance in your own week, that is your capstone. Ask:
 
 ---
 
+## Which model should I use?
+
+Short answer for almost every project on this page: **Qwen3-8B at int4.** It
+does tool calling and RAG reliably, fits 8 GB of VRAM and runs on a free Colab
+T4.
+
+For the projects that need something else — code assistants, anything reading
+images or documents, anything in Kazakh — see
+[which model for which project](../handbook/who-builds-them.html#which-model-for-which-project),
+which maps each kind of build to a starting model and names the thing that
+usually bites. Then clamp to your hardware with
+[The Qwen family](qwen-family.html#which-one).
+
 ## Scoping advice
 
 You have roughly **3 hours of build time**. That means:

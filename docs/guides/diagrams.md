@@ -289,3 +289,24 @@ Notebook 22 and the [language guide](kazakh-and-russian.html). Each step
 multiplies the one before it.
 
 <img src="../assets/diagrams/lang-tax.svg" alt="The same sentence, then two bytes per character in UTF-8, then two to three times the tokens, with the multiplier hitting context, cost and latency at once" width="100%">
+
+---
+
+## Who builds the models
+
+### Total parameters versus active parameters
+[Chapter 8](../handbook/who-builds-them.html). The number that predicts memory
+and the number that predicts speed are not the same number.
+
+<img src="../assets/diagrams/ec-params.svg" alt="A dense model runs every parameter for every token; a Mixture-of-Experts model keeps all experts in memory but activates only a couple per token" width="100%">
+
+### What a model costs, and which part gets quoted
+The disclosed figure covers the final training run. These are the line items it
+leaves out.
+
+<img src="../assets/diagrams/ec-cost-stack.svg" alt="The final training run is one line item; failed runs, research compute, salaries, data work and the cluster itself are excluded from the quoted figure" width="100%">
+
+### How open is it, really?
+Four rungs, not two. Only the top one lets you reproduce the model.
+
+<img src="../assets/diagrams/ec-disclosure.svg" alt="Four rungs of openness: fully open with data and code, open weights, open weights under a restricted licence, and closed models that publish no parameter count" width="100%">

@@ -73,6 +73,9 @@ Two things that break the naive size ordering:
 
 - **Mixture of Experts.** Qwen3-30B-A3B has 30B parameters but activates ~3B per
   token. Memory of a large model, speed of a small one.
+  [Chapter 8](who-builds-them.html#total-parameters-and-active-parameters)
+  takes this apart properly — it is the commonest way a model comparison
+  misleads.
 - **Training budget.** A small model trained on far more tokens beats an older
   larger one. Size alone is not capability.
 

@@ -88,11 +88,20 @@ actively misleading, the entry says so.
 | **Prompt injection** ⭐ | A note slipped into a document that the reader mistakes for instructions from their boss. | The model has no way to tell your instructions from text it read. |
 | **max_steps** | The taxi meter limit you agree before setting off. | — |
 | **pass@k vs pass^k** | "Got it right at least once in 5 tries" vs "got it right all 5 times". | For anything that sends email or moves files, only the second one counts. |
+| **Harness** / scaffolding | The cart, reins and traces. The horse supplies the power; the harness is what makes it pull something. | Swap the harness and the same horse pulls a different load — which is why benchmark scores are a property of both, never of the model alone. |
 | **MCP** | USB-C for tools. Write the adapter once; every client can use it. | — |
 
 ---
 
 ## A to Z
+
+**Active parameters** — How many parameters actually run for each token, as
+opposed to how many are stored. Identical to the total in a dense model; far
+smaller in an *MoE* one, where `Qwen3-30B-A3B` means 30B total and 3B active.
+**Total parameters predict memory; active parameters predict speed and serving
+cost; neither predicts quality.** A comparison that quotes one without saying
+which is not a comparison. See
+[handbook chapter 8](../handbook/who-builds-them.html#total-parameters-and-active-parameters).
 
 **Adapter** — A small set of trained weights added to a frozen base model. See
 *LoRA*. A few megabytes rather than a few gigabytes.
@@ -201,6 +210,28 @@ but a property to be managed — with retrieval, citations and refusals.
 
 **Handoff** — One agent passing work to another. Repeating a story to the next person: each retelling loses detail. The cost nobody counts in a multi-agent design.
 
+**Harness** — Everything around the model that turns "predict the next token"
+into useful work. From *test harness* in software, and before that a horse's
+harness: the model is the engine, the harness is the gear that connects it to
+the load. Two kinds, often confused:
+
+* An **evaluation harness** turns a model into a *number*. It owns the prompt
+  format, the few-shot examples, how an answer is extracted from free text, the
+  scoring rule and the aggregation. `lm-evaluation-harness` is the standard one.
+* An **agent harness** — also called **scaffolding** — turns a model into a
+  *system that acts*: the loop, the tool definitions, the parser, the retries,
+  the memory, the context assembly, the stopping condition. Notebooks 17–20
+  build one from nothing.
+
+**The same weights score differently under different harnesses, often by more
+than two models differ from each other.** Change the answer-extraction rule and
+a benchmark moves points; add a retry-on-parse-failure and "capability" rises
+with no weight changed. So "model X beats model Y" means nothing until you ask
+*under whose harness?* — and your own comparisons are only valid with the
+harness held fixed. It also means most agent failures are harness bugs, not
+model limitations: notebook 10's hallucinated `Observation:` is a parser that
+read too far, not a model that lied.
+
 **Hybrid search** — Combining semantic (embedding) and keyword (BM25) retrieval.
 Almost always better than either alone.
 
@@ -238,7 +269,8 @@ probability. Robust at high temperature.
 
 **MoE (Mixture of Experts)** — Only a subset of parameters ("experts") is used
 per token. Qwen3-30B-A3B has 30B total but ~3B active: memory of a large model,
-speed closer to a small one.
+speed closer to a small one. See *active parameters*, and
+[handbook chapter 8](../handbook/who-builds-them.html#total-parameters-and-active-parameters).
 
 **Open weights** ⭐ — The trained parameters are published; the training data
 usually is not. Distinct from *open source*. See
