@@ -1,6 +1,6 @@
 # Exercise solutions
 
-All 61 in-notebook exercises, in order. See [README](README.md) for the
+All 62 in-notebook exercises, in order. See [README](README.md) for the
 confidence markers (✅ verified · 🔬 expected · ✍️ yours).
 
 ---
@@ -1771,7 +1771,75 @@ can't tell" has given the right answer. One who reports "80% is better than
 
 ---
 
-## 20-4 · The scorecard, and an honest xfail
+## 20-4 · A reformatting harness, and an extractor that reads row 7
+
+> Add a fourth harness that asks the model to *reformat* its answer when
+> parsing fails, rather than re-answer; say why that is safer for an agent
+> that has already acted. Then write an extractor that scores
+> `Across March 2026, the total was 5100.` correctly without breaking any
+> other row, and name the assumption you had to add.
+
+✅ **The reformatting harness.** The only change is what you put in the second
+prompt:
+
+```python
+def lenient_reformat(reply, ask_again):
+    got = lenient(reply, ask_again)
+    if got is not None:
+        return got
+    # Not "answer again" - "say that same answer as digits only".
+    return lenient(ask_again(), ask_again)
+```
+
+On the notebook's transcripts it scores the same **80%** as `lenient+retry`,
+because the fixture returns one canned retry either way. The difference is not
+in the score; it is in what you asked the model to do.
+
+✅ **Why it is safer after the agent has acted.** "Answer again" invites a
+*fresh* run — and a fresh run of an agent with tools may send the message a
+second time, or re-book the room. Re-answering is only safe for a pure
+question-answering system. Reformatting touches nothing: the work is already
+done and you are asking for a different rendering of a result the agent
+already holds. **For anything with side effects, never retry the action when
+what failed was the parsing.**
+
+✍️ **An extractor that reads row 7.** The honest answer is that you cannot do
+it from the digits alone — `2026` and `5100` are both just numbers. You must
+add an assumption. Three that work, in increasing order of how much they
+assume:
+
+```python
+# (a) Take the LAST number, not the first. The answer usually ends the sentence.
+re.findall(r"\d[\d,]*", reply)[-1]
+
+# (b) Reject anything that looks like a year in context.
+[n for n in re.findall(r"\d[\d,]*", reply) if not re.match(r"(19|20)\d\d$", n)]
+
+# (c) Require the number to follow an answer-ish cue
+#     ("total was", "answer is", "comes to", "Final Answer:").
+```
+
+✅ **Measured on the notebook's ten transcripts, (a) and (b) both score 80%**
+— every row except the one needing a retry and the one the model simply got
+wrong — and crucially both read row 7 as `5100` where `lenient` returns `2026`.
+On this fixture they are indistinguishable. They differ only in *where they
+would break next*, which is the thing worth reasoning about:
+
+* **(a) assumes the answer is the last quantity mentioned.** Usually true of a
+  model's prose, and quietly false the moment a reply ends with a citation, a
+  page number, a unit conversion or a follow-up question. That drift moves a
+  published score with nobody editing a model.
+* **(b) assumes no genuine answer looks like a year.** Safe here, wrong for any
+  price, count or quantity that lands in 1900–2099.
+
+Neither is "correct". Both buy row 7 with an assumption, and the assumptions
+fail on different inputs.
+
+**The real lesson**: every extractor encodes a belief about the shape of the
+answer. Write that belief down next to the number it produces, because when
+the number changes next quarter, the belief is the first thing to check.
+
+## 20-5 · The scorecard, and an honest xfail
 
 > Build a scorecard printing all six metrics, run it on the broken and fixed
 > suites, commit it to CI. Then add one case you know fails, marked `xfail`.

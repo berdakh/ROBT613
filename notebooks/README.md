@@ -27,7 +27,7 @@ button on each page.
 | 17 | `17_tools_and_memory.ipynb` | nothing | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/17_tools_and_memory.ipynb) |
 | 18 | `18_planning_and_decomposition.ipynb` | nothing | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/18_planning_and_decomposition.ipynb) |
 | 19 | `19_multi_agent_systems.ipynb` | nothing | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/19_multi_agent_systems.ipynb) |
-| 20 | `20_evaluating_agents.ipynb` | nothing | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/20_evaluating_agents.ipynb) |
+| 20 | `20_evaluating_agents.ipynb` | nothing | 2 h | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/20_evaluating_agents.ipynb) |
 | 21 | `21_attention_from_scratch.ipynb` | nothing | 2 h | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/21_attention_from_scratch.ipynb) |
 | 22 | `22_kazakh_and_russian.ipynb` | nothing | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/22_kazakh_and_russian.ipynb) |
 
@@ -68,7 +68,7 @@ Skipping it is the single most common cause of `ModuleNotFoundError`.
 
 Each notebook embeds SVG diagrams from `../docs/assets/diagrams/`. They render
 in JupyterLab, on GitHub and on the course site, and adapt to light or dark
-themes. All 43 are collected on one page:
+themes. All 46 are collected on one page:
 [`docs/guides/diagrams.md`](../docs/guides/diagrams.md).
 
 ## Editing these notebooks

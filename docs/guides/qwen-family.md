@@ -51,6 +51,11 @@ of RAM but modest compute.
 > mechanism, then scale up. Debugging a 0.6B model takes seconds per iteration;
 > debugging a 14B model takes minutes.
 
+This table maps **hardware** to a model. For the other half of the decision —
+which model a given *task* needs — see
+[which model for which project](../handbook/who-builds-them.html#which-model-for-which-project).
+Choose by task first, then clamp to what your machine can hold.
+
 ### Thinking mode
 
 Qwen3 hybrid checkpoints can emit a reasoning block before answering:
