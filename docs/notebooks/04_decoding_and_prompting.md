@@ -9,8 +9,8 @@ nav_order: 4
 # 04 · Decoding, thinking mode, and prompts that work
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/04_decoding_and_prompting.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT613/blob/master/notebooks/04_decoding_and_prompting.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/04_decoding_and_prompting.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/04_decoding_and_prompting.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -44,11 +44,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -156,7 +156,7 @@ for temp in (0.1, 0.7, 1.3):
 At `T=0.1` the two runs are nearly identical. At `T=1.3` they diverge — and
 quality becomes a lottery.
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/sampling.svg" alt="Sampling narrows the vocabulary by temperature then top-k/top-p before picking one token" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/sampling.svg" alt="Sampling narrows the vocabulary by temperature then top-k/top-p before picking one token" width="100%">
 
 ## 4.3 · top-p, top-k and min-p
 
@@ -239,7 +239,7 @@ Identical output. Note greedy decoding is **not** recommended for Qwen3
 thinking mode — it tends to fall into repetition loops — but it is ideal for
 structured extraction.
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/thinking-mode.svg" alt="Thinking mode inserts a hidden reasoning block before the visible answer" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/thinking-mode.svg" alt="Thinking mode inserts a hidden reasoning block before the visible answer" width="100%">
 
 ## 4.5 · Thinking mode
 
@@ -363,7 +363,7 @@ Models invent answers partly because nothing in the prompt permits them not
 to. Say explicitly that "I don't know" is an acceptable answer.
 
 ```python
-unanswerable = "What was the exact attendance at the ROBT613 lecture on 3 March 2019?"
+unanswerable = "What was the exact attendance at the ROBT407LLM lecture on 3 March 2019?"
 
 print("--- without escape hatch ---")
 wrap_print(chat(qwen, unanswerable, sampling=SamplingParams(temperature=0.3)).text)

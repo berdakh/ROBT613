@@ -14,7 +14,7 @@ works, and ship something you actually use.
 
 [Start with Day 1](days/day-1.html){: .btn .btn-primary .mr-2 }
 [Browse the notebooks](notebooks/){: .btn .mr-2 }
-[Get the code](https://github.com/berdakh/ROBT613){: .btn }
+[Get the code](https://github.com/berdakh/ROBT407LLM){: .btn }
 
 All 20 notebooks are **readable on this site** and open in Google Colab with one
 click — no GitHub account, no install, no GPU to get started.
@@ -66,8 +66,8 @@ background, a GPU, or any paid service.
 ## Set up in five minutes
 
 ```bash
-git clone https://github.com/berdakh/ROBT613.git
-cd ROBT613
+git clone https://github.com/berdakh/ROBT407LLM.git
+cd ROBT407LLM
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 python scripts/check_env.py

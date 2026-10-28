@@ -1,5 +1,5 @@
 # %% [markdown]
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/17_tools_and_memory.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/17_tools_and_memory.ipynb)
 #
 # *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
 
@@ -39,11 +39,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -271,7 +271,7 @@ print(Agent(*model.as_client(), triage_tools).run("File my invoices.").trace())
 # > notebook 10.10 would have stopped this, and which would not?
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/ag-memory-strategies.svg" alt="Four memory strategies as rows: keep everything, keep the newest, compress the old, and write it down; with what each one loses" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/ag-memory-strategies.svg" alt="Four memory strategies as rows: keep everything, keep the newest, compress the old, and write it down; with what each one loses" width="100%">
 #
 # ## 17.4 · Four memory strategies, measured
 #

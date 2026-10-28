@@ -9,7 +9,7 @@ nav_order: 5
 
 An in-depth guide to what agents are, how to build them, how they fail, and
 when you should not use one. Read this alongside
-[notebook 10](https://github.com/berdakh/ROBT613/blob/master/notebooks/10_agents_from_scratch.ipynb).
+[notebook 10](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/10_agents_from_scratch.ipynb).
 
 {: .note }
 > **Every section of this guide now has a notebook that builds it.** Memory

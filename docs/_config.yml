@@ -1,4 +1,4 @@
-# GitHub Pages configuration for the ROBT613 Qwen workshop site.
+# GitHub Pages configuration for the ROBT407LLM Qwen workshop site.
 #
 # Published from the /docs folder. Two ways to serve it:
 #   1. Settings -> Pages -> Source: "Deploy from a branch", branch: main, folder: /docs
@@ -7,7 +7,7 @@
 title: Open-Weight LLMs & Agentic AI
 description: >-
   A four-day hands-on workshop on running Qwen open-weight models locally,
-  building agents, and shipping something you actually use. ROBT613.
+  building agents, and shipping something you actually use. ROBT407LLM.
 lang: en
 
 # just-the-docs gives us a sidebar and search with no vendoring.
@@ -28,22 +28,22 @@ heading_anchors: true
 
 aux_links:
   "Notebooks on GitHub":
-    - "https://github.com/berdakh/ROBT613/tree/master/notebooks"
+    - "https://github.com/berdakh/ROBT407LLM/tree/master/notebooks"
   "Repository":
-    - "https://github.com/berdakh/ROBT613"
+    - "https://github.com/berdakh/ROBT407LLM"
 aux_links_new_tab: true
 
 nav_external_links:
   - title: Qwen on Hugging Face
     url: https://huggingface.co/Qwen
   - title: Open in Colab
-    url: https://colab.research.google.com/github/berdakh/ROBT613
+    url: https://colab.research.google.com/github/berdakh/ROBT407LLM
 
 back_to_top: true
 back_to_top_text: "Back to top"
 
 footer_content: >-
-  ROBT613 workshop materials. Code is MIT licensed; prose is CC BY 4.0.
+  ROBT407LLM workshop materials. Code is MIT licensed; prose is CC BY 4.0.
   Model weights are governed by their own licences - check each model card.
 
 callouts:

@@ -9,8 +9,8 @@ nav_order: 1
 # 01 · What an LLM actually is
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/01_llm_foundations.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT613/blob/master/notebooks/01_llm_foundations.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/01_llm_foundations.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/01_llm_foundations.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -61,7 +61,7 @@ Three consequences that explain most LLM behaviour:
 | The unit is a token, not a letter | Counting letters is genuinely hard for it. |
 | Output is a *distribution*, and we sample from it | The same prompt gives different answers. That is a setting, not a bug. |
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/next-token-loop.svg" alt="The generation loop: tokenize, predict a distribution over every token, sample one, append, repeat" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/next-token-loop.svg" alt="The generation loop: tokenize, predict a distribution over every token, sample one, append, repeat" width="100%">
 
 ```python
 # Setup: make the workshop package importable from anywhere in the repo.
@@ -75,11 +75,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -178,7 +178,7 @@ window of the same document in English.
 > **Exercise 1.** Add Turkish, Arabic or your own language to `samples`.
 > Which is most expensive? Write down the chars/token you measured.
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/tokenization.svg" alt="The word strawberry becomes three tokens, so the letters are invisible to the model" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/tokenization.svg" alt="The word strawberry becomes three tokens, so the letters are invisible to the model" width="100%">
 
 ## 1.3 · Why letter-counting is hard
 
@@ -265,7 +265,7 @@ print(f"that string is {len(tokenizer.encode(prompt))} tokens")
 
 > **Exercise 3.** Set `enable_thinking=True`. What extra marker appears?
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/open-weights.svg" alt="Open weights gives you parameters and inference code, but not the training data" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/open-weights.svg" alt="Open weights gives you parameters and inference code, but not the training data" width="100%">
 
 ## 1.5 · "Open weights" is not "open source"
 

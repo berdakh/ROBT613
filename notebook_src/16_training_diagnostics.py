@@ -1,5 +1,5 @@
 # %% [markdown]
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/16_training_diagnostics.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/16_training_diagnostics.ipynb)
 #
 # *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
 
@@ -30,7 +30,7 @@
 # 6. explain why a falling loss is not evidence that the model got better.
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/loss-curve-patterns.svg" alt="Five loss curve shapes: healthy, undertrained, overfitting, stuck at chance, and diverged" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/loss-curve-patterns.svg" alt="Five loss curve shapes: healthy, undertrained, overfitting, stuck at chance, and diverged" width="100%">
 
 # %%
 # --- Setup: works on your laptop AND in Google Colab ------------------------
@@ -40,11 +40,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 

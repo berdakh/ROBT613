@@ -1,5 +1,5 @@
 # %% [markdown]
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/10_agents_from_scratch.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/10_agents_from_scratch.ipynb)
 #
 # *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
 
@@ -38,11 +38,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -143,7 +143,7 @@ if in_colab() and not HAVE_SERVER:
 # and the gap is the reason agents can be made safe at all.
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/agent-spectrum.svg" alt="A spectrum from prompt and chain through to multi-agent, trading predictability for flexibility" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/agent-spectrum.svg" alt="A spectrum from prompt and chain through to multi-agent, trading predictability for flexibility" width="100%">
 
 # %% [markdown]
 # ## 10.2 · Chain vs. agent
@@ -189,7 +189,7 @@ if in_colab() and not HAVE_SERVER:
 # > chain, and whether you would.
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/agent-loop.svg" alt="The agent loop: think, act, observe, repeat, bounded by max_steps" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/agent-loop.svg" alt="The agent loop: think, act, observe, repeat, bounded by max_steps" width="100%">
 
 # %% [markdown]
 # ## 10.3 · Write the loop yourself
@@ -698,7 +698,7 @@ show("wrong year in step 1, everything after is confidently wrong",
 # agent has a send tool, that is not a hypothetical.
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/prompt-injection.svg" alt="Prompt injection: hostile instructions inside a document, and the defences that actually work" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/prompt-injection.svg" alt="Prompt injection: hostile instructions inside a document, and the defences that actually work" width="100%">
 
 # %%
 # What a successful injection looks like, scripted so it is certain to happen.

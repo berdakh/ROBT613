@@ -34,8 +34,8 @@ will work reliably otherwise.
 ### 2. Clone and install
 
 ```bash
-git clone https://github.com/berdakh/ROBT613.git
-cd ROBT613
+git clone https://github.com/berdakh/ROBT407LLM.git
+cd ROBT407LLM
 
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
@@ -112,7 +112,7 @@ This is the real test. If it passes, you are ready.
 1. Check [troubleshooting](troubleshooting.html) — it is organised by the error
    you are seeing.
 2. Still stuck? **Report it now, not on the day.**
-   [Open an issue](https://github.com/berdakh/ROBT613/issues/new/choose) with
+   [Open an issue](https://github.com/berdakh/ROBT407LLM/issues/new/choose) with
    the full output of `python scripts/check_env.py`.
 
 {: .warning }

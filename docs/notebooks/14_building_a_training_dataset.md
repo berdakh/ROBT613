@@ -9,8 +9,8 @@ nav_order: 14
 # 14 · Building a training dataset
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/14_building_a_training_dataset.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT613/blob/master/notebooks/14_building_a_training_dataset.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/14_building_a_training_dataset.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/14_building_a_training_dataset.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -48,11 +48,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -152,7 +152,7 @@ def show_masking(messages: list[dict]) -> None:
 show_masking(demo["messages"])
 ```
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/tr-loss-masking.svg" alt="A chat example split into system, user and assistant segments. System and user are marked read-only with label -100 so no loss is computed on them; only the assistant segment is graded." width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/tr-loss-masking.svg" alt="A chat example split into system, user and assistant segments. System and user are marked read-only with label -100 so no loss is computed on them; only the assistant segment is graded." width="100%">
 
 ## 14.3 · Build a real dataset
 

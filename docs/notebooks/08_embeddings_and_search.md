@@ -9,8 +9,8 @@ nav_order: 8
 # 08 · Embeddings and semantic search
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/08_embeddings_and_search.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT613/blob/master/notebooks/08_embeddings_and_search.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/08_embeddings_and_search.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/08_embeddings_and_search.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -46,11 +46,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -62,7 +62,7 @@ print("repo root:", REPO_ROOT)
 import numpy as np
 ```
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/embedding-space.svg" alt="Embeddings place text in space where distance means similarity of meaning" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/embedding-space.svg" alt="Embeddings place text in space where distance means similarity of meaning" width="100%">
 
 ## 8.1 · What an embedding is
 
@@ -156,7 +156,7 @@ instruction; documents should not. Skipping this costs accuracy for free.
 ```python
 documents = [
     "Rinse basmati rice until the water runs clear, then use 1.5 cups water per cup of rice.",
-    "The ROBT613 midterm is on 14 March at 09:00 in room 3.204.",
+    "The ROBT407LLM midterm is on 14 March at 09:00 in room 3.204.",
     "Internet costs 6,000 KZT monthly, charged on the 5th.",
     "Bike tyres should be inflated to 4 bar; oil the chain every 300 km.",
 ]
@@ -216,7 +216,7 @@ search("bike maintenance")
 
 Semantic search is not universally better. It is reliably *worse* at:
 
-- **exact identifiers** — "invoice #88213", "ROBT613", a function name;
+- **exact identifiers** — "invoice #88213", "ROBT407LLM", a function name;
 - **negation** — "notes that do *not* mention the exam";
 - **numbers and dates** — "spending over 5,000 KZT";
 - **rare proper nouns** the model never saw in training.
@@ -257,14 +257,14 @@ def hybrid_search(query: str, k: int = 3, alpha: float = 0.6) -> list:
     return scored[:k]
 
 
-for query in ("invoice 88213", "when is my exam?", "ROBT613"):
+for query in ("invoice 88213", "when is my exam?", "ROBT407LLM"):
     print(f"\nQ: {query}")
     for chunk, blended, sem, kw in hybrid_search(query):
         print(f"  [{blended:.3f}] (sem {sem:.3f}, kw {kw:.2f}) {chunk.citation:<14}"
               f"{' '.join(chunk.text.split())[:70]}...")
 ```
 
-For "ROBT613" the keyword component should pull the exam note up decisively.
+For "ROBT407LLM" the keyword component should pull the exam note up decisively.
 This is why production search is almost always hybrid.
 
 ## 8.6 · Persist the index

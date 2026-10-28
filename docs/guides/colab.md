@@ -19,18 +19,18 @@ and go.
 
 | Day | # | Notebook | Needs | In Colab | Open |
 |:---|:---|:---|:---|:---|:---|
-| 1 | 01 | LLM foundations | tokenizer only |  | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/01_llm_foundations.ipynb) |
-| 1 | 02 | Environment & hardware | nothing |  | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/02_environment_and_hardware.ipynb) |
-| 1 | 03 | First generation | Qwen3-0.6B | GPU helps | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/03_first_generation.ipynb) |
-| 1 | 04 | Decoding & prompting | Qwen3-0.6B | GPU helps | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/04_decoding_and_prompting.ipynb) |
-| 2 | 05 | Quantization & runtimes | optional Ollama |  | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb) |
-| 2 | 06 | Serving & the OpenAI API | a server | runs Ollama for you | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/06_serving_and_openai_api.ipynb) |
-| 2 | 07 | Structured output & tools | a server | runs Ollama for you | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/07_structured_output_and_tools.ipynb) |
-| 3 | 08 | Embeddings & search | embedding model | GPU helps | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/08_embeddings_and_search.ipynb) |
-| 3 | 09 | RAG over your notes | server + embeddings | runs Ollama for you | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/09_rag_over_your_notes.ipynb) |
-| 3 | 10 | Agents from scratch | a server | runs Ollama for you | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/10_agents_from_scratch.ipynb) |
-| 4 | 11 | Fine-tuning with LoRA | GPU | **use Colab** | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/11_finetuning_lora.ipynb) |
-| 4 | 12 | Capstone | a server | runs Ollama for you | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
+| 1 | 01 | LLM foundations | tokenizer only |  | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/01_llm_foundations.ipynb) |
+| 1 | 02 | Environment & hardware | nothing |  | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/02_environment_and_hardware.ipynb) |
+| 1 | 03 | First generation | Qwen3-0.6B | GPU helps | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/03_first_generation.ipynb) |
+| 1 | 04 | Decoding & prompting | Qwen3-0.6B | GPU helps | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/04_decoding_and_prompting.ipynb) |
+| 2 | 05 | Quantization & runtimes | optional Ollama |  | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb) |
+| 2 | 06 | Serving & the OpenAI API | a server | runs Ollama for you | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/06_serving_and_openai_api.ipynb) |
+| 2 | 07 | Structured output & tools | a server | runs Ollama for you | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/07_structured_output_and_tools.ipynb) |
+| 3 | 08 | Embeddings & search | embedding model | GPU helps | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/08_embeddings_and_search.ipynb) |
+| 3 | 09 | RAG over your notes | server + embeddings | runs Ollama for you | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/09_rag_over_your_notes.ipynb) |
+| 3 | 10 | Agents from scratch | a server | runs Ollama for you | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/10_agents_from_scratch.ipynb) |
+| 4 | 11 | Fine-tuning with LoRA | GPU | **use Colab** | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/11_finetuning_lora.ipynb) |
+| 4 | 12 | Capstone | a server | runs Ollama for you | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
 
 ## What happens when you click
 

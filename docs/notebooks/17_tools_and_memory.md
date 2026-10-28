@@ -9,8 +9,8 @@ nav_order: 17
 # 17 · Tools and memory
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/17_tools_and_memory.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT613/blob/master/notebooks/17_tools_and_memory.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/17_tools_and_memory.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/17_tools_and_memory.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -53,11 +53,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -284,7 +284,7 @@ print(Agent(*model.as_client(), triage_tools).run("File my invoices.").trace())
 > Then answer: if `safe_path` did not exist, which *other* guardrail from
 > notebook 10.10 would have stopped this, and which would not?
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/ag-memory-strategies.svg" alt="Four memory strategies as rows: keep everything, keep the newest, compress the old, and write it down; with what each one loses" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/ag-memory-strategies.svg" alt="Four memory strategies as rows: keep everything, keep the newest, compress the old, and write it down; with what each one loses" width="100%">
 
 ## 17.4 · Four memory strategies, measured
 

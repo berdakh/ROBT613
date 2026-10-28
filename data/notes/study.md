@@ -1,7 +1,7 @@
 # Study log
 
 ## Exam dates
-- ROBT613 midterm: 14 March, 09:00, room 3.204.
+- ROBT407LLM midterm: 14 March, 09:00, room 3.204.
 - Signals & Systems final: 28 March.
 - The workshop capstone demo is due the last day of the workshop.
 
