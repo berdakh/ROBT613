@@ -17,8 +17,8 @@ Everything you need before day 1. Budget 30 minutes, plus download time.
 ## Quick start
 
 ```bash
-git clone https://github.com/berdakh/ROBT613.git
-cd ROBT613
+git clone https://github.com/berdakh/ROBT406LLM.git
+cd ROBT406LLM
 
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
@@ -121,13 +121,13 @@ export HF_HUB_OFFLINE=1
 Every notebook runs on a free T4, and each one carries an **Open in Colab** badge — see [Run in Colab](colab.html) for the full guide, including the GPU switch and the Ollama bootstrap.
 
 1. Open [colab.research.google.com](https://colab.research.google.com)
-2. **File → Open notebook → GitHub**, paste `berdakh/ROBT613`
+2. **File → Open notebook → GitHub**, paste `berdakh/ROBT406LLM`
 3. **Runtime → Change runtime type → T4 GPU**
 4. Run this as the first cell:
 
 ```python
-!git clone https://github.com/berdakh/ROBT613.git
-%cd ROBT613
+!git clone https://github.com/berdakh/ROBT406LLM.git
+%cd ROBT406LLM
 !pip install -q -r requirements.txt
 import sys; sys.path.insert(0, "src")
 ```

@@ -16,7 +16,7 @@ def test_in_colab_is_false_here():
 def test_notebook_url_shape():
     url = colab.notebook_url("notebooks/01_llm_foundations.ipynb")
     assert url == (
-        "https://colab.research.google.com/github/berdakh/ROBT613/blob/master/"
+        "https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/"
         "notebooks/01_llm_foundations.ipynb"
     )
 

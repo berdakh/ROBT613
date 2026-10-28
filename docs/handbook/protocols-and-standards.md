@@ -297,4 +297,4 @@ in the middle, and how many rewrites does it save?*
 
 **You have reached the end of the handbook.** For where to take this next, see
 [Where next](../guides/where-next.html). To start building, open
-[notebook 01](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/01_llm_foundations.ipynb).
+[notebook 01](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/01_llm_foundations.ipynb).

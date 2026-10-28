@@ -1,5 +1,5 @@
 # %% [markdown]
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/14_building_a_training_dataset.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/14_building_a_training_dataset.ipynb)
 #
 # *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
 
@@ -34,11 +34,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT406LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT406LLM.git",
+                        "/content/ROBT406LLM"], check=True)
+    os.chdir("/content/ROBT406LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -137,7 +137,7 @@ def show_masking(messages: list[dict]) -> None:
 show_masking(demo["messages"])
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/tr-loss-masking.svg" alt="A chat example split into system, user and assistant segments. System and user are marked read-only with label -100 so no loss is computed on them; only the assistant segment is graded." width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/tr-loss-masking.svg" alt="A chat example split into system, user and assistant segments. System and user are marked read-only with label -100 so no loss is computed on them; only the assistant segment is graded." width="100%">
 #
 # ## 14.3 · Build a real dataset
 #

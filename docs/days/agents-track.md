@@ -58,7 +58,7 @@ reproduce. The technique is the lesson as much as the convenience.
 
 ### 17 · Tools and memory
 
-[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/17_tools_and_memory.ipynb)
+[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/17_tools_and_memory.ipynb)
 
 A triage agent for a messy downloads folder. Path containment that actually
 holds, then four memory strategies measured against the same conversation.
@@ -72,7 +72,7 @@ in turn three, except the one where somebody decided it was a rule.
 
 ### 18 · Planning and decomposition
 
-[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/18_planning_and_decomposition.ipynb)
+[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/18_planning_and_decomposition.ipynb)
 
 A research agent over this workshop's own documentation. Plans as dependency
 graphs, validated before they run, executed in waves, and recovered by
@@ -84,7 +84,7 @@ the notebook catches a `Delete everything` task in eleven lines, before it ran.
 
 ### 19 · Multi-agent systems
 
-[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/19_multi_agent_systems.ipynb)
+[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/19_multi_agent_systems.ipynb)
 
 A trip-planning team: router, orchestrator, critic loop, and the handoff costs
 of each, counted rather than assumed.
@@ -97,7 +97,7 @@ with more tools. There are exactly three good reasons for a team, one of which
 
 ### 20 · Evaluating agents
 
-[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/20_evaluating_agents.ipynb)
+[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/20_evaluating_agents.ipynb)
 
 The notebook the rest of the track is for. Outcome versus trajectory, the
 lucky pass, LLM-as-judge and its three traps, pass@k versus pass^k, and a

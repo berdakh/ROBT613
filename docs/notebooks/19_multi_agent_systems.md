@@ -9,8 +9,8 @@ nav_order: 19
 # 19 · Multi-agent systems
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/19_multi_agent_systems.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT613/blob/master/notebooks/19_multi_agent_systems.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/19_multi_agent_systems.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT406LLM/blob/master/notebooks/19_multi_agent_systems.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -52,11 +52,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT406LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT406LLM.git",
+                        "/content/ROBT406LLM"], check=True)
+    os.chdir("/content/ROBT406LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -246,7 +246,7 @@ construction rather than by a prompt asking nicely. Compare that with one
 agent holding all four tools, where the only thing between a bad decision
 and a booking is the model's judgement.
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/ag-team-patterns.svg" alt="Router, orchestrator, pipeline and critic loop side by side, with the model-call cost of each" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/ag-team-patterns.svg" alt="Router, orchestrator, pipeline and critic loop side by side, with the model-call cost of each" width="100%">
 
 ## 19.3 · Pattern 1: the router
 

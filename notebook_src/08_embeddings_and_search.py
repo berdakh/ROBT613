@@ -1,5 +1,5 @@
 # %% [markdown]
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/08_embeddings_and_search.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/08_embeddings_and_search.ipynb)
 #
 # *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
 
@@ -32,11 +32,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT406LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT406LLM.git",
+                        "/content/ROBT406LLM"], check=True)
+    os.chdir("/content/ROBT406LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -48,7 +48,7 @@ print("repo root:", REPO_ROOT)
 import numpy as np
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/embedding-space.svg" alt="Embeddings place text in space where distance means similarity of meaning" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/embedding-space.svg" alt="Embeddings place text in space where distance means similarity of meaning" width="100%">
 
 # %% [markdown]
 # ## 8.1 · What an embedding is
@@ -143,7 +143,7 @@ for i, sentence in enumerate(sentences):
 # %%
 documents = [
     "Rinse basmati rice until the water runs clear, then use 1.5 cups water per cup of rice.",
-    "The ROBT613 midterm is on 14 March at 09:00 in room 3.204.",
+    "The ROBT406LLM midterm is on 14 March at 09:00 in room 3.204.",
     "Internet costs 6,000 KZT monthly, charged on the 5th.",
     "Bike tyres should be inflated to 4 bar; oil the chain every 300 km.",
 ]
@@ -204,7 +204,7 @@ search("bike maintenance")
 #
 # Semantic search is not universally better. It is reliably *worse* at:
 #
-# - **exact identifiers** — "invoice #88213", "ROBT613", a function name;
+# - **exact identifiers** — "invoice #88213", "ROBT406LLM", a function name;
 # - **negation** — "notes that do *not* mention the exam";
 # - **numbers and dates** — "spending over 5,000 KZT";
 # - **rare proper nouns** the model never saw in training.
@@ -245,14 +245,14 @@ def hybrid_search(query: str, k: int = 3, alpha: float = 0.6) -> list:
     return scored[:k]
 
 
-for query in ("invoice 88213", "when is my exam?", "ROBT613"):
+for query in ("invoice 88213", "when is my exam?", "ROBT406LLM"):
     print(f"\nQ: {query}")
     for chunk, blended, sem, kw in hybrid_search(query):
         print(f"  [{blended:.3f}] (sem {sem:.3f}, kw {kw:.2f}) {chunk.citation:<14}"
               f"{' '.join(chunk.text.split())[:70]}...")
 
 # %% [markdown]
-# For "ROBT613" the keyword component should pull the exam note up decisively.
+# For "ROBT406LLM" the keyword component should pull the exam note up decisively.
 # This is why production search is almost always hybrid.
 
 # %% [markdown]

@@ -29,8 +29,8 @@ MAGIC = re.compile(r"^\s*[%!]")
 # Notebook images point at raw.githubusercontent so they also load in Colab,
 # where relative paths do not resolve. We still verify the file exists in this
 # repo - otherwise a typo becomes an image that 404s only for students.
-RAW_PREFIX = "https://raw.githubusercontent.com/berdakh/ROBT613/master/"
-COLAB_PREFIX = "https://colab.research.google.com/github/berdakh/ROBT613/blob/master/"
+RAW_PREFIX = "https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/"
+COLAB_PREFIX = "https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/"
 
 
 def _image_problem(path: Path, target: str) -> str | None:

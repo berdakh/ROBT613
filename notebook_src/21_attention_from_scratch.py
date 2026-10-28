@@ -1,5 +1,5 @@
 # %% [markdown]
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/21_attention_from_scratch.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/21_attention_from_scratch.ipynb)
 #
 # *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
 
@@ -39,11 +39,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT406LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT406LLM.git",
+                        "/content/ROBT406LLM"], check=True)
+    os.chdir("/content/ROBT406LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -80,7 +80,7 @@ np.set_printoptions(precision=3, suppress=True, linewidth=100)
 # below is detail on those two moves.
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/mt-attention-pipeline.svg" alt="The attention pipeline: X projects to Q, K and V; Q times K transpose gives scores; scores are scaled, masked and softmaxed into weights; weights times V gives the output" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/mt-attention-pipeline.svg" alt="The attention pipeline: X projects to Q, K and V; Q times K transpose gives scores; scores are scaled, masked and softmaxed into weights; weights times V gives the output" width="100%">
 #
 # ## 21.2 · Deriving attention
 #
@@ -327,7 +327,7 @@ print("\nThat is floating-point zero. The model literally cannot tell")
 print("'dog bites man' from 'man bites dog' on attention alone.")
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/mt-rope.svg" alt="RoPE rotates each pair of dimensions by an angle proportional to position, so the inner product between a rotated query and key depends only on their gap" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/mt-rope.svg" alt="RoPE rotates each pair of dimensions by an angle proportional to position, so the inner product between a rotated query and key depends only on their gap" width="100%">
 #
 # ### RoPE: rotating position into the vectors
 #
@@ -478,7 +478,7 @@ print("max |MHA(h=2) - MHA(h=1)|    =",
 # > reason GQA exists.
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/mt-block-anatomy.svg" alt="A pre-norm block: the residual stream passes straight through while RMSNorm, attention and the SwiGLU MLP compute corrections that are added back" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/mt-block-anatomy.svg" alt="A pre-norm block: the residual stream passes straight through while RMSNorm, attention and the SwiGLU MLP compute corrections that are added back" width="100%">
 #
 # ## 21.6 · The residual stream and RMSNorm
 #

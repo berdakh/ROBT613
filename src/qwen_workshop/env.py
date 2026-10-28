@@ -177,7 +177,7 @@ def describe_environment(report: EnvReport | None = None) -> str:
     report = report or check_environment()
     lines = [
         "=" * 64,
-        " ROBT613 workshop - environment report",
+        " ROBT406LLM workshop - environment report",
         "=" * 64,
         f"Python        : {report.python_version}",
         f"Platform      : {report.platform}",

@@ -9,8 +9,8 @@ nav_order: 18
 # 18 · Planning and decomposition
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/18_planning_and_decomposition.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT613/blob/master/notebooks/18_planning_and_decomposition.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/18_planning_and_decomposition.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT406LLM/blob/master/notebooks/18_planning_and_decomposition.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -50,11 +50,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT406LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT406LLM.git",
+                        "/content/ROBT406LLM"], check=True)
+    os.chdir("/content/ROBT406LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -306,7 +306,7 @@ thinking about the first.
 > unsafe the moment tasks run concurrently, given that `runner` here touches
 > the filesystem — and what you would change about the runner contract.
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/ag-plan-graph.svg" alt="A plan as a dependency graph in three waves; one failed search blocks its descendants while the parallel branch completes" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/ag-plan-graph.svg" alt="A plan as a dependency graph in three waves; one failed search blocks its descendants while the parallel branch completes" width="100%">
 
 ## 18.6 · When a step fails
 

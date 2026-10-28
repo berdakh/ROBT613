@@ -1,4 +1,4 @@
-"""Helper library for the ROBT613 Qwen open-weight models workshop.
+"""Helper library for the ROBT406LLM Qwen open-weight models workshop.
 
 Everything here is deliberately small and readable: students are expected to
 open these files, not just import them. Nothing is hidden behind a framework.

@@ -9,8 +9,8 @@ nav_order: 16
 # 16 · Training diagnostics
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT613/blob/master/notebooks/16_training_diagnostics.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT613/blob/master/notebooks/16_training_diagnostics.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/16_training_diagnostics.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT406LLM/blob/master/notebooks/16_training_diagnostics.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -43,7 +43,7 @@ By the end you will be able to:
 5. decide when to stop, and why "one more epoch" is usually wrong;
 6. explain why a falling loss is not evidence that the model got better.
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT613/master/docs/assets/diagrams/loss-curve-patterns.svg" alt="Five loss curve shapes: healthy, undertrained, overfitting, stuck at chance, and diverged" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/loss-curve-patterns.svg" alt="Five loss curve shapes: healthy, undertrained, overfitting, stuck at chance, and diverged" width="100%">
 
 ```python
 # --- Setup: works on your laptop AND in Google Colab ------------------------
@@ -53,11 +53,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT613").exists():
+    if not Path("/content/ROBT406LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT613.git",
-                        "/content/ROBT613"], check=True)
-    os.chdir("/content/ROBT613")
+                        "https://github.com/berdakh/ROBT406LLM.git",
+                        "/content/ROBT406LLM"], check=True)
+    os.chdir("/content/ROBT406LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
