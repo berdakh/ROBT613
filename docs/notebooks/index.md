@@ -26,51 +26,51 @@ need a GitHub account, a local install, or a GPU to start.
 
 | # | Notebook | Read | Run |
 |---|---|---|---|
-| 01 | What an LLM actually is | [read](01_llm_foundations.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/01_llm_foundations.ipynb) |
-| 02 | What can *your* machine run? | [read](02_environment_and_hardware.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/02_environment_and_hardware.ipynb) |
-| 03 | Your first generation | [read](03_first_generation.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/03_first_generation.ipynb) |
-| 04 | Decoding, thinking mode, and prompts that work | [read](04_decoding_and_prompting.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/04_decoding_and_prompting.ipynb) |
+| 01 | What an LLM actually is | [read](01_llm_foundations.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/01_llm_foundations.ipynb) |
+| 02 | What can *your* machine run? | [read](02_environment_and_hardware.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/02_environment_and_hardware.ipynb) |
+| 03 | Your first generation | [read](03_first_generation.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/03_first_generation.ipynb) |
+| 04 | Decoding, thinking mode, and prompts that work | [read](04_decoding_and_prompting.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/04_decoding_and_prompting.ipynb) |
 
 ## Day 2 — Making it practical
 
 | # | Notebook | Read | Run |
 |---|---|---|---|
-| 05 | Quantization and local runtimes | [read](05_quantization_and_local_runtimes.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb) |
-| 06 | Serving Qwen behind an API | [read](06_serving_and_openai_api.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/06_serving_and_openai_api.ipynb) |
-| 07 | Structured output and tool calling | [read](07_structured_output_and_tools.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/07_structured_output_and_tools.ipynb) |
+| 05 | Quantization and local runtimes | [read](05_quantization_and_local_runtimes.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb) |
+| 06 | Serving Qwen behind an API | [read](06_serving_and_openai_api.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/06_serving_and_openai_api.ipynb) |
+| 07 | Structured output and tool calling | [read](07_structured_output_and_tools.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/07_structured_output_and_tools.ipynb) |
 
 ## Day 3 — Knowledge and agents
 
 | # | Notebook | Read | Run |
 |---|---|---|---|
-| 08 | Embeddings and semantic search | [read](08_embeddings_and_search.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/08_embeddings_and_search.ipynb) |
-| 09 | RAG: answering from your own documents | [read](09_rag_over_your_notes.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/09_rag_over_your_notes.ipynb) |
-| 10 | Agents from scratch | [read](10_agents_from_scratch.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/10_agents_from_scratch.ipynb) |
+| 08 | Embeddings and semantic search | [read](08_embeddings_and_search.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/08_embeddings_and_search.ipynb) |
+| 09 | RAG: answering from your own documents | [read](09_rag_over_your_notes.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/09_rag_over_your_notes.ipynb) |
+| 10 | Agents from scratch | [read](10_agents_from_scratch.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/10_agents_from_scratch.ipynb) |
 
 ## Day 4 — Adapt and ship
 
 | # | Notebook | Read | Run |
 |---|---|---|---|
-| 11 | Fine-tuning Qwen with LoRA | [read](11_finetuning_lora.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/11_finetuning_lora.ipynb) |
-| 12 | Capstone — build your daily-life assistant | [read](12_capstone_daily_assistant.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
+| 11 | Fine-tuning Qwen with LoRA | [read](11_finetuning_lora.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/11_finetuning_lora.ipynb) |
+| 12 | Capstone — build your daily-life assistant | [read](12_capstone_daily_assistant.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
 
 ## Training track (optional)
 
 | # | Notebook | Read | Run |
 |---|---|---|---|
-| 13 | Pre-train a model from scratch | [read](13_pretrain_a_tiny_model.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb) |
-| 14 | Building a training dataset | [read](14_building_a_training_dataset.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/14_building_a_training_dataset.ipynb) |
-| 15 | Preference tuning with DPO | [read](15_preference_tuning_dpo.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/15_preference_tuning_dpo.ipynb) |
-| 16 | Training diagnostics | [read](16_training_diagnostics.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/16_training_diagnostics.ipynb) |
+| 13 | Pre-train a model from scratch | [read](13_pretrain_a_tiny_model.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb) |
+| 14 | Building a training dataset | [read](14_building_a_training_dataset.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/14_building_a_training_dataset.ipynb) |
+| 15 | Preference tuning with DPO | [read](15_preference_tuning_dpo.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/15_preference_tuning_dpo.ipynb) |
+| 16 | Training diagnostics | [read](16_training_diagnostics.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/16_training_diagnostics.ipynb) |
 
 ## Agents track (optional)
 
 | # | Notebook | Read | Run |
 |---|---|---|---|
-| 17 | Tools and memory | [read](17_tools_and_memory.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/17_tools_and_memory.ipynb) |
-| 18 | Planning and decomposition | [read](18_planning_and_decomposition.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/18_planning_and_decomposition.ipynb) |
-| 19 | Multi-agent systems | [read](19_multi_agent_systems.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/19_multi_agent_systems.ipynb) |
-| 20 | Evaluating agents | [read](20_evaluating_agents.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/20_evaluating_agents.ipynb) |
+| 17 | Tools and memory | [read](17_tools_and_memory.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/17_tools_and_memory.ipynb) |
+| 18 | Planning and decomposition | [read](18_planning_and_decomposition.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/18_planning_and_decomposition.ipynb) |
+| 19 | Multi-agent systems | [read](19_multi_agent_systems.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/19_multi_agent_systems.ipynb) |
+| 20 | Evaluating agents | [read](20_evaluating_agents.html) | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/20_evaluating_agents.ipynb) |
 
 ---
 

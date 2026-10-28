@@ -9,8 +9,8 @@ nav_order: 21
 # 21 · Attention from scratch
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/21_attention_from_scratch.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT406LLM/blob/master/notebooks/21_attention_from_scratch.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/21_attention_from_scratch.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/21_attention_from_scratch.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -53,11 +53,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT406LLM").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT406LLM.git",
-                        "/content/ROBT406LLM"], check=True)
-    os.chdir("/content/ROBT406LLM")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -94,7 +94,7 @@ easier than the notation makes it look.
 positions* with attention, and *within a position* with the MLP. Everything
 below is detail on those two moves.
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/mt-attention-pipeline.svg" alt="The attention pipeline: X projects to Q, K and V; Q times K transpose gives scores; scores are scaled, masked and softmaxed into weights; weights times V gives the output" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/mt-attention-pipeline.svg" alt="The attention pipeline: X projects to Q, K and V; Q times K transpose gives scores; scores are scaled, masked and softmaxed into weights; weights times V gives the output" width="100%">
 
 ## 21.2 · Deriving attention
 
@@ -340,7 +340,7 @@ print("\nThat is floating-point zero. The model literally cannot tell")
 print("'dog bites man' from 'man bites dog' on attention alone.")
 ```
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/mt-rope.svg" alt="RoPE rotates each pair of dimensions by an angle proportional to position, so the inner product between a rotated query and key depends only on their gap" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/mt-rope.svg" alt="RoPE rotates each pair of dimensions by an angle proportional to position, so the inner product between a rotated query and key depends only on their gap" width="100%">
 
 ### RoPE: rotating position into the vectors
 
@@ -489,7 +489,7 @@ print("max |MHA(h=2) - MHA(h=1)|    =",
 > compute what that does to the KV-cache size in 21.8 — which is the entire
 > reason GQA exists.
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/mt-block-anatomy.svg" alt="A pre-norm block: the residual stream passes straight through while RMSNorm, attention and the SwiGLU MLP compute corrections that are added back" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/mt-block-anatomy.svg" alt="A pre-norm block: the residual stream passes straight through while RMSNorm, attention and the SwiGLU MLP compute corrections that are added back" width="100%">
 
 ## 21.6 · The residual stream and RMSNorm
 

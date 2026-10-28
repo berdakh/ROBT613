@@ -9,8 +9,8 @@ nav_order: 2
 # 02 · What can *your* machine run?
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/02_environment_and_hardware.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT406LLM/blob/master/notebooks/02_environment_and_hardware.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/02_environment_and_hardware.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/02_environment_and_hardware.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -43,11 +43,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT406LLM").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT406LLM.git",
-                        "/content/ROBT406LLM"], check=True)
-    os.chdir("/content/ROBT406LLM")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -62,7 +62,7 @@ report = check_environment()
 print(describe_environment(report))
 ```
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/memory-budget.svg" alt="Memory use per model and precision: weights dominate until the context gets long" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/memory-budget.svg" alt="Memory use per model and precision: weights dominate until the context gets long" width="100%">
 
 ## 2.1 · The memory formula
 
@@ -169,8 +169,8 @@ handles Qwen3-4B or Qwen3-8B in int4.
 
 ```python
 # First cell in Colab:
-!git clone https://github.com/berdakh/ROBT406LLM.git
-%cd ROBT406LLM
+!git clone https://github.com/berdakh/ROBT407LLM.git
+%cd ROBT407LLM
 !pip install -q -r requirements.txt
 import sys; sys.path.insert(0, "src")
 ```

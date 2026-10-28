@@ -1,13 +1,13 @@
 # Open-Weight LLMs & Agentic AI — a hands-on workshop
 
-**ROBT406LLM** · Four days · Everything runs on your own machine.
+**ROBT407LLM** · Four days · Everything runs on your own machine.
 
 Learn to run [Qwen](https://huggingface.co/Qwen) open-weight models locally,
 give them tools and your own documents, build an agent, measure whether it
 works, and ship something you actually use — with no API key, no subscription,
 and no data leaving your laptop.
 
-📖 **[Read the full course site →](https://berdakh.github.io/ROBT406LLM/)**
+📖 **[Read the full course site →](https://berdakh.github.io/ROBT407LLM/)**
 
 ---
 
@@ -48,8 +48,8 @@ background, a GPU, or any paid service.
 Setup failures are the biggest waste of day 1.
 
 ```bash
-git clone https://github.com/berdakh/ROBT406LLM.git
-cd ROBT406LLM
+git clone https://github.com/berdakh/ROBT407LLM.git
+cd ROBT407LLM
 
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements-lock.txt                # pinned; use for teaching
@@ -69,43 +69,43 @@ Full local setup, including Windows: **[docs/guides/setup.md](docs/guides/setup.
 
 ## The notebooks
 
-**You can read every notebook on the [course site](https://berdakh.github.io/ROBT406LLM/notebooks/)
+**You can read every notebook on the [course site](https://berdakh.github.io/ROBT407LLM/notebooks/)
 and open it in Colab with one click** — no clone, no install, no GPU to begin.
 
 
 | # | Notebook | You learn to | Time | Colab |
 |---|---|---|---|---|
 | **Day 1 — Foundations** |||||
-| 01 | [LLM foundations](notebooks/01_llm_foundations.ipynb) | Tokenization; what a model really computes; open weights vs. open source | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/01_llm_foundations.ipynb) |
-| 02 | [Environment & hardware](notebooks/02_environment_and_hardware.ipynb) | Compute memory needs; choose a model; control your cache | 45 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/02_environment_and_hardware.ipynb) |
-| 03 | [First generation](notebooks/03_first_generation.ipynb) | Load Qwen3, generate, stream, converse, measure tok/s | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/03_first_generation.ipynb) |
-| 04 | [Decoding & prompting](notebooks/04_decoding_and_prompting.ipynb) | Temperature, top-p, thinking mode, prompt patterns that work | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/04_decoding_and_prompting.ipynb) |
+| 01 | [LLM foundations](notebooks/01_llm_foundations.ipynb) | Tokenization; what a model really computes; open weights vs. open source | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/01_llm_foundations.ipynb) |
+| 02 | [Environment & hardware](notebooks/02_environment_and_hardware.ipynb) | Compute memory needs; choose a model; control your cache | 45 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/02_environment_and_hardware.ipynb) |
+| 03 | [First generation](notebooks/03_first_generation.ipynb) | Load Qwen3, generate, stream, converse, measure tok/s | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/03_first_generation.ipynb) |
+| 04 | [Decoding & prompting](notebooks/04_decoding_and_prompting.ipynb) | Temperature, top-p, thinking mode, prompt patterns that work | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/04_decoding_and_prompting.ipynb) |
 | **Day 2 — Making it practical** |||||
-| 05 | [Quantization & runtimes](notebooks/05_quantization_and_local_runtimes.ipynb) | GGUF, Ollama, llama.cpp, bitsandbytes; measure the quality cost | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb) |
-| 06 | [Serving & the OpenAI API](notebooks/06_serving_and_openai_api.ipynb) | Run a local server; write portable client code | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/06_serving_and_openai_api.ipynb) |
-| 07 | [Structured output & tools](notebooks/07_structured_output_and_tools.ipynb) | Reliable JSON, Pydantic validation, tool calling, tool security | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/07_structured_output_and_tools.ipynb) |
+| 05 | [Quantization & runtimes](notebooks/05_quantization_and_local_runtimes.ipynb) | GGUF, Ollama, llama.cpp, bitsandbytes; measure the quality cost | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb) |
+| 06 | [Serving & the OpenAI API](notebooks/06_serving_and_openai_api.ipynb) | Run a local server; write portable client code | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/06_serving_and_openai_api.ipynb) |
+| 07 | [Structured output & tools](notebooks/07_structured_output_and_tools.ipynb) | Reliable JSON, Pydantic validation, tool calling, tool security | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/07_structured_output_and_tools.ipynb) |
 | **Day 3 — Knowledge & agents** |||||
-| 08 | [Embeddings & search](notebooks/08_embeddings_and_search.ipynb) | Semantic search, hybrid search, and when embeddings fail | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/08_embeddings_and_search.ipynb) |
-| 09 | [RAG over your notes](notebooks/09_rag_over_your_notes.ipynb) | Full RAG pipeline with citations, refusals and **evaluation** | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/09_rag_over_your_notes.ipynb) |
-| 10 | [Agents from scratch](notebooks/10_agents_from_scratch.ipynb) | Write the agent loop; test it with no model; six failure modes; injection | 120 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/10_agents_from_scratch.ipynb) |
+| 08 | [Embeddings & search](notebooks/08_embeddings_and_search.ipynb) | Semantic search, hybrid search, and when embeddings fail | 60 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/08_embeddings_and_search.ipynb) |
+| 09 | [RAG over your notes](notebooks/09_rag_over_your_notes.ipynb) | Full RAG pipeline with citations, refusals and **evaluation** | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/09_rag_over_your_notes.ipynb) |
+| 10 | [Agents from scratch](notebooks/10_agents_from_scratch.ipynb) | Write the agent loop; test it with no model; six failure modes; injection | 120 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/10_agents_from_scratch.ipynb) |
 | **Day 4 — Adapt & ship** |||||
-| 11 | [Fine-tuning with LoRA](notebooks/11_finetuning_lora.ipynb) | Train an adapter — and decide whether you should | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/11_finetuning_lora.ipynb) |
-| 12 | [Capstone](notebooks/12_capstone_daily_assistant.ipynb) | Build, evaluate and present a daily-life assistant | rest | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
+| 11 | [Fine-tuning with LoRA](notebooks/11_finetuning_lora.ipynb) | Train an adapter — and decide whether you should | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/11_finetuning_lora.ipynb) |
+| 12 | [Capstone](notebooks/12_capstone_daily_assistant.ipynb) | Build, evaluate and present a daily-life assistant | rest | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/12_capstone_daily_assistant.ipynb) |
 
 | **Optional track — how training actually works** |||||
-| 13 | [Pre-train a tiny model](notebooks/13_pretrain_a_tiny_model.ipynb) | Write a transformer and train it from scratch on CPU | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb) |
-| 14 | [Building a training dataset](notebooks/14_building_a_training_dataset.ipynb) | Loss masking, dedup, leak-free splits, validation | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/14_building_a_training_dataset.ipynb) |
-| 15 | [Preference tuning with DPO](notebooks/15_preference_tuning_dpo.ipynb) | Implement the DPO loss; build pairs; run `DPOTrainer` | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/15_preference_tuning_dpo.ipynb) |
-| 16 | [Training diagnostics](notebooks/16_training_diagnostics.ipynb) | Read loss curves, find the LR, know when to stop | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/16_training_diagnostics.ipynb) |
+| 13 | [Pre-train a tiny model](notebooks/13_pretrain_a_tiny_model.ipynb) | Write a transformer and train it from scratch on CPU | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb) |
+| 14 | [Building a training dataset](notebooks/14_building_a_training_dataset.ipynb) | Loss masking, dedup, leak-free splits, validation | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/14_building_a_training_dataset.ipynb) |
+| 15 | [Preference tuning with DPO](notebooks/15_preference_tuning_dpo.ipynb) | Implement the DPO loss; build pairs; run `DPOTrainer` | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/15_preference_tuning_dpo.ipynb) |
+| 16 | [Training diagnostics](notebooks/16_training_diagnostics.ipynb) | Read loss curves, find the LR, know when to stop | 75 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/16_training_diagnostics.ipynb) |
 | **Optional track — agents in depth** |||||
-| 17 | [Tools and memory](notebooks/17_tools_and_memory.ipynb) | Sandboxed tools; four memory strategies; the context budget | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/17_tools_and_memory.ipynb) |
-| 18 | [Planning and decomposition](notebooks/18_planning_and_decomposition.ipynb) | Plans as graphs, waves, blocking, replanning | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/18_planning_and_decomposition.ipynb) |
-| 19 | [Multi-agent systems](notebooks/19_multi_agent_systems.ipynb) | Routers, orchestrators, critic loops — and when not to | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/19_multi_agent_systems.ipynb) |
-| 20 | [Evaluating agents](notebooks/20_evaluating_agents.ipynb) | Outcome vs trajectory; lucky passes; why the harness moves the score; a CI suite | 2 h | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/20_evaluating_agents.ipynb) |
+| 17 | [Tools and memory](notebooks/17_tools_and_memory.ipynb) | Sandboxed tools; four memory strategies; the context budget | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/17_tools_and_memory.ipynb) |
+| 18 | [Planning and decomposition](notebooks/18_planning_and_decomposition.ipynb) | Plans as graphs, waves, blocking, replanning | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/18_planning_and_decomposition.ipynb) |
+| 19 | [Multi-agent systems](notebooks/19_multi_agent_systems.ipynb) | Routers, orchestrators, critic loops — and when not to | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/19_multi_agent_systems.ipynb) |
+| 20 | [Evaluating agents](notebooks/20_evaluating_agents.ipynb) | Outcome vs trajectory; lucky passes; why the harness moves the score; a CI suite | 2 h | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/20_evaluating_agents.ipynb) |
 | **Optional — the mathematics** |||||
-| 21 | [Attention from scratch](notebooks/21_attention_from_scratch.ipynb) | Derive attention, prove the causal mask, implement RoPE | 2 h | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/21_attention_from_scratch.ipynb) |
+| 21 | [Attention from scratch](notebooks/21_attention_from_scratch.ipynb) | Derive attention, prove the causal mask, implement RoPE | 2 h | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/21_attention_from_scratch.ipynb) |
 | **Optional — building in Kazakh or Russian** |||||
-| 22 | [Kazakh and Russian](notebooks/22_kazakh_and_russian.ipynb) | Measure the tokenizer tax; build a tokenizer to see why | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/22_kazakh_and_russian.ipynb) |
+| 22 | [Kazakh and Russian](notebooks/22_kazakh_and_russian.ipynb) | Measure the tokenizer tax; build a tokenizer to see why | 90 min | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/22_kazakh_and_russian.ipynb) |
 
 Short on time? Priority order: **01, 03, 07, 09, 10** are the essential five.
 

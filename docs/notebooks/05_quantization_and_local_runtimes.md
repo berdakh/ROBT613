@@ -9,8 +9,8 @@ nav_order: 5
 # 05 · Quantization and local runtimes
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT406LLM/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/05_quantization_and_local_runtimes.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -51,11 +51,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT406LLM").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT406LLM.git",
-                        "/content/ROBT406LLM"], check=True)
-    os.chdir("/content/ROBT406LLM")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -85,7 +85,7 @@ for binary in ("ollama", "llama-cli", "llama-server"):
     print(f"{binary:<14}{'found' if have(binary) else 'not installed'}")
 ```
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/quantization.svg" alt="Quantization stores a group of weights as small integers plus one shared scale" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/quantization.svg" alt="Quantization stores a group of weights as small integers plus one shared scale" width="100%">
 
 ## 5.1 · What quantization actually does
 

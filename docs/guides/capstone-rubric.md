@@ -17,7 +17,7 @@ exactly what is being judged.
 
 {: .note }
 > Exercise and checkpoint answers for the other notebooks live in
-> [`solutions/`](https://github.com/berdakh/ROBT406LLM/tree/master/solutions).
+> [`solutions/`](https://github.com/berdakh/ROBT407LLM/tree/master/solutions).
 
 ## How to use this
 

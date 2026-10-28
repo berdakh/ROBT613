@@ -9,8 +9,8 @@ nav_order: 13
 # 13 · Pre-train a model from scratch
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT406LLM/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -50,11 +50,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT406LLM").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT406LLM.git",
-                        "/content/ROBT406LLM"], check=True)
-    os.chdir("/content/ROBT406LLM")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -332,7 +332,7 @@ print(f"ln(vocab_size) = ln({VOCAB_SIZE}) : {math.log(VOCAB_SIZE):.3f}")
 print("\nThey match, so the model starts out genuinely uncertain.")
 ```
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/tr-training-loop.svg" alt="One training step: batch, forward, loss, backward, weight update, then repeat. Gradient clipping and the learning-rate schedule modify the update. The loop reports train loss, validation loss, learning rate and gradient norm." width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/tr-training-loop.svg" alt="One training step: batch, forward, loss, backward, weight update, then repeat. Gradient clipping and the learning-rate schedule modify the update. The loop reports train loss, validation loss, learning rate and gradient norm." width="100%">
 
 ### In plain terms
 

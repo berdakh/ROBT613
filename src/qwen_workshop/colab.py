@@ -17,8 +17,8 @@ import sys
 import time
 from pathlib import Path
 
-REPO_URL = "https://github.com/berdakh/ROBT406LLM.git"
-REPO_DIR = "ROBT406LLM"
+REPO_URL = "https://github.com/berdakh/ROBT407LLM.git"
+REPO_DIR = "ROBT407LLM"
 DEFAULT_BRANCH = "master"
 
 
@@ -176,11 +176,11 @@ def _pull(model: str, timeout: float) -> None:
 
 
 def notebook_url(notebook: str, *, branch: str = DEFAULT_BRANCH,
-                 owner_repo: str = "berdakh/ROBT406LLM") -> str:
+                 owner_repo: str = "berdakh/ROBT407LLM") -> str:
     """Build the Colab URL for a notebook in this repo.
 
     >>> notebook_url("notebooks/01_llm_foundations.ipynb")
-    'https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/01_llm_foundations.ipynb'
+    'https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/01_llm_foundations.ipynb'
     """
     notebook = notebook.lstrip("/")
     return f"https://colab.research.google.com/github/{owner_repo}/blob/{branch}/{notebook}"

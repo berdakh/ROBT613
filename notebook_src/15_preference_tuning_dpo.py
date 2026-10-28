@@ -1,5 +1,5 @@
 # %% [markdown]
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/15_preference_tuning_dpo.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/15_preference_tuning_dpo.ipynb)
 #
 # *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
 
@@ -34,7 +34,7 @@
 # this phase. Here you build it.
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/dpo-vs-rlhf.svg" alt="RLHF trains a reward model then optimises against it with PPO; DPO optimises the preference pairs directly against a frozen reference model" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/dpo-vs-rlhf.svg" alt="RLHF trains a reward model then optimises against it with PPO; DPO optimises the preference pairs directly against a frozen reference model" width="100%">
 
 # %%
 # --- Setup: works on your laptop AND in Google Colab ------------------------
@@ -44,11 +44,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT406LLM").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT406LLM.git",
-                        "/content/ROBT406LLM"], check=True)
-    os.chdir("/content/ROBT406LLM")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 

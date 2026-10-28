@@ -9,8 +9,8 @@ nav_order: 11
 # 11 · Fine-tuning Qwen with LoRA
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/11_finetuning_lora.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT406LLM/blob/master/notebooks/11_finetuning_lora.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/11_finetuning_lora.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/11_finetuning_lora.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -56,7 +56,7 @@ Work down this list. **Stop at the first "yes".**
 > knowledge. It half-works, cannot cite sources, and must be redone whenever
 > a document changes. Use RAG.
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/decision-tree.svg" alt="Decision order: prompt, then RAG, then structured output, then tools, then fine-tuning" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/decision-tree.svg" alt="Decision order: prompt, then RAG, then structured output, then tools, then fine-tuning" width="100%">
 
 ```python
 # --- Setup: works on your laptop AND in Google Colab ------------------------
@@ -69,11 +69,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT406LLM").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT406LLM.git",
-                        "/content/ROBT406LLM"], check=True)
-    os.chdir("/content/ROBT406LLM")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -97,7 +97,7 @@ if not torch.cuda.is_available():
     print("!" * 70)
 ```
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/lora.svg" alt="LoRA freezes the original weight matrix and learns two thin matrices beside it" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/lora.svg" alt="LoRA freezes the original weight matrix and learns two thin matrices beside it" width="100%">
 
 ## 11.2 · What LoRA does
 

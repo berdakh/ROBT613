@@ -1,5 +1,5 @@
 # %% [markdown]
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/01_llm_foundations.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/01_llm_foundations.ipynb)
 #
 # *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
 
@@ -49,7 +49,7 @@
 # | Output is a *distribution*, and we sample from it | The same prompt gives different answers. That is a setting, not a bug. |
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/next-token-loop.svg" alt="The generation loop: tokenize, predict a distribution over every token, sample one, append, repeat" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/next-token-loop.svg" alt="The generation loop: tokenize, predict a distribution over every token, sample one, append, repeat" width="100%">
 
 # %%
 # Setup: make the workshop package importable from anywhere in the repo.
@@ -63,11 +63,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT406LLM").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT406LLM.git",
-                        "/content/ROBT406LLM"], check=True)
-    os.chdir("/content/ROBT406LLM")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -166,7 +166,7 @@ for name, text in samples.items():
 # > Which is most expensive? Write down the chars/token you measured.
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/tokenization.svg" alt="The word strawberry becomes three tokens, so the letters are invisible to the model" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/tokenization.svg" alt="The word strawberry becomes three tokens, so the letters are invisible to the model" width="100%">
 
 # %% [markdown]
 # ## 1.3 · Why letter-counting is hard
@@ -255,7 +255,7 @@ print(f"that string is {len(tokenizer.encode(prompt))} tokens")
 # > **Exercise 3.** Set `enable_thinking=True`. What extra marker appears?
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/open-weights.svg" alt="Open weights gives you parameters and inference code, but not the training data" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/open-weights.svg" alt="Open weights gives you parameters and inference code, but not the training data" width="100%">
 
 # %% [markdown]
 # ## 1.5 · "Open weights" is not "open source"

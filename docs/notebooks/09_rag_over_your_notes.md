@@ -9,8 +9,8 @@ nav_order: 9
 # 09 · RAG: answering from your own documents
 {: .no_toc }
 
-[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/09_rag_over_your_notes.ipynb){: .btn .btn-primary .mr-2 target=_blank }
-[View the .ipynb](https://github.com/berdakh/ROBT406LLM/blob/master/notebooks/09_rag_over_your_notes.ipynb){: .btn target=_blank }
+[Run it in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/09_rag_over_your_notes.ipynb){: .btn .btn-primary .mr-2 target=_blank }
+[View the .ipynb](https://github.com/berdakh/ROBT407LLM/blob/master/notebooks/09_rag_over_your_notes.ipynb){: .btn target=_blank }
 
 {: .note }
 > You are reading this notebook. To **run** it, open it in Colab with the button above - no install, no GPU needed for most of them - or clone the repository and open it in Jupyter.
@@ -46,11 +46,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT406LLM").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT406LLM.git",
-                        "/content/ROBT406LLM"], check=True)
-    os.chdir("/content/ROBT406LLM")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -97,7 +97,7 @@ else:
 Reach for RAG first; nine times out of ten it is what you actually needed.
 (Notebook 11 covers the tenth case.)
 
-<img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/rag-pipeline.svg" alt="The four RAG stages: chunk, embed, retrieve, generate - measured in two halves" width="100%">
+<img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/rag-pipeline.svg" alt="The four RAG stages: chunk, embed, retrieve, generate - measured in two halves" width="100%">
 
 ## 9.2 · The pipeline, one stage at a time
 
@@ -125,7 +125,7 @@ else:
 # Stage 3 - retrieve.
 from qwen_workshop.rag import build_rag_prompt, format_context
 
-question = "When and where is my ROBT406LLM midterm?"
+question = "When and where is my ROBT407LLM midterm?"
 hits = index.search(embedder.encode_queries([question])[0], k=3)
 
 print(f"stage 3: retrieved {len(hits)} chunks for {question!r}\n")

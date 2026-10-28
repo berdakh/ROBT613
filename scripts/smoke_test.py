@@ -67,7 +67,7 @@ def main() -> int:
     args = parser.parse_args()
 
     print("=" * 64)
-    print(" ROBT406LLM workshop - smoke test")
+    print(" ROBT407LLM workshop - smoke test")
     print("=" * 64)
 
     try:

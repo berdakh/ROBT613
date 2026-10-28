@@ -58,7 +58,7 @@ for a GPU queue.
 
 ### 13 · Pre-train a tiny model
 
-[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb)
+[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/13_pretrain_a_tiny_model.ipynb)
 
 A character-level tokenizer, causal self-attention written out in full, and a
 ~800k-parameter model trained on this repository's own documentation. It writes
@@ -71,7 +71,7 @@ notebooks.
 
 ### 14 · Building a training dataset
 
-[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/14_building_a_training_dataset.ipynb)
+[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/14_building_a_training_dataset.ipynb)
 
 No model, no GPU, no training run — which is itself the lesson. Loss masking,
 near-duplicate detection, splitting without leaking, and a validator for the
@@ -83,7 +83,7 @@ started.
 
 ### 15 · Preference tuning with DPO
 
-[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/15_preference_tuning_dpo.ipynb)
+[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/15_preference_tuning_dpo.ipynb)
 
 You implement the DPO loss, then use it to answer questions about itself: what β
 does, why the reference model is frozen, why a healthy run can report a negative
@@ -97,7 +97,7 @@ a hyperparameter costume.
 
 ### 16 · Training diagnostics
 
-[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/16_training_diagnostics.ipynb)
+[Open in Colab](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/16_training_diagnostics.ipynb)
 
 Five real training runs — healthy, undertrained, overfitting, stuck and diverged
 — and a `diagnose()` function that labels them correctly. Then gradient norms,

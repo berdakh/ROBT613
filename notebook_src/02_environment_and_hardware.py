@@ -1,5 +1,5 @@
 # %% [markdown]
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT406LLM/blob/master/notebooks/02_environment_and_hardware.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/berdakh/ROBT407LLM/blob/master/notebooks/02_environment_and_hardware.ipynb)
 #
 # *Click the badge to run this notebook in Google Colab - no install required. The first code cell sets everything up.*
 
@@ -29,11 +29,11 @@ import sys
 from pathlib import Path
 
 if "google.colab" in sys.modules:
-    if not Path("/content/ROBT406LLM").exists():
+    if not Path("/content/ROBT407LLM").exists():
         subprocess.run(["git", "clone", "--depth", "1",
-                        "https://github.com/berdakh/ROBT406LLM.git",
-                        "/content/ROBT406LLM"], check=True)
-    os.chdir("/content/ROBT406LLM")
+                        "https://github.com/berdakh/ROBT407LLM.git",
+                        "/content/ROBT407LLM"], check=True)
+    os.chdir("/content/ROBT407LLM")
     subprocess.run([sys.executable, "-m", "pip", "install", "-q",
                     "-r", "requirements.txt"], check=True)
 
@@ -48,7 +48,7 @@ report = check_environment()
 print(describe_environment(report))
 
 # %% [markdown]
-# <img src="https://raw.githubusercontent.com/berdakh/ROBT406LLM/master/docs/assets/diagrams/memory-budget.svg" alt="Memory use per model and precision: weights dominate until the context gets long" width="100%">
+# <img src="https://raw.githubusercontent.com/berdakh/ROBT407LLM/master/docs/assets/diagrams/memory-budget.svg" alt="Memory use per model and precision: weights dominate until the context gets long" width="100%">
 
 # %% [markdown]
 # ## 2.1 · The memory formula
@@ -158,8 +158,8 @@ print(f"  why          : {choice.notes}")
 #
 # ```python
 # # First cell in Colab:
-# !git clone https://github.com/berdakh/ROBT406LLM.git
-# %cd ROBT406LLM
+# !git clone https://github.com/berdakh/ROBT407LLM.git
+# %cd ROBT407LLM
 # !pip install -q -r requirements.txt
 # import sys; sys.path.insert(0, "src")
 # ```
